@@ -481,34 +481,24 @@
               </packing>
             </child>
             <child>
-              <!-- n-columns=3 n-rows=3 -->
-              <object class="GtkGrid" id="pagina2">
+              <object class="GtkBox" id="pagina2">
                 <property name="name">pagina2</property>
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Temperature</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <child>
                   <placeholder/>
