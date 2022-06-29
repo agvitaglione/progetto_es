@@ -33,11 +33,11 @@ SlopeFigure *figure_temperature;
 GtkWidget *view_temperature;
 SlopeScale *scale_temperature;
 SlopeItem *series_temperature;
-GtkWidget *box_preassure;
-SlopeFigure *figure_preassure;
-GtkWidget *view_preassure;
-SlopeScale *scale_preassure;
-SlopeItem *series_preassure;
+GtkWidget *box_pressure;
+SlopeFigure *figure_pressure;
+GtkWidget *view_pressure;
+SlopeScale *scale_pressure;
+SlopeItem *series_pressure;
 
 // HANDLER SHUTDOWN BUTTON
 extern "C" gboolean shutdown_request_handler (GtkWidget *shutdown_button_box) {
@@ -47,7 +47,8 @@ extern "C" gboolean shutdown_request_handler (GtkWidget *shutdown_button_box) {
 
 	if(risultato == 1 /* SHUTDOWN */) {
 		// SHUTDOWN
-		system("shutdown now");
+		// system("shutdown now");
+		gtk_main_quit();
 	}
 	else if (risultato == 0 /* CANCEL */) {
 		gtk_widget_hide(request_dialog);
@@ -125,14 +126,14 @@ void chart_plot_temperature() {
 
 }
 
-// CHART PLOT PREASSURE
-void chart_plot_preassure() {
-	figure_preassure = slope_figure_new();
-	scale_preassure = slope_xyscale_new();
-	view_preassure   = slope_view_new();
-	gtk_box_pack_start(GTK_BOX(box_preassure), GTK_WIDGET(view_preassure), TRUE, TRUE, 0);
-	slope_view_set_figure(SLOPE_VIEW(view_preassure), figure_preassure);
-	slope_figure_add_scale(SLOPE_FIGURE(figure_preassure), scale_preassure);
+// CHART PLOT pressure
+void chart_plot_pressure() {
+	figure_pressure = slope_figure_new();
+	scale_pressure = slope_xyscale_new();
+	view_pressure   = slope_view_new();
+	gtk_box_pack_start(GTK_BOX(box_pressure), GTK_WIDGET(view_pressure), TRUE, TRUE, 0);
+	slope_view_set_figure(SLOPE_VIEW(view_pressure), figure_pressure);
+	slope_figure_add_scale(SLOPE_FIGURE(figure_pressure), scale_pressure);
 	
 
 	const long n = 100;
@@ -145,12 +146,12 @@ void chart_plot_preassure() {
 		x[i] = g_random_double();
 		y[i] = g_random_double();
 	}
-	slope_view_redraw(SLOPE_VIEW(view_preassure));
-	series_preassure = slope_xyseries_new_filled("Identical", x, y, 100, "kor");
-	slope_scale_add_item(scale_preassure, series_preassure);
+	slope_view_redraw(SLOPE_VIEW(view_pressure));
+	series_pressure = slope_xyseries_new_filled("Identical", x, y, 100, "kor");
+	slope_scale_add_item(scale_pressure, series_pressure);
 
 	// DELETE SIGNAL HANDLER MOUSE MOVING
-	g_signal_handlers_disconnect_by_data(view_preassure, GINT_TO_POINTER(SLOPE_MOUSE_MOVE));
+	g_signal_handlers_disconnect_by_data(view_pressure, GINT_TO_POINTER(SLOPE_MOUSE_MOVE));
 
 }
 
@@ -161,13 +162,22 @@ int main(int argc, char* argv[]) {
 	//g_object_set(gtk_settings_get_default(), "gtk-enable-animations", TRUE, NULL);
 	
 	builder = gtk_builder_new_from_file("interface.glade");
+	GtkCssProvider *css = gtk_css_provider_new();
+	gtk_css_provider_load_from_path(css, "style.css", NULL);
+	GtkStyleContext *context;
+
+
 	window = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
 	stack = GTK_WIDGET(gtk_builder_get_object(builder, "stack"));
 	togglebottom1 = GTK_WIDGET(gtk_builder_get_object(builder, "circle_page_1"));
 	togglebottom2 = GTK_WIDGET(gtk_builder_get_object(builder, "circle_page_2"));
 	togglebottom3 = GTK_WIDGET(gtk_builder_get_object(builder, "circle_page_3"));
 	box_temperature = GTK_WIDGET(gtk_builder_get_object(builder, "pagina2"));
-	box_preassure = GTK_WIDGET(gtk_builder_get_object(builder, "pagina3"));
+	box_pressure = GTK_WIDGET(gtk_builder_get_object(builder, "pagina3"));
+
+	// context = gtk_widget_get_style_context(window);
+	//gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(css), GTK_STYLE_PROVIDER_PRIORITY_USER);
+	//gtk_style_context_add_class(context, "dialog");
 
 	// ADD GESTURE LISTENER
 	GtkGesture *swipe = gtk_gesture_swipe_new(window);
@@ -175,7 +185,7 @@ int main(int argc, char* argv[]) {
 	
 	// ADD CHART
 	chart_plot_temperature();
-	chart_plot_preassure();
+	chart_plot_pressure();
 
 	// ADD DESTROY SIGNAL AT WINDOW CLOSING
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
