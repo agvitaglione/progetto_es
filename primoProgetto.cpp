@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include "time.h"
+#include <thread>
+#include <chrono>
 
 
 /* SWIPE ACT
@@ -126,30 +129,72 @@ void chart_plot_temperature() {
 
 }
 
+
+// thread
+void task() {
+
+	size_t MAX = 61;
+	int pos_new_value = 0;
+	int n = 0;
+	double x_samples[MAX];
+	double y_samples[MAX];
+	double x[MAX];
+	double y[MAX];
+
+	int currentTime;
+	while(true) {
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		currentTime = (int)time(NULL);
+		x_samples[pos_new_value] = (int)time(NULL);
+		y_samples[pos_new_value] = (double) g_random_double() * 10;
+		
+		n = n == MAX ? MAX :  n + 1;
+
+		int i = pos_new_value;
+		for (int k = 0; k < n; k++) {
+			x[k] = x_samples[i] - currentTime;
+			y[k] = y_samples[i];
+			i = i == 0 ? i = MAX - 1 : i - 1;
+		}
+
+		pos_new_value = (pos_new_value + 1) % MAX ;
+
+		// Disegnare grafico
+		slope_scale_remove_item_by_name(SLOPE_SCALE(scale_pressure), "P1");
+		series_pressure = slope_xyseries_new_filled("P1", x, y, n, "b-");
+		slope_scale_add_item(scale_pressure, series_pressure);
+		slope_xyscale_set_x_range(SLOPE_XYSCALE(scale_pressure), -60, 0);
+		slope_view_redraw(SLOPE_VIEW(view_pressure));
+	}
+}
+
 // CHART PLOT pressure
 void chart_plot_pressure() {
 	figure_pressure = slope_figure_new();
-	scale_pressure = slope_xyscale_new();
+	// scale_pressure = slope_xyscale_new();
 	view_pressure   = slope_view_new();
 	gtk_box_pack_start(GTK_BOX(box_pressure), GTK_WIDGET(view_pressure), TRUE, TRUE, 0);
 	slope_view_set_figure(SLOPE_VIEW(view_pressure), figure_pressure);
-	slope_figure_add_scale(SLOPE_FIGURE(figure_pressure), scale_pressure);
 	
+	// slope_figure_add_scale(SLOPE_FIGURE(figure_pressure), scale_pressure);
+	scale_pressure = slope_xyscale_new_axis("tempo", "pressione", "Valori di pressione");
+	
+	slope_figure_add_scale(SLOPE_FIGURE(figure_pressure), scale_pressure);
+	SlopeItem *axis = slope_xyscale_get_axis(SLOPE_XYSCALE(scale_pressure), SLOPE_XYSCALE_AXIS_BOTTOM);
+	SlopeSampler *sampler = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis));
+	
+	
+	static const SlopeSample slope_sampler_array[] = {
+		{-60, "60s"},
+		{-40, "40s"},
+		{-20, "20s"},
+		{0, "0s"},
+	};
 
-	const long n = 100;
-	double *x, *y;
-
-	x = (double*) g_malloc(n * sizeof(double));
-	y = (double*) g_malloc(n * sizeof(double));
-
-	for(long i = 0; i < 100; i++) {
-		x[i] = g_random_double();
-		y[i] = g_random_double();
-	}
-	slope_view_redraw(SLOPE_VIEW(view_pressure));
-	series_pressure = slope_xyseries_new_filled("Identical", x, y, 100, "kor");
-	slope_scale_add_item(scale_pressure, series_pressure);
-
+	slope_sampler_set_samples(sampler, slope_sampler_array, 4);
+	
+	
+	
 	// DELETE SIGNAL HANDLER MOUSE MOVING
 	g_signal_handlers_disconnect_by_data(view_pressure, GINT_TO_POINTER(SLOPE_MOUSE_MOVE));
 
@@ -165,7 +210,6 @@ int main(int argc, char* argv[]) {
 	GtkCssProvider *css = gtk_css_provider_new();
 	gtk_css_provider_load_from_path(css, "style.css", NULL);
 	GtkStyleContext *context;
-
 
 	window = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
 	stack = GTK_WIDGET(gtk_builder_get_object(builder, "stack"));
@@ -199,6 +243,8 @@ int main(int argc, char* argv[]) {
 
 	// CURSOR (TO DELETE ON TOUCH SCREEN) 
 	gdk_window_set_cursor(gtk_widget_get_window(window), gdk_cursor_new(GDK_ARROW));
+
+	std::thread t(task);
 
 	// START GTK MAIN ROUTINE
 	gtk_main();

@@ -1,13 +1,13 @@
-CFLAGS=`pkg-config --cflags --libs gtk+-3.0` -rdynamic -std=c++17 -fpermissive -g
+CFLAGS=`pkg-config --cflags --libs gtk+-3.0` -rdynamic -std=c++17 -g
 OBJ=PtMain.o PtMonitorControl.o PtMonitorView.o
 LIBS=-lslope -lm
 DEPS=PtMonitorView.h PtMonitorControl.h
 
 %.o: %.cpp $(DEPS)
-	g++ -c $< $(CFLAGS)
+	@g++ -c $< $(CFLAGS)
 
 PtMain: $(OBJ)
-	g++ -o $@ $^ $(CFLAGS) $(LIBS)
+	@g++ -o $@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean
 

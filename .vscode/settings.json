@@ -7,6 +7,10 @@
         "string": "cpp",
         "vector": "cpp",
         "iterator": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "compare": "cpp",
+        "limits": "cpp",
+        "type_traits": "cpp",
+        "iostream": "cpp"
     }
 }

@@ -4,17 +4,29 @@
 #define SWIPE_RIGHT(v_x, v_y) (v_x >= PtMonitorControl::XACT && abs(v_y) < PtMonitorControl::YLIMIT) // CHECK IT'S A RIGHT SWIPE
 #define SWIPE_LEFT(v_x, v_y) (v_x <= -PtMonitorControl::XACT && abs(v_y) < PtMonitorControl::YLIMIT) // CHECK IT'S A LEFT SWIPE
 
-PtMonitorControl::PtMonitorControl(PtMonitorView* view) {
-    this->view = view;
-    this->view->setShoutdownHandler((void*)&shutdownHandler);
-    this->view->setSwipeHandler((void*)&swipeHandler);
+// STATIC VARIABLES INITIALIZATION
+PtMonitorView* PtMonitorControl::view = nullptr;
+
+
+PtMonitorControl* PtMonitorControl::getInstance(PtMonitorView* view) {
+    static PtMonitorControl instance(view);
+    return &instance;
 }
 
+// CONSTRUCTOR
+PtMonitorControl::PtMonitorControl(PtMonitorView* _view) {
+    PtMonitorControl::view = _view;
+    this->view->setShoutdownHandler(&PtMonitorControl::shutdownHandler);
+    this->view->setSwipeHandler(&PtMonitorControl::swipeHandler);
+}
+
+
 void PtMonitorControl::shutdownHandler(void) {
+    // TODO
     std::cout << "Chiudere!" << std::endl;
 }
 
-void PtMonitorControl::swipeHandler(GtkGestureSwipe *swipe, gdouble v_x, gdouble v_y) {
+void PtMonitorControl::swipeHandler(gdouble v_x, gdouble v_y) {
     int pagesNumber = PtMonitorView::getNumberOfPages();
     int currentPageNumber = view->getCurrentPageNumber();
     int nextPage = currentPageNumber;
@@ -30,6 +42,6 @@ void PtMonitorControl::swipeHandler(GtkGestureSwipe *swipe, gdouble v_x, gdouble
         transition = GTK_STACK_TRANSITION_TYPE_SLIDE_LEFT;
     }
 
-    view->setPage(currentPageNumber, transition);
+    view->setPage(nextPage, transition);
 
 }

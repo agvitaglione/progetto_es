@@ -3,10 +3,10 @@
 
 int main() {
 
-    PtMonitorView view;
-    PtMonitorControl control(&view);
+    PtMonitorView* view = PtMonitorView::getInstance();
+    PtMonitorControl* control = PtMonitorControl::getInstance(view);
 
-    view.startRoutine();
+    view->startRoutine();
 
     return 0;
 }
