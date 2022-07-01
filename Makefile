@@ -1,7 +1,7 @@
-CFLAGS=`pkg-config --cflags --libs gtk+-3.0` -rdynamic -std=c++17 -g
-OBJ=PtMain.o PtMonitorControl.o PtMonitorView.o
-LIBS=-lslope -lm
-DEPS=PtMonitorView.h PtMonitorControl.h
+CFLAGS=`pkg-config --cflags --libs gtk+-3.0` -rdynamic -std=c++17 -g 
+OBJ=PtMain.o PtMonitorControl.o PtMonitorView.o PtMonitorModel.o
+LIBS=-lslope -lm -lrt
+DEPS=PtMonitorView.h PtMonitorControl.h PtMonitorModel.h
 
 %.o: %.cpp $(DEPS)
 	@g++ -c $< $(CFLAGS)

@@ -3,10 +3,10 @@
 // X AXIS FOR PLOT
 #define NLABEL 4
 static const SlopeSample slope_sampler_array[] = {
-		{-60, "60s"},
-		{-40, "40s"},
-		{-20, "20s"},
-		{0, "0s"},
+    {-60, (char*) "60s"},
+    {-40, (char*) "40s"},
+    {-20, (char*) "20s"},
+    {0  , (char*) "0s" },
 };
 
 std::string toString(PtMonitorView::TyreType tyre) {
@@ -18,6 +18,13 @@ std::string toString(PtMonitorView::TyreType tyre) {
         case PtMonitorView::TyreType::RR: return "RR";
     }
 } 
+
+std::string to_unit(PtMonitorView::MeasureType measure) {
+    switch(measure) {
+        case PtMonitorView::MeasureType::TEMPERATURE: return "°C";
+        case PtMonitorView::MeasureType::PRESSURE: return " bar";
+    }
+}
 
 //----------------------------------- CALLBACKS
 // SWIPE HANDLER
@@ -64,8 +71,25 @@ PtMonitorView::PtMonitorView(void) {
     request_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "request_dialog"));
     shutdown_button_box = GTK_WIDGET(gtk_builder_get_object(builder, "shutdown_button_box"));
 
+    // ------------------------ LABELS
+
+    fl_temperature = GTK_WIDGET(gtk_builder_get_object(builder, "fl_temperature"));
+    fr_temperature = GTK_WIDGET(gtk_builder_get_object(builder, "fr_temperature"));
+    rl_temperature = GTK_WIDGET(gtk_builder_get_object(builder, "rl_temperature"));
+    rr_temperature = GTK_WIDGET(gtk_builder_get_object(builder, "rr_temperature"));
+    fl_pressure = GTK_WIDGET(gtk_builder_get_object(builder, "fl_pressure"));
+    fr_pressure = GTK_WIDGET(gtk_builder_get_object(builder, "fr_pressure"));
+    rl_pressure = GTK_WIDGET(gtk_builder_get_object(builder, "rl_pressure"));
+    rr_pressure = GTK_WIDGET(gtk_builder_get_object(builder, "rr_pressure"));
+
+    // ------------------------
+
+    // ------------------------ CALLBACKS
+
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(shutdown_button_box, "button-release-event", G_CALLBACK(shutdownRequestHandler), NULL);
+
+    // ------------------------
     
 
   	// ------------------------ ADD GESTURE LISTENER
@@ -194,7 +218,7 @@ int PtMonitorView::getNumberOfPages(void) {
     return NUMBER_OF_PAGES;
 }
 
-void PtMonitorView::plotData(const DataType* data, const GraphType graph, const int nelem) {
+void PtMonitorView::plotData(const DataType* data, const MeasureType graph, const int nelem) {
 
     SlopeScale* scale;
     SlopeItem* series;
@@ -219,4 +243,49 @@ void PtMonitorView::plotData(const DataType* data, const GraphType graph, const 
 		slope_xyscale_set_x_range(SLOPE_XYSCALE(scale), -60, 0);
 		slope_view_redraw(SLOPE_VIEW(view));
     }
+}
+
+void PtMonitorView::setMeasureValues(float value, MeasureType measure, TyreType tyre) {
+    
+    GtkWidget *tyreLabel;
+
+    if(measure == MeasureType::TEMPERATURE) {
+
+        switch(tyre) {
+            case PtMonitorView::TyreType::FL: 
+                    tyreLabel = fl_temperature;
+                    break;
+            case PtMonitorView::TyreType::FR: 
+                    tyreLabel = fr_temperature;
+                    break;              
+            case PtMonitorView::TyreType::RL: 
+                    tyreLabel = rl_temperature;
+                    break;
+            case PtMonitorView::TyreType::RR: 
+                    tyreLabel = rr_temperature;
+                    break;
+        }
+    }
+
+    else if(measure == MeasureType::PRESSURE) {
+        switch(tyre) {
+            case PtMonitorView::TyreType::FL: 
+                    tyreLabel = fl_pressure;
+                    break;
+            case PtMonitorView::TyreType::FR: 
+                    tyreLabel = fr_pressure;
+                    break;              
+            case PtMonitorView::TyreType::RL: 
+                    tyreLabel = rl_pressure;
+                    break;
+            case PtMonitorView::TyreType::RR: 
+                    tyreLabel = rr_pressure;
+                    break;
+        }
+    }
+
+    std::stringstream stream;
+    stream << std::fixed << std::setprecision(1) << value << to_unit(measure);
+    gtk_label_set_label(GTK_LABEL(tyreLabel), stream.str().c_str());
+
 }

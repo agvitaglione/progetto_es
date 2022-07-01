@@ -5,6 +5,8 @@
 #include <gdk/gdk.h>
 #include <slope/slope.h>
 #include <string>
+#include <sstream>
+#include <iomanip>
 
 
 
@@ -25,7 +27,7 @@ class PtMonitorView {
         // --------------------------- USEFULL TYPE DEFINITIONS
 
         // TYPE OF PLOTTABLE GRAPH (TEMPERATURE GRAPH OR PRESSURE GRAPH)
-        typedef enum {TEMPERATURE, PRESSURE} GraphType; 
+        typedef enum {TEMPERATURE, PRESSURE} MeasureType; 
 
         // TYRE TYPE
         typedef enum {FL, FR, RL, RR} TyreType;
@@ -58,11 +60,15 @@ class PtMonitorView {
         void setShoutdownHandler(void (*callback)(void));
         void setSwipeHandler(void (*callback)(gdouble v_x, gdouble v_y));
 
+        // SET MEASURE LABELS
+        void setMeasureValues(float value, MeasureType measure, TyreType tyre);
+        
+
         // DRAW DATA
         /*
         * Data must be a vector of 4 elements
         */
-        void plotData(const DataType* data, const GraphType graph, const int nelem);
+        void plotData(const DataType* data, const MeasureType graph, const int nelem);
 
     protected:
         PtMonitorView(void);
@@ -83,6 +89,16 @@ class PtMonitorView {
         GtkWidget *togglebottom3;
         GtkWidget *request_dialog;
         GtkWidget *shutdown_button_box;
+        
+        //LABELS
+        GtkWidget *fl_temperature;
+        GtkWidget *fr_temperature;
+        GtkWidget *rl_temperature;
+        GtkWidget *rr_temperature;
+        GtkWidget *fl_pressure;
+        GtkWidget *fr_pressure;
+        GtkWidget *rl_pressure;
+        GtkWidget *rr_pressure;
 
         // GESTURE
         GtkGesture *swipe;
