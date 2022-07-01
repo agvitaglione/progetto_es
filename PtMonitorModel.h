@@ -11,6 +11,8 @@ class PtMonitorModel {
 
     public:
 
+        static const int MAX_QUEUE_SIZE = 61;
+
         //SINGLETON
         static PtMonitorModel* getInstance();
 
@@ -48,15 +50,11 @@ class PtMonitorModel {
 
         // ---------
 
-       // --------- SET CALLBACK FUNCTIONS
-
-        void setNewMassageHandler(void (*callback)(void));
-
-        // ---------
+    protected:
+        PtMonitorModel();
 
     private:
 
-        static const int MAX_QUEUE_SIZE = 61;
         static const int MSG_SIZE = 24;
         inline static const std::string NAME_QUEUE = "ptm_measure_queue";
 

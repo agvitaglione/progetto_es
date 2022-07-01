@@ -1,7 +1,10 @@
 #include "PtMonitorView.h"
 #include "PtMonitorControl.h"
+#include "PtMonitorModel.h"
 #include <thread>
 #include <chrono>
+#include <iostream>
+#include "DataPlotQueue.h"
 
 void task(PtMonitorView* view) {
     view->startRoutine();
@@ -9,8 +12,10 @@ void task(PtMonitorView* view) {
 
 int main() {
 
+
     PtMonitorView* view = PtMonitorView::getInstance();
-    PtMonitorControl* control = PtMonitorControl::getInstance(view);
+    PtMonitorModel *model = PtMonitorModel::getInstance();
+    PtMonitorControl* control = PtMonitorControl::getInstance(view, model);
 
     std::thread t(task, view);
     

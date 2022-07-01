@@ -6,16 +6,19 @@
 
 // STATIC VARIABLES INITIALIZATION
 PtMonitorView* PtMonitorControl::view = nullptr;
+PtMonitorModel* PtMonitorControl::model = nullptr;
+DataPlotQueue PtMonitorControl::queue(PtMonitorModel::MAX_QUEUE_SIZE);
 
 
-PtMonitorControl* PtMonitorControl::getInstance(PtMonitorView* view) {
-    static PtMonitorControl instance(view);
+PtMonitorControl* PtMonitorControl::getInstance(PtMonitorView* view, PtMonitorModel* model) {
+    static PtMonitorControl instance(view, model);
     return &instance;
 }
 
 // CONSTRUCTOR
-PtMonitorControl::PtMonitorControl(PtMonitorView* _view) {
+PtMonitorControl::PtMonitorControl(PtMonitorView* _view, PtMonitorModel* _model) {
     PtMonitorControl::view = _view;
+    PtMonitorControl::model = _model;
     this->view->setShoutdownHandler(&PtMonitorControl::shutdownHandler);
     this->view->setSwipeHandler(&PtMonitorControl::swipeHandler);
 }
@@ -43,5 +46,10 @@ void PtMonitorControl::swipeHandler(gdouble v_x, gdouble v_y) {
     }
 
     view->setPage(nextPage, transition);
+
+}
+
+void PtMonitorControl::newMessageHandler() {
+    //TODO
 
 }

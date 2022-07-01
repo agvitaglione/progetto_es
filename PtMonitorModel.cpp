@@ -41,10 +41,7 @@ PtMonitorModel::PtMonitorModel() {
     attr.mq_flags = O_NONBLOCK;
      
     queue = mq_open(NAME_QUEUE.c_str(), O_CREAT | O_RDONLY, 0664, &attr);
-  {-60, (char*) "60s"},
-    {-40, (char*) "40s"},
-    {-20, (char*) "20s"},
-    {0  , (char*) "0s" },
+    
     // QUEUE NOT EMPTY EVENT
     sigevent sigevent;
     signal(SIGUSR1, newMessages);

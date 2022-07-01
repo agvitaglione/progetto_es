@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "PtMonitorView.h"
+#include "PtMonitorModel.h"
+#include "DataPlotQueue.h"
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
@@ -12,7 +14,7 @@ class PtMonitorControl {
     public:
         
         //SINGLETON
-        static PtMonitorControl* getInstance(PtMonitorView* _view);
+        static PtMonitorControl* getInstance(PtMonitorView *_view, PtMonitorModel *_model);
 
         // DISABLE OTHER CONSTRUCOTRS
         PtMonitorControl(const PtMonitorControl&) = delete;
@@ -21,9 +23,10 @@ class PtMonitorControl {
         // CALLBACK FUNCTIONS
         static void shutdownHandler(void);
         static void swipeHandler(gdouble v_x, gdouble v_y);
+        static void newMessageHandler();
 
     protected:
-        PtMonitorControl(PtMonitorView* view);
+        PtMonitorControl(PtMonitorView *view, PtMonitorModel *model);
 
     private:
 
@@ -31,7 +34,13 @@ class PtMonitorControl {
         static const int XACT = 500;
         static const int YLIMIT = 300;
         
-        static PtMonitorView* view;
+        
+        static PtMonitorView *view;
+        static PtMonitorModel *model;
+
+        static DataPlotQueue queue;
+
+        
 
 };
 
