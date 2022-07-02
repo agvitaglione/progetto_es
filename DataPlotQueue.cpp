@@ -2,8 +2,8 @@
 
 DataPlotQueue::DataPlotQueue(const int size) {
     this->size = size;
-    x = new double[size];
-    y = new double[size];
+    x = new float[size];
+    y = new float[size];
     nelem = 0;
     head = 0;
     tail = 0;
@@ -12,8 +12,8 @@ DataPlotQueue::DataPlotQueue(const int size) {
 
 DataPlotQueue::DataPlotQueue(const DataPlotQueue& other)  {
     this->size = other.size;
-    this->x = new double[other.size];
-    this->y = new double[other.size];
+    this->x = new float[other.size];
+    this->y = new float[other.size];
     this->nelem = other.nelem;
     this->head = other.head;
     this->tail = other.tail;
@@ -30,7 +30,7 @@ DataPlotQueue::~DataPlotQueue()  {
     delete[] y;
 }
 
-void DataPlotQueue::push(const double xVal, const double yVal) {
+void DataPlotQueue::push(const float xVal, const float yVal) {
   
     x[tail] = xVal;
     y[tail] = yVal;
@@ -47,7 +47,7 @@ void DataPlotQueue::push(const double xVal, const double yVal) {
 }
 
 
-void DataPlotQueue::getData(double *xData, double *yData) const {
+void DataPlotQueue::getData(float *xData, float *yData) const {
 
     int i = head;
     for(int k = 0; k < nelem; k++) {
