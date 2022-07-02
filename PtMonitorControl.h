@@ -1,7 +1,6 @@
 #ifndef __PTMONITORCONTROL_H__
 #define __PTMONITORCONTROL_H__
 
-#include <iostream>
 #include "PtMonitorView.h"
 #include "PtMonitorModel.h"
 #include "DataPlotQueue.h"
@@ -39,7 +38,7 @@ class PtMonitorControl {
 
         static DataPlotQueue queue;
 
-        
+        static void periodicGetData();
 
 };
 

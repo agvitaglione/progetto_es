@@ -9,23 +9,6 @@ static const SlopeSample slope_sampler_array[] = {
     {0  , (char*) "0s" },
 };
 
-std::string toString(PtMonitorView::TyreType tyre) {
-
-    switch(tyre) {
-        case PtMonitorView::TyreType::FL: return "FL";
-        case PtMonitorView::TyreType::FR: return "FR";
-        case PtMonitorView::TyreType::RL: return "RL";
-        case PtMonitorView::TyreType::RR: return "RR";
-    }
-} 
-
-std::string to_unit(PtMonitorView::MeasureType measure) {
-    switch(measure) {
-        case PtMonitorView::MeasureType::TEMPERATURE: return "°C";
-        case PtMonitorView::MeasureType::PRESSURE: return " bar";
-    }
-}
-
 //----------------------------------- CALLBACKS
 // SWIPE HANDLER
 void changePageHandler(GtkGestureSwipe *swipe, gdouble v_x, gdouble v_y) {
@@ -252,16 +235,16 @@ void PtMonitorView::setMeasureValues(float value, MeasureType measure, TyreType 
     if(measure == MeasureType::TEMPERATURE) {
 
         switch(tyre) {
-            case PtMonitorView::TyreType::FL: 
+            case TyreType::FL: 
                     tyreLabel = fl_temperature;
                     break;
-            case PtMonitorView::TyreType::FR: 
+            case TyreType::FR: 
                     tyreLabel = fr_temperature;
                     break;              
-            case PtMonitorView::TyreType::RL: 
+            case TyreType::RL: 
                     tyreLabel = rl_temperature;
                     break;
-            case PtMonitorView::TyreType::RR: 
+            case TyreType::RR: 
                     tyreLabel = rr_temperature;
                     break;
         }
@@ -269,23 +252,23 @@ void PtMonitorView::setMeasureValues(float value, MeasureType measure, TyreType 
 
     else if(measure == MeasureType::PRESSURE) {
         switch(tyre) {
-            case PtMonitorView::TyreType::FL: 
+            case TyreType::FL: 
                     tyreLabel = fl_pressure;
                     break;
-            case PtMonitorView::TyreType::FR: 
+            case TyreType::FR: 
                     tyreLabel = fr_pressure;
                     break;              
-            case PtMonitorView::TyreType::RL: 
+            case TyreType::RL: 
                     tyreLabel = rl_pressure;
                     break;
-            case PtMonitorView::TyreType::RR: 
+            case TyreType::RR: 
                     tyreLabel = rr_pressure;
                     break;
         }
     }
 
     std::stringstream stream;
-    stream << std::fixed << std::setprecision(1) << value << to_unit(measure);
+    stream << std::fixed << std::setprecision(1) << value << toUnit(measure);
     gtk_label_set_label(GTK_LABEL(tyreLabel), stream.str().c_str());
 
 }

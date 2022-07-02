@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include "TypeDefinitions.h"
 
 
 
@@ -23,23 +24,6 @@ class PtMonitorView {
     // --------------------------- 
 
     public:
-
-        // --------------------------- USEFULL TYPE DEFINITIONS
-
-        // TYPE OF PLOTTABLE GRAPH (TEMPERATURE GRAPH OR PRESSURE GRAPH)
-        typedef enum {TEMPERATURE, PRESSURE} MeasureType; 
-
-        // TYRE TYPE
-        typedef enum {FL, FR, RL, RR} TyreType;
-
-        // STRUCT THAT CONTAINS THE X Y VALUE TO PLOT, ACCORDING TO THE TYRE
-        typedef struct {
-            double *x;
-            double *y;
-            TyreType tyre;
-        } DataType;
-
-        // ---------------------------
 
         // SINGLETON
         static PtMonitorView* getInstance();

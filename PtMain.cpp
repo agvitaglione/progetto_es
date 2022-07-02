@@ -5,6 +5,7 @@
 #include <chrono>
 #include <iostream>
 #include "DataPlotQueue.h"
+#include "TypeDefinitions.h"
 
 void task(PtMonitorView* view) {
     view->startRoutine();
@@ -21,17 +22,17 @@ int main() {
     
     while(true) {
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        view->setMeasureValues(g_random_double()*100, PtMonitorView::TEMPERATURE, PtMonitorView::FL);
-        view->setMeasureValues(g_random_double()*100, PtMonitorView::PRESSURE, PtMonitorView::FL);
+        view->setMeasureValues(g_random_double()*100, MeasureType::TEMPERATURE, TyreType::FL);
+        view->setMeasureValues(g_random_double()*100, MeasureType::PRESSURE, TyreType::FL);
 
-        view->setMeasureValues(g_random_double()*100, PtMonitorView::TEMPERATURE, PtMonitorView::FR);
-        view->setMeasureValues(g_random_double()*100, PtMonitorView::PRESSURE, PtMonitorView::FR);
+        view->setMeasureValues(g_random_double()*100, MeasureType::TEMPERATURE, TyreType::FR);
+        view->setMeasureValues(g_random_double()*100, MeasureType::PRESSURE, TyreType::FR);
 
-        view->setMeasureValues(g_random_double()*100, PtMonitorView::TEMPERATURE, PtMonitorView::RL);
-        view->setMeasureValues(g_random_double()*100, PtMonitorView::PRESSURE, PtMonitorView::RL);
+        view->setMeasureValues(g_random_double()*100, MeasureType::TEMPERATURE, TyreType::RL);
+        view->setMeasureValues(g_random_double()*100, MeasureType::PRESSURE, TyreType::RL);
 
-        view->setMeasureValues(g_random_double()*100, PtMonitorView::TEMPERATURE, PtMonitorView::RR);
-        view->setMeasureValues(g_random_double()*100, PtMonitorView::PRESSURE, PtMonitorView::RR);
+        view->setMeasureValues(g_random_double()*100, MeasureType::TEMPERATURE, TyreType::RR);
+        view->setMeasureValues(g_random_double()*100, MeasureType::PRESSURE, TyreType::RR);
     }
     
     t.join();
