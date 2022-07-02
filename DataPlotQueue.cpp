@@ -2,8 +2,7 @@
 
 DataPlotQueue::DataPlotQueue(const int size) {
     this->size = size;
-    x = new float[size];
-    y = new float[size];
+    queue = new MessageType[size];
     nelem = 0;
     head = 0;
     tail = 0;
@@ -12,28 +11,24 @@ DataPlotQueue::DataPlotQueue(const int size) {
 
 DataPlotQueue::DataPlotQueue(const DataPlotQueue& other)  {
     this->size = other.size;
-    this->x = new float[other.size];
-    this->y = new float[other.size];
+    this->queue = new MessageType[other.size];
     this->nelem = other.nelem;
     this->head = other.head;
     this->tail = other.tail;
 
     for(int i = 0; i < size; i++) {
-        this->x[i] = other.x[i];
-        this->y[i] = other.y[i];
+        this->queue[i] = other.queue[i];
     }
 }
 
 
 DataPlotQueue::~DataPlotQueue()  {
-    delete[] x;
-    delete[] y;
+    delete[] queue;
 }
 
-void DataPlotQueue::push(const float xVal, const float yVal) {
+void DataPlotQueue::push(const MessageType& message) {
   
-    x[tail] = xVal;
-    y[tail] = yVal;
+    queue[tail] = message;
     tail = (tail + 1) % size;
 
     if(nelem < size) {
@@ -45,12 +40,11 @@ void DataPlotQueue::push(const float xVal, const float yVal) {
 }
 
 
-void DataPlotQueue::getData(float *xData, float *yData) const {
+void DataPlotQueue::getData(MessageType *messageArray) const {
 
     int i = head;
     for(int k = 0; k < nelem; k++) {
-        xData[k] = x[i];
-        yData[k] = y[i];
+        messageArray[k] = queue[i];
         i = (i + 1) % size;
     }
 }

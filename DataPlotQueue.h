@@ -1,5 +1,6 @@
 #ifndef __DATA_PLOT_QUEUE_H__
 #define __DATA_PLOT_QUEUE_H__
+#include "TypeDefinitions.h"
 
 class DataPlotQueue {
 
@@ -9,18 +10,17 @@ class DataPlotQueue {
         ~DataPlotQueue();
 
         // IF THE QUEUE IS FULL, REMOVE THE OLDEST ELEMENT
-        void push(const float xVal, const float yVal);
+        void push(const MessageType& message);
 
         // RETURN X Y ARRAY IN CHRONOLOGICAL ORDER
-        void getData(float *xData, float *yData) const;
+        void getData(MessageType *messageArray) const;
 
         int getNelem() const {return nelem;}
 
     private:
 
         // VECTOR OF SAMPLES TO BE PLOT
-	    float *x;
-	    float *y;
+	    MessageType *queue;
         int head;
         int tail;
         int nelem;
