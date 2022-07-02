@@ -206,24 +206,32 @@ void PtMonitorView::plotData(const DataType* data, const MeasureType graph, cons
     SlopeScale* scale;
     SlopeItem* series;
     GtkWidget* view;
+    static std::string colors[] = {"b-", "r-", "y-", "g-"};
+    double ymin;
+    double ymax;
 
     if(graph == TEMPERATURE) {
         scale = scale_temperature;
         series = series_temperature;
         view = view_temperature;
+        ymin = 0.0;
+        ymax = 150.0;
     }
     else if(graph == PRESSURE) {
         scale = scale_pressure;
         series = series_pressure;
         view = view_pressure;
+        ymin = 0.0;
+        ymax = 5.0;
     }
 
     // GRAPH PLOT FOR ALL WHEELS
     for(size_t i = 0; i < 4; i++) {
 		slope_scale_remove_item_by_name(SLOPE_SCALE(scale), toString(data[i].tyre).c_str());
-		series = slope_xyseries_new_filled(toString(data[i].tyre).c_str(), data[i].x, data[i].y, nelem, "b-");
+		series = slope_xyseries_new_filled(toString(data[i].tyre).c_str(), data[i].x, data[i].y, nelem, colors[i].c_str());
 		slope_scale_add_item(scale, series);
 		slope_xyscale_set_x_range(SLOPE_XYSCALE(scale), -60, 0);
+        slope_xyscale_set_y_range(SLOPE_XYSCALE(scale), ymin, ymax);
 		slope_view_redraw(SLOPE_VIEW(view));
     }
 }

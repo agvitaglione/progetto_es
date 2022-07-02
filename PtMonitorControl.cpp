@@ -27,6 +27,7 @@ void PtMonitorControl::periodicGetData() {
     int size = queue.getSize();
     MessageType messageArray[size];
     int nelem;
+    int currentTime;
 
     for(int i = 0; i < 4; i++) {
         // QUANDO DEALLOCARE?
@@ -48,49 +49,67 @@ void PtMonitorControl::periodicGetData() {
 
     while(stopThread == 0) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        
+            
+
         while(model->getData(message)) {
             queue.push(message);
         }
-
         // PLOT DATA
         nelem = queue.getNelem();
+        if(nelem == 0) continue;        // At the beginning, the queue might be empty
         queue.getData(messageArray);
+
+        currentTime = (int) time(NULL);
 
         for(int i = 0; i < nelem; i++) {
 
             // TEMPERATURE
             dataTemperature[FL].y[i] = messageArray[i].fl[TEMPERATURE];
-            dataTemperature[FL].x[i] = messageArray[i].time;
+            dataTemperature[FL].x[i] = (double) (messageArray[i].time - currentTime);
+
 
             dataTemperature[FR].y[i] = messageArray[i].fr[TEMPERATURE];
-            dataTemperature[FR].x[i] = messageArray[i].time;        
+            dataTemperature[FR].x[i] = (double) (messageArray[i].time - currentTime);        
 
             dataTemperature[RL].y[i] = messageArray[i].rl[TEMPERATURE];
-            dataTemperature[RL].x[i] = messageArray[i].time;
+            dataTemperature[RL].x[i] = (double) (messageArray[i].time - currentTime);
             
             dataTemperature[RR].y[i] = messageArray[i].rr[TEMPERATURE];
-            dataTemperature[RR].x[i] = messageArray[i].time;
+            dataTemperature[RR].x[i] = (double) (messageArray[i].time - currentTime);
         
             // PRESSURE
             dataPressure[FL].y[i] = messageArray[i].fl[PRESSURE];
-            dataPressure[FL].x[i] = messageArray[i].time;
+            dataPressure[FL].x[i] = (double) (messageArray[i].time - currentTime);
             
             dataPressure[FR].y[i] = messageArray[i].fr[PRESSURE];
-            dataPressure[FR].x[i] = messageArray[i].time;
+            dataPressure[FR].x[i] = (double) (messageArray[i].time - currentTime);
             
             dataPressure[RL].y[i] = messageArray[i].rl[PRESSURE];
-            dataPressure[RL].x[i] = messageArray[i].time;
+            dataPressure[RL].x[i] = (double) (messageArray[i].time - currentTime);
             
             dataPressure[RR].y[i] = messageArray[i].rr[PRESSURE];
-            dataPressure[RR].x[i] = messageArray[i].time;
+            dataPressure[RR].x[i] = (double) (messageArray[i].time - currentTime);
+            
             
         }
+
+        // PLOT DATA
+        view->plotData(dataTemperature, TEMPERATURE, nelem);
+        view->plotData(dataPressure, PRESSURE, nelem);
+
+        // SET LABELS
+        view->setMeasureValues(message.fl[TEMPERATURE], TEMPERATURE, FL);
+        view->setMeasureValues(message.fr[TEMPERATURE], TEMPERATURE, FR);
+        view->setMeasureValues(message.rl[TEMPERATURE], TEMPERATURE, RL);
+        view->setMeasureValues(message.rr[TEMPERATURE], TEMPERATURE, RR);
+
+        view->setMeasureValues(message.fl[PRESSURE], PRESSURE, FL);
+        view->setMeasureValues(message.fr[PRESSURE], PRESSURE, FR);
+        view->setMeasureValues(message.rl[PRESSURE], PRESSURE, RL);
+        view->setMeasureValues(message.rr[PRESSURE], PRESSURE, RR);
     }
 
-    view->plotData(dataTemperature, TEMPERATURE, nelem);
-    view->plotData(dataTemperature, PRESSURE, nelem);
-    
+
 }
 
 

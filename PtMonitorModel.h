@@ -4,6 +4,9 @@
 #include <mqueue.h>
 #include <string>
 #include "TypeDefinitions.h"
+#include <sys/msg.h>
+#include <sys/ipc.h>
+#include <sys/types.h>
 
 
 
@@ -35,7 +38,7 @@ class PtMonitorModel {
         inline static const std::string NAME_QUEUE = "ptm_measure_queue";
 
         // POSIX QUEUE
-        mqd_t queue; 
+        int queue; 
  
 };
 

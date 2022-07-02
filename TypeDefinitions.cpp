@@ -17,3 +17,28 @@ std::string toUnit(MeasureType measure) {
         default: return NULL;
     }
 }
+
+const MessageType& MessageType::operator=(const MessageType& other) {
+
+    time = other.time;
+    
+    for(int i = 0; i < 2; i++) {
+        fl[i] = other.fl[i];
+        fr[i] = other.fr[i];
+        rl[i] = other.rl[i];
+        rr[i] = other.rr[i];
+    }
+
+    return *this;
+}
+
+MessageType::MessageType(const MessageType& other) {
+    time = other.time;
+    
+    for(int i = 0; i < 2; i++) {
+        fl[i] = other.fl[i];
+        fr[i] = other.fr[i];
+        rl[i] = other.rl[i];
+        rr[i] = other.rr[i];
+    }
+}

@@ -7,6 +7,7 @@
 #include "DataPlotQueue.h"
 #include "TypeDefinitions.h"
 #include <mqueue.h>
+#include <string.h>
 
 void task(PtMonitorView* view) {
     view->startRoutine();
@@ -19,7 +20,7 @@ int main() {
     PtMonitorModel *model = PtMonitorModel::getInstance();
     PtMonitorControl* control = PtMonitorControl::getInstance(view, model);
     
-    
+
     std::thread t(task, view);
     /*
     while(true) {
@@ -40,25 +41,24 @@ int main() {
     t.join();
     */
 
-    std::stringstream message;
-    mqd_t queue;
-    mq_attr attr;
-    attr.mq_maxmsg = 61;
-    attr.mq_flags = O_NONBLOCK;
-     
-    queue = mq_open("ptm_measure_queue", O_RDWR | O_CREAT, 0664, &attr);
 
+    std::stringstream message;
+    int queue = msgget(ftok("ptm_measure_queue", 0), IPC_CREAT | 0644);
+
+    Msgbuf msg;
 
     while(true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         message << g_random_int_range(1000, 9999) <<  g_random_int_range(10, 99)
                 << g_random_int_range(1000, 9999) <<  g_random_int_range(10, 99)
                 << g_random_int_range(1000, 9999) <<  g_random_int_range(10, 99)
-                << g_random_int_range(1000, 9999) <<  g_random_int_range(10, 99);
+                << g_random_int_range(1000, 9999) <<  g_random_int_range(10, 99) << "\0";
 
-        mq_send(queue, message.str().c_str(), 24, 0);
-
+        msg.mtype = 1;
+        strcpy(msg.mtext, message.str().c_str());
         message.str("");
+
+        msgsnd(queue, &msg, sizeof(Msgbuf) - sizeof(long), 0);
 
     }
 

@@ -1,27 +1,24 @@
 #include "PtMonitorModel.h"
 #include <signal.h>
 #include <time.h>
+#include <iomanip>
 
-MessageType messageParsing(const char msg[]) {
+void messageParsing(const char msg[], MessageType& msgResult) {
 
     // Message: TTTTPP * 4
-
-    MessageType msgResult;
     std::string msgString(msg);
+    
+    msgResult.fl[MeasureType::TEMPERATURE] = std::stof(msgString.substr(0, 3) + ',' + msgString.substr(3, 1));
+    msgResult.fl[MeasureType::PRESSURE] = stof(msgString.substr(4, 1) + "," + msgString.substr(5, 1));
 
-    msgResult.fl[MeasureType::TEMPERATURE] = stof(msgString.substr(0, 3) + "." + msgString.substr(3, 1));
-    msgResult.fl[MeasureType::PRESSURE] = stof(msgString.substr(4, 1) + "." + msgString.substr(5, 1));
+    msgResult.fr[MeasureType::TEMPERATURE] = stof(msgString.substr(6, 3) + "," + msgString.substr(9, 1));
+    msgResult.fr[MeasureType::PRESSURE] = stof(msgString.substr(10, 1) + "," + msgString.substr(11, 1));  
 
-    msgResult.fr[MeasureType::TEMPERATURE] = stof(msgString.substr(6, 3) + "." + msgString.substr(9, 1));
-    msgResult.fr[MeasureType::PRESSURE] = stof(msgString.substr(10, 1) + "." + msgString.substr(11, 1));  
+    msgResult.rl[MeasureType::TEMPERATURE] = stof(msgString.substr(12, 3) + "," + msgString.substr(15, 1));
+    msgResult.rl[MeasureType::PRESSURE] = stof(msgString.substr(16, 1) + "," + msgString.substr(17, 1));  
 
-    msgResult.rl[MeasureType::TEMPERATURE] = stof(msgString.substr(12, 3) + "." + msgString.substr(15, 1));
-    msgResult.rl[MeasureType::PRESSURE] = stof(msgString.substr(16, 1) + "." + msgString.substr(17, 1));  
-
-    msgResult.rr[MeasureType::TEMPERATURE] = stof(msgString.substr(18, 3) + "." + msgString.substr(21, 1));
-    msgResult.rr[MeasureType::PRESSURE] = stof(msgString.substr(22, 1) + "." + msgString.substr(23, 1));  
-
-    return msgResult;
+    msgResult.rr[MeasureType::TEMPERATURE] = stof(msgString.substr(18, 3) + "," + msgString.substr(21, 1));
+    msgResult.rr[MeasureType::PRESSURE] = stof(msgString.substr(22, 1) + "," + msgString.substr(23, 1));  
 }
 
 PtMonitorModel* PtMonitorModel::getInstance() {
@@ -32,28 +29,21 @@ PtMonitorModel* PtMonitorModel::getInstance() {
 }
 
 PtMonitorModel::PtMonitorModel() {
-
-    mq_attr attr;
-    attr.mq_maxmsg = MAX_QUEUE_SIZE;
-    attr.mq_flags = O_NONBLOCK;
-     
-    queue = mq_open("/ptm_measure_queue", O_CREAT | O_RDONLY, 0664, &attr);
+    queue = msgget(ftok(NAME_QUEUE.c_str(), 0), IPC_CREAT | 0644);
 }
 
 PtMonitorModel::~PtMonitorModel() {
-    mq_unlink(NAME_QUEUE.c_str());
-    mq_close(queue);
+    msgctl(queue, IPC_RMID, 0);
 }
 
-#include <iostream>
 bool PtMonitorModel::getData(MessageType& message) const {
 
-    char msg[MSG_SIZE]; 
-
-    if(mq_receive(queue, msg, MSG_SIZE * sizeof(char), 0) != -1) {
-        std::cout << msg << std::endl;
+    Msgbuf msg;
+    
+    if(msgrcv(queue, &msg, sizeof(Msgbuf) - sizeof(long), 1, IPC_NOWAIT) >= 0) {
         message.time = (int) time(NULL);
-        message = messageParsing(msg);
+        messageParsing(msg.mtext, message);
+       
         return true;
 
     }
