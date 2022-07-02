@@ -14,6 +14,7 @@ class PtMonitorControl {
         
         //SINGLETON
         static PtMonitorControl* getInstance(PtMonitorView *_view, PtMonitorModel *_model);
+        ~PtMonitorControl();
 
         // DISABLE OTHER CONSTRUCOTRS
         PtMonitorControl(const PtMonitorControl&) = delete;

@@ -2,7 +2,7 @@
 std::string toString(TyreType tyre) {
 
     switch(tyre) {
-        case TyreType::FL : return "FL";
+        case TyreType::FL: return "FL";
         case TyreType::FR: return "FR";
         case TyreType::RL: return "RL";
         case TyreType::RR: return "RR";

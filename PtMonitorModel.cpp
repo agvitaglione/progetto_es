@@ -1,5 +1,6 @@
 #include "PtMonitorModel.h"
 #include <signal.h>
+#include <time.h>
 
 MessageType messageParsing(const char msg[]) {
 
@@ -50,6 +51,7 @@ bool PtMonitorModel::getData(MessageType& message) const {
 
     if(mq_receive(queue, msg, MSG_SIZE * sizeof(char), 0) != -1) {
 
+        message.time = (int) time(NULL);
         message = messageParsing(msg);
         return true;
 

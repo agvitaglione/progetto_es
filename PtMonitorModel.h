@@ -23,11 +23,8 @@ class PtMonitorModel {
 
         ~PtMonitorModel();
 
-
-
         bool getData(MessageType& message) const;
 
-        // ---------
 
     protected:
         PtMonitorModel();

@@ -16,6 +16,7 @@ typedef struct {
 } DataType;
 
 typedef struct {
+    int time;
     float fl[2];
     float fr[2];
     float rl[2];

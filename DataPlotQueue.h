@@ -16,6 +16,7 @@ class DataPlotQueue {
         void getData(MessageType *messageArray) const;
 
         int getNelem() const {return nelem;}
+        int getSize() const {return size;}
 
     private:
 
