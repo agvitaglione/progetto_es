@@ -34,7 +34,6 @@ class PtMonitorControl {
         static const int XACT = 500;
         static const int YLIMIT = 300;
         
-        
         static PtMonitorView *view;
         static PtMonitorModel *model;
 

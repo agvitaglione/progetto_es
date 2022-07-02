@@ -36,8 +36,6 @@ void DataPlotQueue::push(const float xVal, const float yVal) {
     y[tail] = yVal;
     tail = (tail + 1) % size;
 
-    std::cout << tail << "\t" << std::endl;
-
     if(nelem < size) {
        nelem++;
     }
