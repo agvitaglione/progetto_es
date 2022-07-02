@@ -46,7 +46,8 @@ int main() {
     attr.mq_maxmsg = 61;
     attr.mq_flags = O_NONBLOCK;
      
-    queue = mq_open("ptm_measure_queue", O_CREAT | O_WRONLY, 0664, &attr);
+    queue = mq_open("ptm_measure_queue", O_RDWR | O_CREAT, 0664, &attr);
+
 
     while(true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -56,7 +57,6 @@ int main() {
                 << g_random_int_range(1000, 9999) <<  g_random_int_range(10, 99);
 
         mq_send(queue, message.str().c_str(), 24, 0);
-        std::cout << message.str() << std::endl;
 
         message.str("");
 

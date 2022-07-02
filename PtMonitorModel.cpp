@@ -37,7 +37,7 @@ PtMonitorModel::PtMonitorModel() {
     attr.mq_maxmsg = MAX_QUEUE_SIZE;
     attr.mq_flags = O_NONBLOCK;
      
-    queue = mq_open(NAME_QUEUE.c_str(), O_CREAT | O_RDONLY, 0664, &attr);
+    queue = mq_open("/ptm_measure_queue", O_CREAT | O_RDONLY, 0664, &attr);
 }
 
 PtMonitorModel::~PtMonitorModel() {
@@ -45,12 +45,13 @@ PtMonitorModel::~PtMonitorModel() {
     mq_close(queue);
 }
 
+#include <iostream>
 bool PtMonitorModel::getData(MessageType& message) const {
-      
+
     char msg[MSG_SIZE]; 
 
     if(mq_receive(queue, msg, MSG_SIZE * sizeof(char), 0) != -1) {
-
+        std::cout << msg << std::endl;
         message.time = (int) time(NULL);
         message = messageParsing(msg);
         return true;
