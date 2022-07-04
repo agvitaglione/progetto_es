@@ -1,3 +1,5 @@
 primoProgetto
 PtMain
 *.o
+build/
+bin/
