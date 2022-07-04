@@ -1,10 +1,6 @@
 #ifndef __TYPEDEFINITIONS_H__
 #define __TYPEDEFINITIONS_H__
 #include <string>
-#include <iostream>
-#include <time.h>
-
-#define ARRIVATO (std::cout << "arrivo" << std::endl);
 
 // TYPE OF PLOTTABLE GRAPH (TEMPERATURE GRAPH OR PRESSURE GRAPH)
 typedef enum {TEMPERATURE, PRESSURE} MeasureType; 

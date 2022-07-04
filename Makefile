@@ -1,16 +1,43 @@
-CFLAGS=`pkg-config --cflags --libs gtk+-3.0` -rdynamic -std=c++17 -g
-OBJ=PtMain.o PtMonitorControl.o PtMonitorView.o PtMonitorModel.o DataPlotQueue.o TypeDefinitions.o
-LIBS=-lslope -lm -lrt
-DEPS=PtMonitorView.h PtMonitorControl.h PtMonitorModel.h DataPlotQueue.h TypeDefinitions.h
+# DIRECTORIES
+SRCDIR := src
+BUILDDIR := build
+TARGETDIR := bin
+INCLUDEDIR := include
 
-%.o: %.cpp $(DEPS)
-	@g++ -c $< $(CFLAGS)
+# TARGET
+TARGET := ptmonitor
 
-PtMain: $(OBJ)
-	@g++ -o $@ $^ $(CFLAGS) $(LIBS)
+CC := g++
 
-.PHONY: clean
+SRC := $(wildcard $(SRCDIR)/*.cpp)
+OBJ := $(SRC:$(SRCDIR)/%.cpp=$(BUILDDIR)/%.o)
+INCLUDE := $(wildcard $(INCLUDEDIR)/*.h)
+
+CFLAGS :=`pkg-config --cflags --libs gtk+-3.0` -rdynamic -std=c++17 -g
+CFLAGS += $(addprefix -I, $(INCLUDEDIR))
+
+LIBS = -lslope -lm -lrt
+
+all: directories $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CC) -o $(TARGETDIR)/$@ $^ $(CFLAGS) $(LIBS)
+
+$(OBJ): $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(INCLUDE)
+	$(CC) -o $@ -c $< $(CFLAGS)
+
+
+.PHONY: clean all directories print
+
+directories:
+	@mkdir -p build
+	@mkdir -p bin
 
 clean:
-	rm *.o
-	rm PtMain
+	rm $(BUILDDIR)/*.o
+	rm $(TARGETDIR)/$(TARGET)
+	rmdir bin
+	rmdir build
+
+print:
+	@echo $(OBJ)

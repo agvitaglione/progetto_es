@@ -61,7 +61,7 @@ class PtMonitorView {
 
         // GLOBAL VIARIABLES
         static const int NUMBER_OF_PAGES = 3;
-        inline static const std::string builder_file_name = "interface.glade";
+        inline static const std::string builder_file_name =  "../interface.glade";
 
 
         // GLOBAL WIDGET INTERFACE VARIABLES
