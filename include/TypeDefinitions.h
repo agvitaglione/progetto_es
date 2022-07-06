@@ -2,6 +2,7 @@
 #define __TYPEDEFINITIONS_H__
 #include <string>
 #include <iostream>
+#define MAX_QUEUE_SIZE 60
 
 // TYPE OF PLOTTABLE GRAPH (TEMPERATURE GRAPH OR PRESSURE GRAPH)
 typedef enum {TEMPERATURE, PRESSURE} MeasureType; 
@@ -16,13 +17,16 @@ typedef struct {
 } DataType;
 
 class MessageType {
-    uint32_t id;
-    uint32_t temperature;
-    uint32_t pressure;
-    int time;
 
-    MessageType(uint32_t id, uint32_t temperature, uint32_t pressure, int time);
-} ;
+    public:
+        uint32_t id;
+        uint32_t temperature;
+        uint32_t pressure;
+        int time;
+
+        MessageType();
+        MessageType(uint32_t id, uint32_t temperature, uint32_t pressure, int time);
+};
 
 
 std::string toString(TyreType tyre);

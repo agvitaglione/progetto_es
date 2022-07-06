@@ -28,6 +28,7 @@ DataPlotQueue::~DataPlotQueue()  {
 
 void DataPlotQueue::push(const MessageType& message) {
   
+    
     queue[tail] = message;
     tail = (tail + 1) % size;
 
@@ -46,5 +47,15 @@ void DataPlotQueue::getData(MessageType *messageArray) const {
     for(int k = 0; k < nelem; k++) {
         messageArray[k] = queue[i];
         i = (i + 1) % size;
+    }
+}
+
+bool DataPlotQueue::pop(MessageType& message) {
+    
+    if(nelem > 0 ) {
+        message = queue[head];
+        head = (head + 1) % size;
+        nelem--;
+        return true;
     }
 }

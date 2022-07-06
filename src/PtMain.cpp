@@ -16,6 +16,7 @@ void task(PtMonitorView* view) {
 
 int main() {
 
+    /*
     PtConfig *ptconfig = PtConfig::getInstance();
     ptconfig->readFile("../config.txt");
 
@@ -47,7 +48,7 @@ int main() {
 
     } 
 
-   
+   */
 
     return 0;
 }

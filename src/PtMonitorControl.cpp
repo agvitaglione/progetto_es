@@ -1,12 +1,14 @@
 #include "PtMonitorControl.h"
 #include <chrono>
 #include <thread>
+#include "PtConfig.h"
 
 // THREAD
 std::thread *periodicThread;
-DataType dataTemperature[4];
-DataType dataPressure[4];
+
 int stopThread = 0;
+int naxis;
+int ntyre;
 
 // MACRO
 #define SWIPE_RIGHT(v_x, v_y) (v_x >= PtMonitorControl::XACT && abs(v_y) < PtMonitorControl::YLIMIT) // CHECK IT'S A RIGHT SWIPE
@@ -15,7 +17,7 @@ int stopThread = 0;
 // STATIC VARIABLES INITIALIZATION
 PtMonitorView* PtMonitorControl::view = nullptr;
 PtMonitorModel* PtMonitorControl::model = nullptr;
-DataPlotQueue PtMonitorControl::queue(PtMonitorModel::MAX_QUEUE_SIZE);
+DataPlotQueue **PtMonitorControl::queues = nullptr;
 
 /* PERIODIC TASK
 * EACH X SECONDS, IT GETS DATA FROM MODEL
@@ -24,91 +26,52 @@ DataPlotQueue PtMonitorControl::queue(PtMonitorModel::MAX_QUEUE_SIZE);
 void PtMonitorControl::periodicGetData() {
 
     MessageType message;
-    int size = queue.getSize();
-    MessageType messageArray[size];
+    MessageType messageArray[MAX_QUEUE_SIZE];
     int nelem;
     int currentTime;
 
-    for(int i = 0; i < 4; i++) {
-        // QUANDO DEALLOCARE?
-        dataTemperature[i].x = new double[size];
-        dataTemperature[i].y = new double[size];
-        dataPressure[i].x = new double[size];
-        dataPressure[i].y = new double[size];
-    }
-
-    dataTemperature[FL].tyre = FL;
-    dataTemperature[FR].tyre = FR;
-    dataTemperature[RL].tyre = RL;
-    dataTemperature[RR].tyre = RR;
-
-    dataPressure[FL].tyre = FL;
-    dataPressure[FR].tyre = FR;
-    dataPressure[RL].tyre = RL;
-    dataPressure[RR].tyre = RR;
+    PtConfig *config = PtConfig::getInstance();
+    naxis = config->getNumberOfAxis();
+    ntyre = config->getNumberOfTyrePerAxis();
+    DataType dataTemperature[naxis][ntyre];
+    DataType dataPressure[naxis][ntyre];
+    DataPlotQueue *queue;
+    int axis;
+    int tyre;
 
     while(stopThread == 0) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
             
 
-        while(model->getData(message)) {
-            queue.push(message);
-        }
-        // PLOT DATA
-        nelem = queue.getNelem();
-        if(nelem == 0) continue;        // At the beginning, the queue might be empty
-        queue.getData(messageArray);
+        while(model->getData(message) == false);
 
-        currentTime = (int) time(NULL);
+        axis = config->getAxisFromId(std::to_string(message.id));
+        tyre = config->getTyreFromId(std::to_string(message.id));
+        queue = &queues[axis][tyre];
+        queue->push(message);
+        
+        // PLOT DATA
+        nelem = queue->getNelem();
+        queue->getData(messageArray);
+        
 
         for(int i = 0; i < nelem; i++) {
+           dataTemperature[axis][tyre].x[i] = -i;
+           dataTemperature[axis][tyre].y[i] = messageArray[i].temperature;
 
-            // TEMPERATURE
-            dataTemperature[FL].y[i] = messageArray[i].fl[TEMPERATURE];
-            dataTemperature[FL].x[i] = (double) (messageArray[i].time - currentTime);
-
-
-            dataTemperature[FR].y[i] = messageArray[i].fr[TEMPERATURE];
-            dataTemperature[FR].x[i] = (double) (messageArray[i].time - currentTime);        
-
-            dataTemperature[RL].y[i] = messageArray[i].rl[TEMPERATURE];
-            dataTemperature[RL].x[i] = (double) (messageArray[i].time - currentTime);
-            
-            dataTemperature[RR].y[i] = messageArray[i].rr[TEMPERATURE];
-            dataTemperature[RR].x[i] = (double) (messageArray[i].time - currentTime);
-        
-            // PRESSURE
-            dataPressure[FL].y[i] = messageArray[i].fl[PRESSURE];
-            dataPressure[FL].x[i] = (double) (messageArray[i].time - currentTime);
-            
-            dataPressure[FR].y[i] = messageArray[i].fr[PRESSURE];
-            dataPressure[FR].x[i] = (double) (messageArray[i].time - currentTime);
-            
-            dataPressure[RL].y[i] = messageArray[i].rl[PRESSURE];
-            dataPressure[RL].x[i] = (double) (messageArray[i].time - currentTime);
-            
-            dataPressure[RR].y[i] = messageArray[i].rr[PRESSURE];
-            dataPressure[RR].x[i] = (double) (messageArray[i].time - currentTime);
-            
-            
+           dataPressure[axis][tyre].x[i] = -i;
+           dataPressure[axis][tyre].y[i] = messageArray[i].pressure;
         }
 
         // PLOT DATA
-        view->plotData(dataTemperature, TEMPERATURE, nelem);
-        view->plotData(dataPressure, PRESSURE, nelem);
+        view->plotData(dataTemperature[axis][tyre], nelem, TEMPERATURE, axis, tyre);
+        view->plotData(dataPressure[axis][tyre], nelem, PRESSURE, axis, tyre);
 
         // SET LABELS
-        view->setMeasureValues(message.fl[TEMPERATURE], TEMPERATURE, 0, 0);
-        view->setMeasureValues(message.fr[TEMPERATURE], TEMPERATURE, 0, 1);
-        view->setMeasureValues(message.rl[TEMPERATURE], TEMPERATURE, 1, 0);
-        view->setMeasureValues(message.rr[TEMPERATURE], TEMPERATURE, 1, 1);
+        view->setMeasureValues(message.temperature, TEMPERATURE, axis, tyre);
+        view->setMeasureValues(message.pressure, PRESSURE, axis, tyre);
 
-        view->setMeasureValues(message.fl[PRESSURE], PRESSURE, 0, 0);
-        view->setMeasureValues(message.fr[PRESSURE], PRESSURE, 0, 1);
-        view->setMeasureValues(message.rl[PRESSURE], PRESSURE, 1, 0);
-        view->setMeasureValues(message.rr[PRESSURE], PRESSURE, 1, 1);
     }
-
 
 }
 
@@ -125,6 +88,14 @@ PtMonitorControl::PtMonitorControl(PtMonitorView* _view, PtMonitorModel* _model)
     this->view->setShoutdownHandler(&PtMonitorControl::shutdownHandler);
     this->view->setSwipeHandler(&PtMonitorControl::swipeHandler);
 
+    PtConfig *conf = PtConfig::getInstance();
+
+    // CREATE QUEUES. ONE FOR EACH TYRE
+    queues = new DataPlotQueue*[conf->getNumberOfAxis()];
+    for(int i = 0; i < conf->getNumberOfAxis(); i++) {
+        queues[i] = new DataPlotQueue[conf->getNumberOfTyrePerAxis()];
+    }
+
     periodicThread = new std::thread(periodicGetData);
 }
 
@@ -133,11 +104,12 @@ PtMonitorControl::~PtMonitorControl() {
     stopThread = 1;
     periodicThread->join();
     delete[] periodicThread;
-    
-    for(int i = 0; i < 4; i++) {
-        delete[] dataTemperature[i].x;
-        delete[] dataTemperature[i].y;
+
+    // DELETE QUEUES
+    for(int i = 0; i < naxis; i++) {
+        delete[] queues[i];
     }
+    delete[] queues;
 }
 
 

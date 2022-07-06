@@ -4,10 +4,8 @@
 #include <mqueue.h>
 #include <string>
 #include "TypeDefinitions.h"
-#include <sys/msg.h>
-#include <sys/ipc.h>
-#include <sys/types.h>
-
+#include "DataPlotQueueConcurrent.h"
+#include <thread>
 
 
 class PtMonitorModel {
@@ -15,8 +13,8 @@ class PtMonitorModel {
 
     public:
 
-        static const int MAX_QUEUE_SIZE = 61;
-
+        ~PtMonitorModel();
+        
         //SINGLETON
         static PtMonitorModel* getInstance();
 
@@ -24,21 +22,18 @@ class PtMonitorModel {
         PtMonitorModel(const PtMonitorModel&) = delete;
         const PtMonitorModel& operator=(const PtMonitorModel&) = delete;
 
-        ~PtMonitorModel();
+        bool getData(MessageType& message);
 
-        bool getData(MessageType& message) const;
+        // ROUTINE TO TAKE DATA FROM USB2CAN MODULE
+        static void readDataFromModule();
 
 
     protected:
         PtMonitorModel();
 
     private:
-
-        static const int MSG_SIZE = 24;
-        inline static const std::string NAME_QUEUE = "ptm_measure_queue";
-
-        // POSIX QUEUE
-        int queue; 
+        static DataPlotQueueConcurret queue;
+        std::thread *readDataFromModuleThread;
  
 };
 

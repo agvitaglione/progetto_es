@@ -3,50 +3,82 @@
 #include <time.h>
 #include <iomanip>
 
-void messageParsing(const char msg[], MessageType& msgResult) {
+// FOR CAN MESSAGE
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <net/if.h>
+#include <sys/ioctl.h>
+#include <cstring>
+#include <cstdio>
+#include <unistd.h>
+#include "/usr/include/linux/can.h"
 
-    // Message: TTTTPP * 4
-    std::string msgString(msg);
-    
-    msgResult.fl[MeasureType::TEMPERATURE] = std::stof(msgString.substr(0, 3) + ',' + msgString.substr(3, 1));
-    msgResult.fl[MeasureType::PRESSURE] = stof(msgString.substr(4, 1) + "," + msgString.substr(5, 1));
-
-    msgResult.fr[MeasureType::TEMPERATURE] = stof(msgString.substr(6, 3) + "," + msgString.substr(9, 1));
-    msgResult.fr[MeasureType::PRESSURE] = stof(msgString.substr(10, 1) + "," + msgString.substr(11, 1));  
-
-    msgResult.rl[MeasureType::TEMPERATURE] = stof(msgString.substr(12, 3) + "," + msgString.substr(15, 1));
-    msgResult.rl[MeasureType::PRESSURE] = stof(msgString.substr(16, 1) + "," + msgString.substr(17, 1));  
-
-    msgResult.rr[MeasureType::TEMPERATURE] = stof(msgString.substr(18, 3) + "," + msgString.substr(21, 1));
-    msgResult.rr[MeasureType::PRESSURE] = stof(msgString.substr(22, 1) + "," + msgString.substr(23, 1));  
-}
+DataPlotQueueConcurret PtMonitorModel::queue(MAX_QUEUE_SIZE);
+int stopThread = 0;
 
 PtMonitorModel* PtMonitorModel::getInstance() {
-
-    static PtMonitorModel model = PtMonitorModel();
+    static PtMonitorModel model;
     return &model;
-
 }
 
 PtMonitorModel::PtMonitorModel() {
-    queue = msgget(ftok(NAME_QUEUE.c_str(), 0), IPC_CREAT | 0644);
+    readDataFromModuleThread = new std::thread(readDataFromModule);
 }
 
 PtMonitorModel::~PtMonitorModel() {
-    msgctl(queue, IPC_RMID, 0);
+    stopThread = 1;
+    readDataFromModuleThread->join();
+    delete readDataFromModuleThread;
 }
 
-bool PtMonitorModel::getData(MessageType& message) const {
+bool PtMonitorModel::getData(MessageType& message)  {
+    return queue.pop(message);
+}
 
-    Msgbuf msg;
+
+
+void PtMonitorModel::readDataFromModule() {
+
+    int s;
+    struct sockaddr_can addr;
+    struct ifreq ifr;
+
+    s = socket(PF_CAN, SOCK_RAW, CAN_RAW);
+
+    strcpy(ifr.ifr_name, "can0" );
+    ioctl(s, SIOCGIFINDEX, &ifr);
+
+    addr.can_family = AF_CAN;
+    addr.can_ifindex = ifr.ifr_ifindex;
+
+    bind(s, (struct sockaddr *)&addr, sizeof(addr));
     
-    if(msgrcv(queue, &msg, sizeof(Msgbuf) - sizeof(long), 1, IPC_NOWAIT) >= 0) {
-        message.time = (int) time(NULL);
-        messageParsing(msg.mtext, message);
-       
-        return true;
+    
+    struct can_frame frame;
+    int nbytes;
 
+	while(stopThread == 0) {
+		
+    	nbytes = read(s, &frame, sizeof(struct can_frame));
+
+		if (nbytes < 0) {
+		        // perror("can raw socket read");
+		        continue;
+		}
+
+		/* paranoid check ... */
+		if (nbytes < sizeof(struct can_frame)) {
+		        // fprintf(stderr, "read: incomplete CAN frame\n");
+		        continue;
+		}
+		
+		/* do something with the received CAN frame */
+		uint32_t id (frame.can_id & (uint32_t)0x1FFFFFFF);
+        uint32_t temperature (frame.data[1]); // °C
+        temperature = temperature - 52;
+        uint32_t pressure (frame.data[2] + frame.data[3] & 0x1); // mBar
+        pressure = pressure * 40;
+        int t = (int) time(NULL);
+        queue.push(MessageType(id, temperature, pressure, t));
     }
-
-    return false;
 }

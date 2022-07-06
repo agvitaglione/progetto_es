@@ -1,4 +1,5 @@
 #include "TypeDefinitions.h"
+#define MAX_QUEUE_SIZE 60
 std::string toString(TyreType tyre) {
 
     switch(tyre) {
@@ -18,27 +19,16 @@ std::string toUnit(MeasureType measure) {
     }
 }
 
-const MessageType& MessageType::operator=(const MessageType& other) {
-
-    time = other.time;
-    
-    for(int i = 0; i < 2; i++) {
-        fl[i] = other.fl[i];
-        fr[i] = other.fr[i];
-        rl[i] = other.rl[i];
-        rr[i] = other.rr[i];
-    }
-
-    return *this;
+MessageType::MessageType() {
+    this->id = 0;
+    this->temperature = 0;
+    this->pressure = 0;
+    this->time = 0;
 }
 
-MessageType::MessageType(const MessageType& other) {
-    time = other.time;
-    
-    for(int i = 0; i < 2; i++) {
-        fl[i] = other.fl[i];
-        fr[i] = other.fr[i];
-        rl[i] = other.rl[i];
-        rr[i] = other.rr[i];
-    }
+MessageType::MessageType(uint32_t id, uint32_t temperature, uint32_t pressure, int time) {
+    this->id = id;
+    this->temperature = temperature;
+    this->pressure = pressure;
+    this->time = time;
 }

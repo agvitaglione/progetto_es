@@ -37,7 +37,8 @@ class PtMonitorControl {
         static PtMonitorView *view;
         static PtMonitorModel *model;
 
-        static DataPlotQueue queue;
+        //Queue Array
+        static DataPlotQueue **queues;
 
         static void periodicGetData();
 
