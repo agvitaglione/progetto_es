@@ -108,6 +108,73 @@ void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, Gt
     }
 }
 
+void generatePlotDiagram (
+    GtkWidget *box,
+    GtkWidget ***view_temperature,
+    SlopeScale ***scale_temperature,
+    GtkWidget ***view_pressure,
+    SlopeScale ***scale_pressure)
+{
+
+    for(int axis = 0; axis < numberOfAxis; axis++) {
+        
+        for(int tyre = 0; tyre < numberOfTyrePerAxis; tyre++){
+
+            // Create a grid for each axis
+            GtkWidget* grid = gtk_grid_new();
+            gtk_grid_set_column_homogeneous(GTK_GRID(grid), true);
+            gtk_box_pack_start(GTK_BOX(box), grid, TRUE, TRUE, 10);
+            
+            // Title for the tyre
+            std::string label_string = "Axis " + std::to_string(axis) + " Tyre " + std::to_string(tyre);
+            GtkWidget* label = gtk_label_new(label_string.c_str());
+            gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 2, 1);
+
+            // ------------ Generate Graph Temperature
+
+            SlopeFigure *figure_temperature = slope_figure_new();
+            scale_temperature[axis][tyre] = slope_xyscale_new_axis("Time [s]", "Value [°C]", "Temperature");
+            view_temperature[axis][tyre]   = slope_view_new();
+            
+            // Get value to semplify
+            SlopeScale *_scale_temperature = scale_temperature[axis][tyre];
+            GtkWidget *_view_temperature = view_temperature[axis][tyre];
+
+            gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(_view_temperature), 0, 1, 1, 1);
+            slope_view_set_figure(SLOPE_VIEW(_view_temperature), figure_temperature);
+            slope_figure_add_scale(SLOPE_FIGURE(figure_temperature), _scale_temperature);
+            SlopeItem *axis_temperature = slope_xyscale_get_axis(SLOPE_XYSCALE(_scale_temperature), SLOPE_XYSCALE_AXIS_BOTTOM);
+            SlopeSampler *sampler_temperature = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis_temperature));
+            slope_sampler_set_samples(sampler_temperature, slope_sampler_array, NLABEL);
+            slope_xyscale_set_x_range(SLOPE_XYSCALE(_scale_temperature), -60, 0);
+            g_signal_handlers_disconnect_by_data(_view_temperature, GINT_TO_POINTER(SLOPE_MOUSE_MOVE)); // REMOVE DIAGRAM MOVEMENT ON SWIPE
+
+            //------------
+
+            // ------------ Generate Graph Pressure
+
+            SlopeFigure *figure_pressure = slope_figure_new();
+            scale_pressure[axis][tyre] = slope_xyscale_new_axis("Time [s]", "Value [bar]", "Pressure");
+            view_pressure[axis][tyre]   = slope_view_new();
+            
+            // Get value to semplify
+            SlopeScale *_scale_pressure = scale_pressure[axis][tyre];
+            GtkWidget *_view_pressure = view_pressure[axis][tyre];
+
+            gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(_view_pressure), 1, 1, 1, 1);
+            slope_view_set_figure(SLOPE_VIEW(_view_pressure), figure_pressure);
+            slope_figure_add_scale(SLOPE_FIGURE(figure_pressure), _scale_pressure);
+            SlopeItem *axis_pressure = slope_xyscale_get_axis(SLOPE_XYSCALE(_scale_pressure), SLOPE_XYSCALE_AXIS_BOTTOM);
+            SlopeSampler *sampler_pressure = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis_pressure));
+            slope_sampler_set_samples(sampler_pressure, slope_sampler_array, NLABEL);
+            slope_xyscale_set_x_range(SLOPE_XYSCALE(_scale_pressure), -60, 0);
+            g_signal_handlers_disconnect_by_data(_view_pressure, GINT_TO_POINTER(SLOPE_MOUSE_MOVE)); // REMOVE DIAGRAM MOVEMENT ON SWIPE
+
+            //------------
+        }
+    }
+}
+
 
 
 //---------------------------------- CLASS FUNCTIONS
@@ -127,8 +194,11 @@ PtMonitorView::PtMonitorView(void) {
 	togglebottom1 = GTK_WIDGET(gtk_builder_get_object(builder, "circle_page_1"));
 	togglebottom2 = GTK_WIDGET(gtk_builder_get_object(builder, "circle_page_2"));
 	togglebottom3 = GTK_WIDGET(gtk_builder_get_object(builder, "circle_page_3"));
+    /*
 	box_temperature = GTK_WIDGET(gtk_builder_get_object(builder, "pagina2"));
 	box_pressure = GTK_WIDGET(gtk_builder_get_object(builder, "pagina3"));
+    */
+    box_plot = GTK_WIDGET(gtk_builder_get_object(builder, "pagina2"));
     request_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "request_dialog"));
     shutdown_button_box = GTK_WIDGET(gtk_builder_get_object(builder, "shutdown_button_box"));
 
@@ -152,6 +222,13 @@ PtMonitorView::PtMonitorView(void) {
 
     // ------------------------
 
+    // ------------------------ GENERATE PLOT DIAGRAM
+
+
+    // ------------------------
+
+
+
     // ------------------------ CALLBACKS
 
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -170,6 +247,25 @@ PtMonitorView::PtMonitorView(void) {
 
     // ------------------------ CREATE DIAGRAM BOXES
 
+    view_temperature = new GtkWidget**[numberOfAxis];
+    scale_temperature = new SlopeScale**[numberOfAxis];
+    series_temperature = new SlopeItem**[numberOfAxis];
+    view_pressure = new GtkWidget**[numberOfAxis];
+    scale_pressure = new SlopeScale**[numberOfAxis];
+    series_pressure = new SlopeItem**[numberOfAxis];
+
+    for(int i = 0; i < numberOfAxis; i++) {
+        view_temperature[i] = new GtkWidget*[numberOfAxis];
+        scale_temperature[i] = new SlopeScale*[numberOfAxis];
+        series_temperature[i] = new SlopeItem*[numberOfAxis];
+        view_pressure[i] = new GtkWidget*[numberOfAxis];
+        scale_pressure[i] = new SlopeScale*[numberOfAxis];
+        series_pressure[i] = new SlopeItem*[numberOfAxis];
+    }
+
+    generatePlotDiagram(box_plot, view_temperature, scale_temperature, view_pressure, scale_pressure);
+
+    /*
     figure_temperature = slope_figure_new();
 	scale_temperature = slope_xyscale_new_axis("Time [s]", "Value [°C]", "Temperature");
 	view_temperature   = slope_view_new();
@@ -194,6 +290,7 @@ PtMonitorView::PtMonitorView(void) {
     slope_sampler_set_samples(sampler_pressure, slope_sampler_array, NLABEL);
     slope_xyscale_set_x_range(SLOPE_XYSCALE(scale_pressure), -60, 0);
     g_signal_handlers_disconnect_by_data(view_pressure, GINT_TO_POINTER(SLOPE_MOUSE_MOVE)); // REMOVE DIAGRAM MOVEMENT ON SWIPE
+    */
     
     // ------------------------ 
 	
@@ -214,9 +311,10 @@ PtMonitorView::~PtMonitorView() {
     gtk_widget_destroy(togglebottom1);
     gtk_widget_destroy(togglebottom2);
     gtk_widget_destroy(togglebottom3);
-    gtk_widget_destroy(box_temperature);
-    gtk_widget_destroy(box_pressure);
+    gtk_widget_destroy(box_plot);
     g_object_unref(G_OBJECT(builder));
+
+    // TODO: Distruggere tutti i puntatori allocati
     
 
 }
@@ -288,7 +386,7 @@ int PtMonitorView::getNumberOfPages(void) {
     return NUMBER_OF_PAGES;
 }
 
-void PtMonitorView::plotData(const DataType* data, const MeasureType graph, const int nelem) {
+void PtMonitorView::plotData(const DataType& data, const int nelem, const MeasureType graph, const int axis, const int tyre) {
 
     SlopeScale* scale;
     SlopeItem* series;
@@ -298,29 +396,26 @@ void PtMonitorView::plotData(const DataType* data, const MeasureType graph, cons
     double ymax;
 
     if(graph == TEMPERATURE) {
-        scale = scale_temperature;
-        series = series_temperature;
-        view = view_temperature;
+        scale = scale_temperature[axis][tyre];
+        series = series_temperature[axis][tyre];
+        view = view_temperature[axis][tyre];
         ymin = 0.0;
         ymax = 150.0;
     }
     else if(graph == PRESSURE) {
-        scale = scale_pressure;
-        series = series_pressure;
-        view = view_pressure;
+        scale = scale_pressure[axis][tyre];
+        series = series_pressure[axis][tyre];
+        view = view_pressure[axis][tyre];
         ymin = 0.0;
         ymax = 5.0;
     }
 
-    // GRAPH PLOT FOR ALL WHEELS
-    for(size_t i = 0; i < 4; i++) {
-		slope_scale_remove_item_by_name(SLOPE_SCALE(scale), toString(data[i].tyre).c_str());
-		series = slope_xyseries_new_filled(toString(data[i].tyre).c_str(), data[i].x, data[i].y, nelem, colors[i].c_str());
-		slope_scale_add_item(scale, series);
-		slope_xyscale_set_x_range(SLOPE_XYSCALE(scale), -60, 0);
-        slope_xyscale_set_y_range(SLOPE_XYSCALE(scale), ymin, ymax);
-		slope_view_redraw(SLOPE_VIEW(view));
-    }
+    slope_scale_remove_item_by_name(SLOPE_SCALE(scale), "prova");
+    series = slope_xyseries_new_filled("prova", data.x, data.y, nelem, "b-");
+    slope_scale_add_item(scale, series);
+    slope_xyscale_set_x_range(SLOPE_XYSCALE(scale), -60, 0);
+    slope_xyscale_set_y_range(SLOPE_XYSCALE(scale), ymin, ymax);
+    slope_view_redraw(SLOPE_VIEW(view));
 }
 
 void PtMonitorView::setMeasureValues(float value, MeasureType measure, const int axis, const int tyre) {
