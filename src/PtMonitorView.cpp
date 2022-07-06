@@ -1,4 +1,13 @@
 #include "PtMonitorView.h"
+#include <string>
+#include "PtConfig.h"
+
+/*
+* TODO
+* Variabili da prendere da file
+*/
+static int numberOfAxis;
+static int numberOfTyrePerAxis;
 
 // X AXIS FOR PLOT
 #define NLABEL 4
@@ -32,7 +41,76 @@ gboolean shutdownRequestHandler (GtkWidget *shutdown_button_box) {
 
     return TRUE;
 }
-//-----------------------------------
+
+
+//----------------------------------- GENERATE GRID
+
+void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, GtkWidget ***interface_labels_pressure) {
+
+    gtk_grid_set_row_homogeneous(GTK_GRID(grid), true);
+    gtk_grid_set_row_spacing(GTK_GRID(grid), 20);
+
+
+    for(int i = 0; i < numberOfAxis; i++) {
+
+        int ntyre = 0;
+
+        for(int j = 0; j < 2; j++) {
+
+            GtkWidget* box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 12); // BOX INTO GRID CELL
+            gtk_grid_attach(GTK_GRID(grid), box, j, i, 1, 1);
+
+
+            std::string label_box_str = "ASSE " + std::to_string(i + 1);
+            label_box_str += j == 0 ? " L" : " R";
+            GtkWidget* label_box = gtk_label_new(label_box_str.c_str());
+            gtk_widget_set_halign(label_box, GTK_ALIGN_START);
+            gtk_box_pack_start(GTK_BOX(box), label_box, false, false, 0);
+
+
+            GtkWidget* grid_tp = gtk_grid_new();
+            gtk_box_pack_start(GTK_BOX(box), grid_tp, false, false, 0);
+            gtk_grid_set_column_homogeneous(GTK_GRID(grid_tp), true);
+
+            // --------------------------- SET IMAGE TEMPERATURE AND PRESURE
+
+            GtkWidget* image_thermometer = gtk_image_new_from_file("../img/thermometer.png");
+            gtk_grid_attach(GTK_GRID(grid_tp), image_thermometer, 0, 0, 1, 1);
+
+            GtkWidget* image_tyre = gtk_image_new_from_file("../img/tyre.png");
+            gtk_grid_attach(GTK_GRID(grid_tp), image_tyre, 2, 0, 1, 1);
+
+            // ---------------------------
+
+
+            // --------------------------- GENERATE LABEL T AND P FOR EACH TYRE
+
+
+            GtkWidget* box_temperature = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+            gtk_box_set_homogeneous(GTK_BOX(box_temperature), true);
+            gtk_grid_attach(GTK_GRID(grid_tp), box_temperature, 1, 0, 1, 1);
+
+            GtkWidget* box_pressure = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+            gtk_box_set_homogeneous(GTK_BOX(box_pressure), true);
+            gtk_grid_attach(GTK_GRID(grid_tp), box_pressure, 3, 0, 1, 1);
+
+            for(int k = 0; k < numberOfTyrePerAxis / 2; k++) {
+                interface_labels_temperature[i][ntyre] = gtk_label_new("0°C");
+                interface_labels_pressure[i][ntyre] = gtk_label_new("0 bar");
+                gtk_box_pack_start(GTK_BOX(box_temperature), interface_labels_temperature[i][ntyre], false, false, 0);
+                gtk_box_pack_start(GTK_BOX(box_pressure), interface_labels_pressure[i][ntyre], false, false, 0);
+                ntyre++;
+            }
+            
+            // ---------------------------
+
+        }
+    }
+}
+
+
+
+//---------------------------------- CLASS FUNCTIONS
 
 PtMonitorView* PtMonitorView::getInstance() {
     static PtMonitorView instance;
@@ -54,16 +132,23 @@ PtMonitorView::PtMonitorView(void) {
     request_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "request_dialog"));
     shutdown_button_box = GTK_WIDGET(gtk_builder_get_object(builder, "shutdown_button_box"));
 
-    // ------------------------ LABELS
+    // ------------------------ GENERATE GRID
 
-    fl_temperature = GTK_WIDGET(gtk_builder_get_object(builder, "fl_temperature"));
-    fr_temperature = GTK_WIDGET(gtk_builder_get_object(builder, "fr_temperature"));
-    rl_temperature = GTK_WIDGET(gtk_builder_get_object(builder, "rl_temperature"));
-    rr_temperature = GTK_WIDGET(gtk_builder_get_object(builder, "rr_temperature"));
-    fl_pressure = GTK_WIDGET(gtk_builder_get_object(builder, "fl_pressure"));
-    fr_pressure = GTK_WIDGET(gtk_builder_get_object(builder, "fr_pressure"));
-    rl_pressure = GTK_WIDGET(gtk_builder_get_object(builder, "rl_pressure"));
-    rr_pressure = GTK_WIDGET(gtk_builder_get_object(builder, "rr_pressure"));
+    // Get number of axis and tyre for each axis
+    PtConfig *ptConfig = PtConfig::getInstance(); 
+    ::numberOfAxis = ptConfig->getNumberOfAxis();
+    ::numberOfTyrePerAxis = ptConfig->getNumberOfTyrePerAxis();
+
+    GtkWidget* box_first_page = GTK_WIDGET(gtk_builder_get_object(builder, "pagina1"));
+
+    interface_labels_temperature = new GtkWidget**[numberOfAxis];
+    interface_labels_pressure = new GtkWidget**[numberOfAxis];
+    for(int i = 0; i < numberOfAxis; i++) {
+        interface_labels_temperature[i] = new GtkWidget*[numberOfTyrePerAxis];
+        interface_labels_pressure[i] = new GtkWidget*[numberOfTyrePerAxis];
+    }
+    generateGrid(box_first_page, interface_labels_temperature, interface_labels_pressure);
+
 
     // ------------------------
 
@@ -175,6 +260,8 @@ void PtMonitorView::setSwipeHandler(void (*callback)(gdouble v_x, gdouble v_y)) 
     swipeHandler = callback; 
 }
 
+
+
 void PtMonitorView::startRoutine(void) const {
 
     // SHOW MAIN WINDOW
@@ -236,47 +323,20 @@ void PtMonitorView::plotData(const DataType* data, const MeasureType graph, cons
     }
 }
 
-void PtMonitorView::setMeasureValues(float value, MeasureType measure, TyreType tyre) {
-    
+void PtMonitorView::setMeasureValues(float value, MeasureType measure, const int axis, const int tyre) {
+
     GtkWidget *tyreLabel;
 
     if(measure == MeasureType::TEMPERATURE) {
-
-        switch(tyre) {
-            case TyreType::FL: 
-                    tyreLabel = fl_temperature;
-                    break;
-            case TyreType::FR: 
-                    tyreLabel = fr_temperature;
-                    break;              
-            case TyreType::RL: 
-                    tyreLabel = rl_temperature;
-                    break;
-            case TyreType::RR: 
-                    tyreLabel = rr_temperature;
-                    break;
-        }
+        tyreLabel = interface_labels_temperature[axis][tyre];
     }
 
     else if(measure == MeasureType::PRESSURE) {
-        switch(tyre) {
-            case TyreType::FL: 
-                    tyreLabel = fl_pressure;
-                    break;
-            case TyreType::FR: 
-                    tyreLabel = fr_pressure;
-                    break;              
-            case TyreType::RL: 
-                    tyreLabel = rl_pressure;
-                    break;
-            case TyreType::RR: 
-                    tyreLabel = rr_pressure;
-                    break;
-        }
+       tyreLabel = interface_labels_pressure[axis][tyre];
     }
 
     std::stringstream stream;
     stream << std::fixed << std::setprecision(1) << value << toUnit(measure);
     gtk_label_set_label(GTK_LABEL(tyreLabel), stream.str().c_str());
-
+    
 }

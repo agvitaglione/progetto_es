@@ -98,21 +98,19 @@ void PtMonitorControl::periodicGetData() {
         view->plotData(dataPressure, PRESSURE, nelem);
 
         // SET LABELS
-        view->setMeasureValues(message.fl[TEMPERATURE], TEMPERATURE, FL);
-        view->setMeasureValues(message.fr[TEMPERATURE], TEMPERATURE, FR);
-        view->setMeasureValues(message.rl[TEMPERATURE], TEMPERATURE, RL);
-        view->setMeasureValues(message.rr[TEMPERATURE], TEMPERATURE, RR);
+        view->setMeasureValues(message.fl[TEMPERATURE], TEMPERATURE, 0, 0);
+        view->setMeasureValues(message.fr[TEMPERATURE], TEMPERATURE, 0, 1);
+        view->setMeasureValues(message.rl[TEMPERATURE], TEMPERATURE, 1, 0);
+        view->setMeasureValues(message.rr[TEMPERATURE], TEMPERATURE, 1, 1);
 
-        view->setMeasureValues(message.fl[PRESSURE], PRESSURE, FL);
-        view->setMeasureValues(message.fr[PRESSURE], PRESSURE, FR);
-        view->setMeasureValues(message.rl[PRESSURE], PRESSURE, RL);
-        view->setMeasureValues(message.rr[PRESSURE], PRESSURE, RR);
+        view->setMeasureValues(message.fl[PRESSURE], PRESSURE, 0, 0);
+        view->setMeasureValues(message.fr[PRESSURE], PRESSURE, 0, 1);
+        view->setMeasureValues(message.rl[PRESSURE], PRESSURE, 1, 0);
+        view->setMeasureValues(message.rr[PRESSURE], PRESSURE, 1, 1);
     }
 
 
 }
-
-
 
 // SINGLETON GET INSTANCE
 PtMonitorControl* PtMonitorControl::getInstance(PtMonitorView* view, PtMonitorModel* model) {

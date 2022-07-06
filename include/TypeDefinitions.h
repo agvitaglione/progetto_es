@@ -1,6 +1,7 @@
 #ifndef __TYPEDEFINITIONS_H__
 #define __TYPEDEFINITIONS_H__
 #include <string>
+#include <iostream>
 
 // TYPE OF PLOTTABLE GRAPH (TEMPERATURE GRAPH OR PRESSURE GRAPH)
 typedef enum {TEMPERATURE, PRESSURE} MeasureType; 

@@ -34,25 +34,27 @@ class PtMonitorView {
         const PtMonitorView& operator=(const PtMonitorView&) = delete; 
         
 
-        void setPage(const int page_number, const GtkStackTransitionType transition);
-        void startRoutine(void) const;
-
         int getCurrentPageNumber(void) const;
         static int getNumberOfPages(void);
+
+
+        void setPage(const int page_number, const GtkStackTransitionType transition);
 
         // SET HANDLERS
         void setShoutdownHandler(void (*callback)(void));
         void setSwipeHandler(void (*callback)(gdouble v_x, gdouble v_y));
 
         // SET MEASURE LABELS
-        void setMeasureValues(float value, MeasureType measure, TyreType tyre);
-        
+        void setMeasureValues(float value, MeasureType measure, const int axis, const int tyre);
 
         // DRAW DATA
         /*
         * Data must be a vector of 4 elements
         */
         void plotData(const DataType* data, const MeasureType graph, const int nelem);
+
+        void startRoutine(void) const;
+
 
     protected:
         PtMonitorView(void);
@@ -61,7 +63,7 @@ class PtMonitorView {
 
         // GLOBAL VIARIABLES
         static const int NUMBER_OF_PAGES = 3;
-        inline static const std::string builder_file_name =  "../interface.glade";
+        inline static const std::string builder_file_name =  "../interface_scalable.glade";
 
 
         // GLOBAL WIDGET INTERFACE VARIABLES
@@ -75,14 +77,8 @@ class PtMonitorView {
         GtkWidget *shutdown_button_box;
         
         //LABELS
-        GtkWidget *fl_temperature;
-        GtkWidget *fr_temperature;
-        GtkWidget *rl_temperature;
-        GtkWidget *rr_temperature;
-        GtkWidget *fl_pressure;
-        GtkWidget *fr_pressure;
-        GtkWidget *rl_pressure;
-        GtkWidget *rr_pressure;
+        GtkWidget ***interface_labels_temperature;
+        GtkWidget ***interface_labels_pressure;
 
         // GESTURE
         GtkGesture *swipe;

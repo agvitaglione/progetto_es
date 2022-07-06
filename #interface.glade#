@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.39.0 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkWindow" id="window">
+    <property name="can-focus">False</property>
+    <property name="default-width">800</property>
+    <property name="default-height">400</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <!-- n-columns=3 n-rows=1 -->
+          <object class="GtkGrid">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">4</property>
+            <property name="column-homogeneous">True</property>
+            <child>
+              <object class="GtkLabel" id="time">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">12:30</property>
+              </object>
+              <packing>
+                <property name="left-attach">1</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkFixed">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+              </object>
+              <packing>
+                <property name="left-attach">0</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEventBox" id="shutdown_button_box">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">end</property>
+                <property name="margin-end">25</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="pixbuf">img/power-off_32.png</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left-attach">2</property>
+                <property name="top-attach">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStack" id="stack">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <!-- n-columns=2 n-rows=2 -->
+              <object class="GtkGrid" id="pagina1">
+                <property name="name">pagina1</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="row-homogeneous">True</property>
+                <property name="column-homogeneous">True</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="margin-start">20</property>
+                        <property name="label" translatable="yes">FL</property>
+                        <attributes>
+                          <attribute name="scale" value="2"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFixed">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="valign">start</property>
+                        <child>
+                          <object class="GtkLabel" id="fl_temperature">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">0°C</property>
+                            <attributes>
+                              <attribute name="scale" value="2"/>
+                              <attribute name="foreground" value="#1c1c7171d8d8"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="x">66</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fl_pressure">
+                            <property name="width-request">137</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">0 bar</property>
+                            <attributes>
+                              <attribute name="scale" value="2"/>
+                              <attribute name="foreground" value="#1c1c7171d8d8"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="x">251</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">img/thermometer.png</property>
+                          </object>
+                          <packing>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">img/tyre.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">167</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="margin-start">20</property>
+                        <property name="label" translatable="yes">FR</property>
+                        <attributes>
+                          <attribute name="scale" value="2"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFixed">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="valign">start</property>
+                        <child>
+                          <object class="GtkLabel" id="fr_temperature">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">0°C</property>
+                            <attributes>
+                              <attribute name="scale" value="2"/>
+                              <attribute name="foreground" value="#1c1c7171d8d8"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="x">66</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="fr_pressure">
+                            <property name="width-request">137</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">0 bar</property>
+                            <attributes>
+                              <attribute name="scale" value="2"/>
+                              <attribute name="foreground" value="#1c1c7171d8d8"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="x">251</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">img/thermometer.png</property>
+                          </object>
+                          <packing>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">img/tyre.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">167</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="margin-start">20</property>
+                        <property name="label" translatable="yes">RL</property>
+                        <attributes>
+                          <attribute name="scale" value="2"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFixed">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="valign">start</property>
+                        <child>
+                          <object class="GtkLabel" id="rl_temperature">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">0 C</property>
+                            <attributes>
+                              <attribute name="scale" value="2"/>
+                              <attribute name="foreground" value="#1c1c7171d8d8"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="x">66</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="rl_pressure">
+                            <property name="width-request">137</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">0 bar</property>
+                            <attributes>
+                              <attribute name="scale" value="2"/>
+                              <attribute name="foreground" value="#1c1c7171d8d8"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="x">251</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">img/thermometer.png</property>
+                          </object>
+                          <packing>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">img/tyre.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">167</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="margin-start">20</property>
+                        <property name="label" translatable="yes">RR</property>
+                        <attributes>
+                          <attribute name="scale" value="2"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFixed">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="valign">start</property>
+                        <child>
+                          <object class="GtkLabel" id="rr_temperature">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">0°C</property>
+                            <attributes>
+                              <attribute name="scale" value="2"/>
+                              <attribute name="foreground" value="#1c1c7171d8d8"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="x">66</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="rr_pressure">
+                            <property name="width-request">137</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="label" translatable="yes">0 bar</property>
+                            <attributes>
+                              <attribute name="scale" value="2"/>
+                              <attribute name="foreground" value="#1c1c7171d8d8"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="x">251</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">img/thermometer.png</property>
+                          </object>
+                          <packing>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="width-request">100</property>
+                            <property name="height-request">80</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="pixbuf">img/tyre.png</property>
+                          </object>
+                          <packing>
+                            <property name="x">167</property>
+                            <property name="y">20</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="name">pagina1</property>
+                <property name="title" translatable="yes">pagina1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="pagina2">
+                <property name="name">pagina2</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="margin-start">15</property>
+                    <property name="label" translatable="yes">Temperature</property>
+                    <attributes>
+                      <attribute name="scale" value="2"/>
+                      <attribute name="foreground" value="#1c1c7171d8d8"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="name">pagina2</property>
+                <property name="title" translatable="yes">pagina2</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="pagina3">
+                <property name="name">pagina3</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="margin-start">15</property>
+                    <property name="label" translatable="yes">Pressure</property>
+                    <attributes>
+                      <attribute name="scale" value="2"/>
+                      <attribute name="foreground" value="#1c1c7171d8d8"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="name">pagina3</property>
+                <property name="title" translatable="yes">pagina3</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButtonBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="layout-style">center</property>
+            <child>
+              <object class="GtkRadioButton" id="circle_page_1">
+                <property name="label" translatable="yes">
+</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="draw-indicator">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+                <property name="non-homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="circle_page_2">
+                <property name="label" translatable="yes">
+</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="draw-indicator">True</property>
+                <property name="group">circle_page_1</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+                <property name="non-homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="circle_page_3">
+                <property name="label" translatable="yes">
+</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <property name="draw-indicator">True</property>
+                <property name="group">circle_page_1</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+                <property name="non-homogeneous">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <style>
+      <class name="dialog"/>
+    </style>
+  </object>
+  <object class="GtkDialog" id="request_dialog">
+    <property name="can-focus">False</property>
+    <property name="window-position">center</property>
+    <property name="default-width">300</property>
+    <property name="default-height">200</property>
+    <property name="type-hint">dialog</property>
+    <property name="deletable">False</property>
+    <property name="transient-for">window</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
+            <child>
+              <object class="GtkButton" id="cancel_button">
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="shutdown_button">
+                <property name="label" translatable="yes">Shutdown</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-top">20</property>
+                <property name="label" translatable="yes">Shutdown</property>
+                <attributes>
+                  <attribute name="scale" value="2"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Do you want to shutdown the system?</property>
+                <attributes>
+                  <attribute name="scale" value="1"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">cancel_button</action-widget>
+      <action-widget response="1">shutdown_button</action-widget>
+    </action-widgets>
+  </object>
+</interface>

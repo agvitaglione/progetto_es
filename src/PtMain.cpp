@@ -8,6 +8,7 @@
 #include "TypeDefinitions.h"
 #include <mqueue.h>
 #include <string.h>
+#include "PtConfig.h"
 
 void task(PtMonitorView* view) {
     view->startRoutine();
@@ -15,31 +16,15 @@ void task(PtMonitorView* view) {
 
 int main() {
 
-    
+    PtConfig *ptconfig = PtConfig::getInstance();
+    ptconfig->readFile("../config.txt");
+
     PtMonitorView* view = PtMonitorView::getInstance();
     PtMonitorModel *model = PtMonitorModel::getInstance();
     PtMonitorControl* control = PtMonitorControl::getInstance(view, model);
     
 
     std::thread t(task, view);
-    /*
-    while(true) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        view->setMeasureValues(g_random_double()*100, MeasureType::TEMPERATURE, TyreType::FL);
-        view->setMeasureValues(g_random_double()*100, MeasureType::PRESSURE, TyreType::FL);
-
-        view->setMeasureValues(g_random_double()*100, MeasureType::TEMPERATURE, TyreType::FR);
-        view->setMeasureValues(g_random_double()*100, MeasureType::PRESSURE, TyreType::FR);
-
-        view->setMeasureValues(g_random_double()*100, MeasureType::TEMPERATURE, TyreType::RL);
-        view->setMeasureValues(g_random_double()*100, MeasureType::PRESSURE, TyreType::RL);
-
-        view->setMeasureValues(g_random_double()*100, MeasureType::TEMPERATURE, TyreType::RR);
-        view->setMeasureValues(g_random_double()*100, MeasureType::PRESSURE, TyreType::RR);
-    }
-    
-    t.join();
-    */
 
 
     std::stringstream message;
@@ -60,7 +45,9 @@ int main() {
 
         msgsnd(queue, &msg, sizeof(Msgbuf) - sizeof(long), 0);
 
-    }
+    } 
+
+   
 
     return 0;
 }
