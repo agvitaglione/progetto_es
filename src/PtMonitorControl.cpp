@@ -4,11 +4,11 @@
 #include "PtConfig.h"
 
 // THREAD
-std::thread *periodicThread;
+static std::thread *periodicThread;
 
-int stopThread = 0;
-int naxis;
-int ntyre;
+static int stopThread = 0;
+static int naxis;
+static int ntyre;
 
 // MACRO
 #define SWIPE_RIGHT(v_x, v_y) (v_x >= PtMonitorControl::XACT && abs(v_y) < PtMonitorControl::YLIMIT) // CHECK IT'S A RIGHT SWIPE

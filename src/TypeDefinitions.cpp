@@ -1,5 +1,5 @@
 #include "TypeDefinitions.h"
-#define MAX_QUEUE_SIZE 60
+
 std::string toString(TyreType tyre) {
 
     switch(tyre) {

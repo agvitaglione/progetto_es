@@ -14,7 +14,7 @@
 #include "/usr/include/linux/can.h"
 
 DataPlotQueueConcurret PtMonitorModel::queue(MAX_QUEUE_SIZE);
-int stopThread = 0;
+static int stopThread = 0;
 
 PtMonitorModel* PtMonitorModel::getInstance() {
     static PtMonitorModel model;
