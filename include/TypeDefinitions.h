@@ -16,23 +16,14 @@ typedef struct {
     TyreType tyre;
 } DataType;
 
-class MessageType{
-    public:
-        int time;
-        float fl[2];
-        float fr[2];
-        float rl[2];
-        float rr[2];
+class MessageType {
+    uint32_t id;
+    uint32_t temperature;
+    uint32_t pressure;
+    int time;
 
-        MessageType() {};
-        MessageType(const MessageType& other);
-        const MessageType& operator=(const MessageType& other);
-};
-
-typedef struct {
-    long mtype;      
-    char mtext[24 + 1];    
-} Msgbuf;
+    MessageType(uint32_t id, uint32_t temperature, uint32_t pressure, int time);
+} ;
 
 
 std::string toString(TyreType tyre);
