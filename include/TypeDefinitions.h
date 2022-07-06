@@ -13,7 +13,6 @@ typedef enum {FL, FR, RL, RR} TyreType;
 typedef struct {
     double *x;
     double *y;
-    TyreType tyre;
 } DataType;
 
 class MessageType {
