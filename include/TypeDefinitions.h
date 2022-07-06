@@ -12,8 +12,8 @@ typedef enum {FL, FR, RL, RR} TyreType;
 
 // STRUCT THAT CONTAINS THE X Y VALUE TO PLOT, ACCORDING TO THE TYRE
 typedef struct {
-    double *x;
-    double *y;
+    double x[MAX_QUEUE_SIZE];
+    double y[MAX_QUEUE_SIZE];
 } DataType;
 
 class MessageType {
