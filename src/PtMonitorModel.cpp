@@ -35,8 +35,6 @@ bool PtMonitorModel::getData(MessageType& message)  {
     return queue.pop(message);
 }
 
-
-#include <iostream>
 void PtMonitorModel::readDataFromModule() {
 
     int s;
