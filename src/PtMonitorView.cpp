@@ -42,7 +42,7 @@ gboolean shutdownRequestHandler (GtkWidget *shutdown_button_box) {
 		gtk_widget_hide(view->request_dialog);
 	}
 
-    std::cout << "Fine change page handler" << std::endl;
+    std::cout << "Fine shutdown page handler" << std::endl;
     return TRUE;
 }
 
