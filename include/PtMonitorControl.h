@@ -23,7 +23,6 @@ class PtMonitorControl {
         // CALLBACK FUNCTIONS
         static void shutdownHandler(void);
         static void swipeHandler(gdouble v_x, gdouble v_y);
-        static void newMessageHandler();
 
     protected:
         PtMonitorControl(PtMonitorView *view, PtMonitorModel *model);

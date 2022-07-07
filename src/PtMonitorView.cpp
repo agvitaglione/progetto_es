@@ -12,10 +12,10 @@ static int numberOfTyrePerAxis;
 // X AXIS FOR PLOT
 #define NLABEL 4
 static const SlopeSample slope_sampler_array[] = {
-    {-60, (char*) "60s"},
-    {-40, (char*) "40s"},
-    {-20, (char*) "20s"},
-    {0  , (char*) "0s" },
+    {-60, (char*) "60"},
+    {-40, (char*) "40"},
+    {-20, (char*) "20"},
+    {0  , (char*) "0" },
 };
 
 //----------------------------------- CALLBACKS
@@ -133,7 +133,7 @@ void generatePlotDiagram (
             // ------------ Generate Graph Temperature
 
             SlopeFigure *figure_temperature = slope_figure_new();
-            scale_temperature[axis][tyre] = slope_xyscale_new_axis("Time [s]", "Value [°C]", "Temperature");
+            scale_temperature[axis][tyre] = slope_xyscale_new_axis("Previous samples", "Value [°C]", "Temperature");
             view_temperature[axis][tyre]   = slope_view_new();
             
             // Get value to semplify
@@ -154,7 +154,7 @@ void generatePlotDiagram (
             // ------------ Generate Graph Pressure
 
             SlopeFigure *figure_pressure = slope_figure_new();
-            scale_pressure[axis][tyre] = slope_xyscale_new_axis("Time [s]", "Value [bar]", "Pressure");
+            scale_pressure[axis][tyre] = slope_xyscale_new_axis("Previous samples", "Value [mbar]", "Pressure");
             view_pressure[axis][tyre]   = slope_view_new();
             
             // Get value to semplify
@@ -193,11 +193,6 @@ PtMonitorView::PtMonitorView(void) {
 	stack = GTK_WIDGET(gtk_builder_get_object(builder, "stack"));
 	togglebottom1 = GTK_WIDGET(gtk_builder_get_object(builder, "circle_page_1"));
 	togglebottom2 = GTK_WIDGET(gtk_builder_get_object(builder, "circle_page_2"));
-	togglebottom3 = GTK_WIDGET(gtk_builder_get_object(builder, "circle_page_3"));
-    /*
-	box_temperature = GTK_WIDGET(gtk_builder_get_object(builder, "pagina2"));
-	box_pressure = GTK_WIDGET(gtk_builder_get_object(builder, "pagina3"));
-    */
     box_plot = GTK_WIDGET(gtk_builder_get_object(builder, "pagina2"));
     request_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "request_dialog"));
     shutdown_button_box = GTK_WIDGET(gtk_builder_get_object(builder, "shutdown_button_box"));
@@ -264,40 +259,18 @@ PtMonitorView::PtMonitorView(void) {
     }
 
     generatePlotDiagram(box_plot, view_temperature, scale_temperature, view_pressure, scale_pressure);
-
-    /*
-    figure_temperature = slope_figure_new();
-	scale_temperature = slope_xyscale_new_axis("Time [s]", "Value [°C]", "Temperature");
-	view_temperature   = slope_view_new();
-	gtk_box_pack_start(GTK_BOX(box_temperature), GTK_WIDGET(view_temperature), TRUE, TRUE, 0);
-	slope_view_set_figure(SLOPE_VIEW(view_temperature), figure_temperature);
-	slope_figure_add_scale(SLOPE_FIGURE(figure_temperature), scale_temperature);
-    axis_temperature = slope_xyscale_get_axis(SLOPE_XYSCALE(scale_temperature), SLOPE_XYSCALE_AXIS_BOTTOM);
-	sampler_temperature = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis_temperature));
-    slope_sampler_set_samples(sampler_temperature, slope_sampler_array, NLABEL);
-    slope_xyscale_set_x_range(SLOPE_XYSCALE(scale_temperature), -60, 0);
-    g_signal_handlers_disconnect_by_data(view_temperature, GINT_TO_POINTER(SLOPE_MOUSE_MOVE)); // REMOVE DIAGRAM MOVEMENT ON SWIPE
-
-
-    figure_pressure = slope_figure_new();
-	scale_pressure = slope_xyscale_new_axis("Time [s]", "Value [bar]", "Pressure");
-	view_pressure   = slope_view_new();
-	gtk_box_pack_start(GTK_BOX(box_pressure), GTK_WIDGET(view_pressure), TRUE, TRUE, 0);
-	slope_view_set_figure(SLOPE_VIEW(view_pressure), figure_pressure);
-	slope_figure_add_scale(SLOPE_FIGURE(figure_pressure), scale_pressure);
-    axis_pressure = slope_xyscale_get_axis(SLOPE_XYSCALE(scale_pressure), SLOPE_XYSCALE_AXIS_BOTTOM);
-	sampler_pressure = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis_pressure));
-    slope_sampler_set_samples(sampler_pressure, slope_sampler_array, NLABEL);
-    slope_xyscale_set_x_range(SLOPE_XYSCALE(scale_pressure), -60, 0);
-    g_signal_handlers_disconnect_by_data(view_pressure, GINT_TO_POINTER(SLOPE_MOUSE_MOVE)); // REMOVE DIAGRAM MOVEMENT ON SWIPE
-    */
     
     // ------------------------ 
 	
 
 	// ------------------------ DELETE SIGNAL HANDLER MOUSE MOVING
-	
-    g_signal_handlers_disconnect_by_data(view_temperature, GINT_TO_POINTER(SLOPE_MOUSE_MOVE));
+
+    for(int axis = 0; axis < numberOfAxis; axis++) {
+        for(int tyre = 0; tyre < numberOfTyrePerAxis; tyre++) {
+            g_signal_handlers_disconnect_by_data(view_temperature[axis][tyre], GINT_TO_POINTER(SLOPE_MOUSE_MOVE));
+            g_signal_handlers_disconnect_by_data(view_pressure[axis][tyre], GINT_TO_POINTER(SLOPE_MOUSE_MOVE));
+        }
+    }
 
     // ------------------------
 
@@ -323,8 +296,7 @@ void PtMonitorView::setPage(const int page_number, const GtkStackTransitionType 
 
     GtkToggleButton* togglebottom1 = GTK_TOGGLE_BUTTON(this->togglebottom1);
 	GtkToggleButton* togglebottom2 = GTK_TOGGLE_BUTTON(this->togglebottom2);
-	GtkToggleButton* togglebottom3 = GTK_TOGGLE_BUTTON(this->togglebottom3);
-    static std::string PAGE[] = {"pagina1", "pagina2", "pagina3"};
+    static std::string PAGE[] = {"pagina1", "pagina2"};
 
     gtk_stack_set_visible_child_full(GTK_STACK(stack), PAGE[page_number - 1].c_str(), transition);
 
@@ -333,19 +305,11 @@ void PtMonitorView::setPage(const int page_number, const GtkStackTransitionType 
         case 1:
 			gtk_toggle_button_set_active(togglebottom1, TRUE);
 			gtk_toggle_button_set_active(togglebottom2, FALSE);
-			gtk_toggle_button_set_active(togglebottom3, FALSE);
             break;
 
         case 2:
             gtk_toggle_button_set_active(togglebottom1, FALSE);
 			gtk_toggle_button_set_active(togglebottom2, TRUE);
-			gtk_toggle_button_set_active(togglebottom3, FALSE);
-            break;
-
-        case 3:
-			gtk_toggle_button_set_active(togglebottom1, FALSE);
-			gtk_toggle_button_set_active(togglebottom2, FALSE);
-			gtk_toggle_button_set_active(togglebottom3, TRUE);
             break;
     }
 }
@@ -378,8 +342,7 @@ int PtMonitorView::getCurrentPageNumber(void) const {
 
     if(strcmp(name, "pagina1") == 0)        return 1;
     else if(strcmp(name, "pagina2") == 0)   return 2;
-    else if(strcmp(name, "pagina3") == 0)   return 3;
-    else                                    return 1; // CURRENT PAGE IS 1 IF ERROR
+    else                                    return -1; // CURRENT PAGE IS 1 IF ERROR
 }
 
 int PtMonitorView::getNumberOfPages(void) {

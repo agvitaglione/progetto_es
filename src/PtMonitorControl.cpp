@@ -15,8 +15,8 @@ static int ntyre;
 #define SWIPE_LEFT(v_x, v_y) (v_x <= -PtMonitorControl::XACT && abs(v_y) < PtMonitorControl::YLIMIT) // CHECK IT'S A LEFT SWIPE
 
 // STATIC VARIABLES INITIALIZATION
-PtMonitorView* PtMonitorControl::view = nullptr;
-PtMonitorModel* PtMonitorControl::model = nullptr;
+PtMonitorView *PtMonitorControl::view = nullptr;
+PtMonitorModel *PtMonitorControl::model = nullptr;
 DataPlotQueue **PtMonitorControl::queues = nullptr;
 
 /* PERIODIC TASK
@@ -135,10 +135,5 @@ void PtMonitorControl::swipeHandler(gdouble v_x, gdouble v_y) {
     }
 
     view->setPage(nextPage, transition);
-
-}
-
-void PtMonitorControl::newMessageHandler() {
-    //TODO
 
 }

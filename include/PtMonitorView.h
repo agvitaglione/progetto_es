@@ -62,7 +62,7 @@ class PtMonitorView {
     private:
 
         // GLOBAL VIARIABLES
-        static const int NUMBER_OF_PAGES = 3;
+        static const int NUMBER_OF_PAGES = 2;
         inline static const std::string builder_file_name =  "../interface_scalable.glade";
 
 
