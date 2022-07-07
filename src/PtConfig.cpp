@@ -61,7 +61,6 @@ void PtConfig::readFile(const std::string fileName) {
                 ss << std::hex << line ;
                 ss >> x;
                 positions.insert(std::pair<uint32_t, TyrePosition>(x, position));
-                std::cout << x << std::endl;
             }
         }
     }
