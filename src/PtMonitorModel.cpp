@@ -36,7 +36,7 @@ bool PtMonitorModel::getData(MessageType& message)  {
 }
 
 
-
+#include <iostream>
 void PtMonitorModel::readDataFromModule() {
 
     int s;
@@ -74,6 +74,7 @@ void PtMonitorModel::readDataFromModule() {
 		
 		/* do something with the received CAN frame */
 		uint32_t id (frame.can_id & (uint32_t)0x1FFFFFFF);
+        std::cout << id << std::endl;
         uint32_t temperature (frame.data[1]); // °C
         temperature = temperature - 52;
         uint32_t pressure (frame.data[2] + frame.data[3] & 0x1); // mBar

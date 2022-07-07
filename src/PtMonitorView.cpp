@@ -96,7 +96,7 @@ void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, Gt
 
             for(int k = 0; k < numberOfTyrePerAxis / 2; k++) {
                 interface_labels_temperature[i][ntyre] = gtk_label_new("0°C");
-                interface_labels_pressure[i][ntyre] = gtk_label_new("0 bar");
+                interface_labels_pressure[i][ntyre] = gtk_label_new("0 mbar");
                 gtk_box_pack_start(GTK_BOX(box_temperature), interface_labels_temperature[i][ntyre], false, false, 0);
                 gtk_box_pack_start(GTK_BOX(box_pressure), interface_labels_pressure[i][ntyre], false, false, 0);
                 ntyre++;
@@ -213,11 +213,6 @@ PtMonitorView::PtMonitorView(void) {
         interface_labels_pressure[i] = new GtkWidget*[numberOfTyrePerAxis];
     }
     generateGrid(box_first_page, interface_labels_temperature, interface_labels_pressure);
-
-
-    // ------------------------
-
-    // ------------------------ GENERATE PLOT DIAGRAM
 
 
     // ------------------------
