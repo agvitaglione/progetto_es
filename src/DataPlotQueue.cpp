@@ -58,4 +58,6 @@ bool DataPlotQueue::pop(MessageType& message) {
         nelem--;
         return true;
     }
+
+    return false;
 }
