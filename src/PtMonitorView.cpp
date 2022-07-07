@@ -365,7 +365,7 @@ void PtMonitorView::plotData(const DataType& data, const int nelem, const Measur
         series = series_pressure[axis][tyre];
         view = view_pressure[axis][tyre];
         ymin = 0.0;
-        ymax = 5.0;
+        ymax = 2000.0;
     }
 
     slope_scale_remove_item_by_name(SLOPE_SCALE(scale), "prova");

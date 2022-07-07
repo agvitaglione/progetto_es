@@ -14,7 +14,7 @@ std::string toString(TyreType tyre) {
 std::string toUnit(MeasureType measure) {
     switch(measure) {
         case MeasureType::TEMPERATURE: return "°C";
-        case MeasureType::PRESSURE: return " bar";
+        case MeasureType::PRESSURE: return " mbar";
         default: return NULL;
     }
 }
