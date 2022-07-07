@@ -54,7 +54,7 @@ void PtMonitorModel::readDataFromModule() {
     
     struct can_frame frame;
     int nbytes;
-
+    
 	while(stopThread == 0) {
 		
     	nbytes = read(s, &frame, sizeof(struct can_frame));
@@ -63,16 +63,15 @@ void PtMonitorModel::readDataFromModule() {
 		        // perror("can raw socket read");
 		        continue;
 		}
-
+        
 		/* paranoid check ... */
 		if (nbytes < sizeof(struct can_frame)) {
 		        // fprintf(stderr, "read: incomplete CAN frame\n");
 		        continue;
 		}
-		
+
 		/* do something with the received CAN frame */
 		uint32_t id (frame.can_id & (uint32_t)0x1FFFFFFF);
-        //std::cout << id << std::endl;
         uint32_t temperature (frame.data[1]); // °C
         temperature = temperature - 52;
         uint32_t pressure (frame.data[2] + frame.data[3] & 0x1); // mBar

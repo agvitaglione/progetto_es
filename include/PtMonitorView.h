@@ -45,7 +45,7 @@ class PtMonitorView {
         void setSwipeHandler(void (*callback)(gdouble v_x, gdouble v_y));
 
         // SET MEASURE LABELS
-        void setMeasureValues(float value, MeasureType measure, const int axis, const int tyre);
+        void setMeasureValues(int value, MeasureType measure, const int axis, const int tyre);
 
         // DRAW DATA
         /*

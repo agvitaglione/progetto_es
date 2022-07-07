@@ -371,12 +371,12 @@ void PtMonitorView::plotData(const DataType& data, const int nelem, const Measur
     slope_scale_remove_item_by_name(SLOPE_SCALE(scale), "prova");
     series = slope_xyseries_new_filled("prova", data.x, data.y, nelem, "b-");
     slope_scale_add_item(scale, series);
-    slope_xyscale_set_x_range(SLOPE_XYSCALE(scale), -60, 0);
+    slope_xyscale_set_x_range(SLOPE_XYSCALE(scale), -20, 0);
     slope_xyscale_set_y_range(SLOPE_XYSCALE(scale), ymin, ymax);
     slope_view_redraw(SLOPE_VIEW(view));
 }
 
-void PtMonitorView::setMeasureValues(float value, MeasureType measure, const int axis, const int tyre) {
+void PtMonitorView::setMeasureValues(int value, MeasureType measure, const int axis, const int tyre) {
 
     GtkWidget *tyreLabel;
 
@@ -385,11 +385,9 @@ void PtMonitorView::setMeasureValues(float value, MeasureType measure, const int
     }
 
     else if(measure == MeasureType::PRESSURE) {
-       tyreLabel = interface_labels_pressure[axis][tyre];
+        tyreLabel = interface_labels_pressure[axis][tyre];
     }
 
-    std::stringstream stream;
-    stream << std::fixed << std::setprecision(1) << value << toUnit(measure);
-    gtk_label_set_label(GTK_LABEL(tyreLabel), stream.str().c_str());
+    gtk_label_set_label(GTK_LABEL(tyreLabel), (std::to_string(value) + toUnit(measure)).c_str());
     
 }
