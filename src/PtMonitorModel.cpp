@@ -55,29 +55,24 @@ void PtMonitorModel::readDataFromModule() {
     struct can_frame frame;
     int nbytes;
 
-    uint32_t ids[] = {0x0FF3,
-        0xA13,
-        0xA03,
-        0x103,
-        0xFF2,
-        0xA12,
-        0xA02,
-        0x102,
-        0xFF0,
-        0xA10,
-        0xA00,
-        0x10B,
-        0xFFF,
-        0xA31,
-        0xA10,
-        0x105};
+    uint32_t ids[] = {0x28E311B,
+    0x28E241E,
+    0x28E2F1E,
+    0x28B1826,
+    0x2900E23,
+    0x28E0D14,
+    0x28B3827,
+    0x2912717,
+    0x28B1426,
+    0x28D1832,
+    0x000003A};
     uint32_t temperatures[] = {5, 10, 15, 20, 25, 30};
     int count = 0;
     int count_temp = 0;
     
 	while(stopThread == 0) {
-        //std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        /*
     	nbytes = read(s, &frame, sizeof(struct can_frame));
 
 		if (nbytes < 0) {
@@ -85,29 +80,31 @@ void PtMonitorModel::readDataFromModule() {
 		        continue;
 		}
         
-		/* paranoid check ... */
+		// paranoid check ... 
 		if (nbytes < sizeof(struct can_frame)) {
 		        // fprintf(stderr, "read: incomplete CAN frame\n");
 		        continue;
 		}
-		
+		*/
 		/* do something with the received CAN frame */
-		uint32_t id (frame.can_id & (uint32_t)0x1FFFFFFF);
-        //uint32_t id = ids[count];
-        //count = (count + 1) % 16;
-        uint32_t temperature (frame.data[1]); // °C
-        //uint32_t temperature = temperatures[count_temp] + 52;
-        //count_temp = (count_temp + 1) % 6;
+		//uint32_t id (frame.can_id & (uint32_t)0x1FFFFFFF);
+        uint32_t id = ids[count];
+        count = (count + 1) % 11;
+        //uint32_t temperature (frame.data[1]); // °C
+        uint32_t temperature = temperatures[count_temp] + 52;
+        count_temp = (count_temp + 1) % 6;
         temperature = temperature - 52;
-        uint32_t pressure (frame.data[2] + frame.data[3] & 0x1); // mBar
-        //uint32_t pressure = temperatures[count_temp];
-        //pressure = pressure;
+        //uint32_t pressure (frame.data[2] + frame.data[3] & 0x1); // mBar
+        uint32_t pressure = temperatures[count_temp];
+        pressure = pressure * 40;
         int t = (int) time(NULL);
         queue.push(MessageType(id, temperature, pressure, t));
-        
+
+        /*
         std::cout << "Messaggio" << std::endl;
         std::cout << "id: " << id << std::endl;
         std::cout << "temperature: " << temperature << std::endl;
         std::cout << "pressure: " << pressure << std::endl << std::endl;
+        */
     }
 }

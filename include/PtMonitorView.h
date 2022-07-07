@@ -51,7 +51,7 @@ class PtMonitorView {
         /*
         * Data must be a vector of 4 elements
         */
-        void plotData(const DataType& data, const int nelem, const MeasureType graph, const int axis, const int tyre);
+        void plotData(const DataType data, const int nelem, const MeasureType graph, const int axis, const int tyre);
 
         void startRoutine(void) const;
 

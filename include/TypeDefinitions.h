@@ -23,6 +23,7 @@ class MessageType {
 
         MessageType();
         MessageType(uint32_t id, uint32_t temperature, uint32_t pressure, int time);
+        MessageType(const MessageType& other);
 };
 
 std::string toUnit(MeasureType measure);

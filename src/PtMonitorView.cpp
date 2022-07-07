@@ -210,6 +210,7 @@ PtMonitorView::PtMonitorView(void) {
         interface_labels_temperature[i] = new GtkWidget*[numberOfTyrePerAxis];
         interface_labels_pressure[i] = new GtkWidget*[numberOfTyrePerAxis];
     }
+    
     generateGrid(box_first_page, interface_labels_temperature, interface_labels_pressure);
 
 
@@ -266,6 +267,8 @@ PtMonitorView::PtMonitorView(void) {
     }
 
     // ------------------------
+    // SHOW MAIN WINDOW
+	gtk_widget_show_all(window);
 
 
 }
@@ -291,7 +294,7 @@ PtMonitorView::~PtMonitorView() {
         delete[] scale_pressure[i];
         delete[] series_pressure[i];
     }
-    
+
     delete[] interface_labels_temperature;
     delete[] interface_labels_pressure;
     delete[] view_temperature;
@@ -336,9 +339,6 @@ void PtMonitorView::setSwipeHandler(void (*callback)(gdouble v_x, gdouble v_y)) 
 
 void PtMonitorView::startRoutine(void) const {
 
-    // SHOW MAIN WINDOW
-	gtk_widget_show_all(window);
-
 	// CURSOR (TO DELETE ON TOUCH SCREEN) 
 	gdk_window_set_cursor(gtk_widget_get_window(window), gdk_cursor_new(GDK_ARROW));
 
@@ -359,7 +359,7 @@ int PtMonitorView::getNumberOfPages(void) {
     return NUMBER_OF_PAGES;
 }
 
-void PtMonitorView::plotData(const DataType& data, const int nelem, const MeasureType graph, const int axis, const int tyre) {
+void PtMonitorView::plotData(const DataType data, const int nelem, const MeasureType graph, const int axis, const int tyre) {
 
     SlopeScale* scale;
     SlopeItem* series;
@@ -404,5 +404,4 @@ void PtMonitorView::setMeasureValues(int value, MeasureType measure, const int a
     }
 
     gtk_label_set_label(GTK_LABEL(tyreLabel), (std::to_string(value) + toUnit(measure)).c_str());
-    
 }

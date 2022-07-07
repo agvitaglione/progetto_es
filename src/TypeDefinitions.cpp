@@ -21,3 +21,11 @@ MessageType::MessageType(uint32_t id, uint32_t temperature, uint32_t pressure, i
     this->pressure = pressure;
     this->time = time;
 }
+
+MessageType::MessageType(const MessageType& other) {
+    this->id = other.id;
+    this->temperature = other.temperature;
+    this->pressure = other.pressure;
+    this->time = other.time;
+}
+
