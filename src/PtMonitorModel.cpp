@@ -54,29 +54,47 @@ void PtMonitorModel::readDataFromModule() {
     
     struct can_frame frame;
     int nbytes;
+
+    uint32_t ids[] = {0xFF, 0xA1, 0xA0, 0x10};
+    uint32_t temperatures[] = {5, 10, 15, 20, 25, 30};
+    int count = 0;
+    int count_temp = 0;
     
 	while(stopThread == 0) {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::cout << "Messaggio" << std::endl;
 		
+        /*
     	nbytes = read(s, &frame, sizeof(struct can_frame));
 
 		if (nbytes < 0) {
 		        // perror("can raw socket read");
 		        continue;
 		}
-        
+        */
 		/* paranoid check ... */
+        /*
 		if (nbytes < sizeof(struct can_frame)) {
 		        // fprintf(stderr, "read: incomplete CAN frame\n");
 		        continue;
 		}
-
+		*/
 		/* do something with the received CAN frame */
 		uint32_t id (frame.can_id & (uint32_t)0x1FFFFFFF);
+        //uint32_t id = ids[count];
+        //count = (count + 1) % 4;
+        //std::cout << id << std::endl;
         uint32_t temperature (frame.data[1]); // °C
+        //uint32_t temperature = temperatures[count_temp] + 52;
+        //count_temp = (count_temp + 1) % 6;
         temperature = temperature - 52;
         uint32_t pressure (frame.data[2] + frame.data[3] & 0x1); // mBar
+        //uint32_t pressure = temperatures[count_temp];
         pressure = pressure * 40;
         int t = (int) time(NULL);
         queue.push(MessageType(id, temperature, pressure, t));
+        std::cout << "id: " << id << std::endl;
+        std::cout << "temperature: " << temperature << std::endl;
+        std::cout << "pressure: " << pressure << std::endl << std::endl;
     }
 }
