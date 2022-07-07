@@ -66,7 +66,6 @@ void PtMonitorControl::periodicGetData() {
         }
 
         // PLOT DATA
-        std::cout << "nelem: " << nelem << std::endl;
         view->plotData(dataTemperature[axis][tyre], nelem, TEMPERATURE, axis, tyre);
         view->plotData(dataPressure[axis][tyre], nelem, PRESSURE, axis, tyre);
 

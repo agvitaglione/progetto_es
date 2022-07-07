@@ -12,22 +12,25 @@ static int numberOfTyrePerAxis;
 // X AXIS FOR PLOT
 #define NLABEL 4
 static const SlopeSample slope_sampler_array[] = {
-    {-60, (char*) "60"},
-    {-40, (char*) "40"},
     {-20, (char*) "20"},
+    {-15, (char*) "15"},
+    {-10, (char*) "10"},
+    { -5, (char*) "5"},
     {0  , (char*) "0" },
 };
 
 //----------------------------------- CALLBACKS
 // SWIPE HANDLER
 void changePageHandler(GtkGestureSwipe *swipe, gdouble v_x, gdouble v_y) {
+    std::cout << "Inizio change page handler" << std::endl;
     PtMonitorView* view = PtMonitorView::getInstance();
     view->swipeHandler(v_x, v_y);
+    std::cout << "Fine change page handler" << std::endl;
 }
 
 // CONFIRM SHUTDOWN BUTTON HANDLER
 gboolean shutdownRequestHandler (GtkWidget *shutdown_button_box) {
-
+    std::cout << "Inizio shutdown handler" << std::endl;
 	PtMonitorView* view = PtMonitorView::getInstance();
 
 	int risultato = gtk_dialog_run(GTK_DIALOG(view->request_dialog));
@@ -39,6 +42,7 @@ gboolean shutdownRequestHandler (GtkWidget *shutdown_button_box) {
 		gtk_widget_hide(view->request_dialog);
 	}
 
+    std::cout << "Fine change page handler" << std::endl;
     return TRUE;
 }
 
