@@ -12,10 +12,8 @@ static int numberOfTyrePerAxis;
 // X AXIS FOR PLOT
 #define NLABEL 4
 static const SlopeSample slope_sampler_array[] = {
-    {-20, (char*) "20"},
-    {-15, (char*) "15"},
-    {-10, (char*) "10"},
-    { -5, (char*) "5"},
+    {-10, (char*) "20"},
+    {-5, (char*) "15"},
     {0  , (char*) "0" },
 };
 
@@ -371,7 +369,7 @@ void PtMonitorView::plotData(const DataType& data, const int nelem, const Measur
     slope_scale_remove_item_by_name(SLOPE_SCALE(scale), "prova");
     series = slope_xyseries_new_filled("prova", data.x, data.y, nelem, "b-");
     slope_scale_add_item(scale, series);
-    slope_xyscale_set_x_range(SLOPE_XYSCALE(scale), -20, 0);
+    slope_xyscale_set_x_range(SLOPE_XYSCALE(scale), -10, 0);
     slope_xyscale_set_y_range(SLOPE_XYSCALE(scale), ymin, ymax);
     slope_view_redraw(SLOPE_VIEW(view));
 }

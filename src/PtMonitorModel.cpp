@@ -13,7 +13,7 @@
 #include <unistd.h>
 #include "/usr/include/linux/can.h"
 
-DataPlotQueueConcurret PtMonitorModel::queue(MAX_QUEUE_SIZE);
+DataPlotQueueConcurret PtMonitorModel::queue(60);
 static int stopThread = 0;
 
 PtMonitorModel* PtMonitorModel::getInstance() {
@@ -61,24 +61,24 @@ void PtMonitorModel::readDataFromModule() {
     int count_temp = 0;
     
 	while(stopThread == 0) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        //std::this_thread::sleep_for(std::chrono::seconds(1));
         std::cout << "Messaggio" << std::endl;
 		
-        /*
+        
     	nbytes = read(s, &frame, sizeof(struct can_frame));
 
 		if (nbytes < 0) {
 		        // perror("can raw socket read");
 		        continue;
 		}
-        */
+        
 		/* paranoid check ... */
-        /*
+        
 		if (nbytes < sizeof(struct can_frame)) {
 		        // fprintf(stderr, "read: incomplete CAN frame\n");
 		        continue;
 		}
-		*/
+		
 		/* do something with the received CAN frame */
 		uint32_t id (frame.can_id & (uint32_t)0x1FFFFFFF);
         //uint32_t id = ids[count];
