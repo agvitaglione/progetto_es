@@ -281,8 +281,25 @@ PtMonitorView::~PtMonitorView() {
     g_object_unref(G_OBJECT(builder));
 
     // TODO: Distruggere tutti i puntatori allocati
+    for(int i = 0; i < numberOfAxis; i++) {
+        delete[] interface_labels_temperature[i];
+        delete[]interface_labels_pressure[i];
+        delete[] view_temperature[i];
+        delete[] scale_temperature[i];
+        delete[] series_temperature[i];
+        delete[] view_pressure[i];
+        delete[] scale_pressure[i];
+        delete[] series_pressure[i];
+    }
     
-
+    delete[] interface_labels_temperature;
+    delete[] interface_labels_pressure;
+    delete[] view_temperature;
+    delete[] scale_temperature; 
+    delete[] series_temperature; 
+    delete[] view_pressure;
+    delete[] scale_pressure;
+    delete[] series_pressure;
 }
 
 void PtMonitorView::setPage(const int page_number, const GtkStackTransitionType transition) {
