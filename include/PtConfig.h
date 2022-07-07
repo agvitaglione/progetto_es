@@ -27,8 +27,9 @@ class PtConfig {
 
         int getNumberOfAxis() const; 
         int getNumberOfTyrePerAxis() const; 
-        int getAxisFromId(const std::string id);
-        int getTyreFromId(const std::string id);
+        int getAxisFromId(const uint32_t id);
+        int getTyreFromId(const uint32_t id);
+        bool isValidId(const uint32_t id) const;
 
 
     protected:
@@ -45,7 +46,7 @@ class PtConfig {
         std::fstream file;
         int numberOfAxis;
         int numberOfTyrePerAxis;
-        std::map<std::string, TyrePosition> positions; 
+        std::map<uint32_t, TyrePosition> positions; 
 
 };
 

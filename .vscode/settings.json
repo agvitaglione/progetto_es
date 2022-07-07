@@ -55,6 +55,11 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "cinttypes": "cpp",
-        "mqueue.h": "c"
+        "mqueue.h": "c",
+        "bitset": "cpp",
+        "condition_variable": "cpp",
+        "cstring": "cpp",
+        "map": "cpp",
+        "mutex": "cpp"
     }
 }

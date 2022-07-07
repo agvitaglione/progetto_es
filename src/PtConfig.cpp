@@ -1,5 +1,5 @@
 #include "PtConfig.h"
-
+#include <sstream>
 
 
 PtConfig* PtConfig::getInstance() {
@@ -53,8 +53,14 @@ void PtConfig::readFile(const std::string fileName) {
             std::getline(file, line);
             position.axis = axis;
             position.tyre = tyre;
-            positions.insert(std::pair<std::string, TyrePosition>(line, position));
 
+            if(line != "NONE") {
+                uint32_t x;   
+                std::stringstream ss;
+                ss << std::hex << line ;
+                ss >> x;
+                positions.insert(std::pair<uint32_t, TyrePosition>(x, position));
+            }
         }
     }
 
@@ -83,10 +89,15 @@ int PtConfig::getNumberOfTyrePerAxis() const {
     return numberOfTyrePerAxis;
 }
 
-int PtConfig::getAxisFromId(const std::string id) {
+int PtConfig::getAxisFromId(const uint32_t id) {
     return positions[id].axis;
 }
 
-int PtConfig::getTyreFromId(const std::string id) {
+int PtConfig::getTyreFromId(const uint32_t id) {
     return positions[id].tyre;
+}
+
+bool PtConfig::isValidId(const uint32_t id) const {
+    if(positions.count(id) > 0) return true;
+    else return false;
 }

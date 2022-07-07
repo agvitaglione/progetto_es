@@ -45,8 +45,10 @@ void PtMonitorControl::periodicGetData() {
 
         while(model->getData(message) == false);
 
-        axis = config->getAxisFromId(std::to_string(message.id));
-        tyre = config->getTyreFromId(std::to_string(message.id));
+        if(!config->isValidId(message.id)) continue;    // if it is not a valid id, ignore the message
+
+        axis = config->getAxisFromId(message.id);
+        tyre = config->getTyreFromId(message.id);
         queue = &queues[axis][tyre];
         queue->push(message);
         
