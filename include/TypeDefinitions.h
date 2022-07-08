@@ -2,7 +2,7 @@
 #define __TYPEDEFINITIONS_H__
 #include <string>
 #include <iostream>
-#define MAX_QUEUE_SIZE 10
+#define MAX_QUEUE_SIZE 11
 
 // TYPE OF PLOTTABLE GRAPH (TEMPERATURE GRAPH OR PRESSURE GRAPH)
 typedef enum {TEMPERATURE, PRESSURE} MeasureType; 

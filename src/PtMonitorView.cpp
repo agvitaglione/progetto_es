@@ -2,6 +2,7 @@
 #include <string>
 #include "PtConfig.h"
 
+
 /*
 * TODO
 * Variabili da prendere da file
@@ -12,8 +13,8 @@ static int numberOfTyrePerAxis;
 // X AXIS FOR PLOT
 #define NLABEL 4
 static const SlopeSample slope_sampler_array[] = {
-    {-10, (char*) "20"},
-    {-5, (char*) "15"},
+    {-10, (char*) "10"},
+    {-5, (char*) "5"},
     {0  , (char*) "0" },
 };
 
@@ -59,7 +60,7 @@ void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, Gt
             gtk_grid_attach(GTK_GRID(grid), box, j, i, 1, 1);
 
 
-            std::string label_box_str = "ASSE " + std::to_string(i + 1);
+            std::string label_box_str = "AXIS " + std::to_string(i + 1);
             label_box_str += j == 0 ? " L" : " R";
             GtkWidget* label_box = gtk_label_new(label_box_str.c_str());
             gtk_widget_set_halign(label_box, GTK_ALIGN_START);
@@ -126,6 +127,9 @@ void generatePlotDiagram (
             // Title for the tyre
             std::string label_string = "Axis " + std::to_string(axis) + " Tyre " + std::to_string(tyre);
             GtkWidget* label = gtk_label_new(label_string.c_str());
+
+            
+
             gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 2, 1);
 
             // ------------ Generate Graph Temperature
@@ -368,10 +372,10 @@ int PtMonitorView::getNumberOfPages(void) {
     return NUMBER_OF_PAGES;
 }
 
-void PtMonitorView::plotData(const DataType data, const int nelem, const MeasureType graph, const int axis, const int tyre) {
+void PtMonitorView::plotData(const DataType& data, const int nelem, const MeasureType graph, const int axis, const int tyre) {
 
     SlopeScale* scale;
-    SlopeItem* series;
+    SlopeItem** series;
     GtkWidget* view;
     static std::string colors[] = {"b-", "r-", "y-", "g-"};
     double ymin;
@@ -379,27 +383,31 @@ void PtMonitorView::plotData(const DataType data, const int nelem, const Measure
 
     if(graph == TEMPERATURE) {
         scale = scale_temperature[axis][tyre];
-        series = series_temperature[axis][tyre];
+        series = &series_temperature[axis][tyre];
         view = view_temperature[axis][tyre];
         ymin = 0.0;
         ymax = 150.0;
     }
     else if(graph == PRESSURE) {
         scale = scale_pressure[axis][tyre];
-        series = series_pressure[axis][tyre];
+        series = &series_pressure[axis][tyre];
         view = view_pressure[axis][tyre];
         ymin = 0.0;
         ymax = 2000.0;
     }
-
+    
     gdk_threads_enter();
 
-    slope_scale_remove_item_by_name(SLOPE_SCALE(scale), "prova");
-    series = slope_xyseries_new_filled("prova", data.x, data.y, nelem, "b-");
-    slope_scale_add_item(scale, series);
-    slope_xyscale_set_x_range(SLOPE_XYSCALE(scale), -10, 0);
-    slope_xyscale_set_y_range(SLOPE_XYSCALE(scale), ymin, ymax);
-    slope_view_redraw(SLOPE_VIEW(view));
+    if(nelem == 1) {
+        *series = slope_xyseries_new_filled("Data", data.x, data.y, nelem, "b-");
+        slope_scale_add_item(scale, *series);
+        slope_xyscale_set_x_range(SLOPE_XYSCALE(scale), -10, 0);
+        slope_xyscale_set_y_range(SLOPE_XYSCALE(scale), ymin, ymax);
+    }
+    else {
+        slope_xyseries_set_data(SLOPE_XYSERIES(*series), data.x, data.y, nelem);
+        slope_view_redraw(SLOPE_VIEW(view));
+    }
 
     gdk_threads_leave();
 

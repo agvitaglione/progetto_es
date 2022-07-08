@@ -51,7 +51,7 @@ class PtMonitorView {
         /*
         * Data must be a vector of 4 elements
         */
-        void plotData(const DataType data, const int nelem, const MeasureType graph, const int axis, const int tyre);
+        void plotData(const DataType& data, const int nelem, const MeasureType graph, const int axis, const int tyre);
 
         void startRoutine(void) const;
 
@@ -84,23 +84,6 @@ class PtMonitorView {
         GtkGesture *swipe;
 
         // PLOT
-        /*
-        GtkWidget *box_temperature;
-        SlopeFigure *figure_temperature;
-        GtkWidget *view_temperature;
-        SlopeScale *scale_temperature;
-        SlopeItem *series_temperature;
-        SlopeItem *axis_temperature;
-        SlopeSampler *sampler_temperature;
-        GtkWidget *box_pressure;
-        SlopeFigure *figure_pressure;
-        GtkWidget *view_pressure;
-        SlopeScale *scale_pressure;
-        SlopeItem *series_pressure;
-        SlopeItem *axis_pressure;
-        SlopeSampler *sampler_pressure;
-        */
-
         GtkWidget *box_plot;
         GtkWidget ***view_temperature;
         SlopeScale ***scale_temperature;
