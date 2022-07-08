@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/include/gtk-3.0",
-                "/usr/include/glib-2.0"
+                "/usr/include/glib-2.0",
+                "/usr/local/include/"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

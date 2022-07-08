@@ -5,6 +5,7 @@
 #include <string>
 #include "TypeDefinitions.h"
 #include "DataPlotQueueConcurrent.h"
+#include "DataStore.h"
 #include <thread>
 
 
@@ -27,14 +28,19 @@ class PtMonitorModel {
         // ROUTINE TO TAKE DATA FROM USB2CAN MODULE
         static void readDataFromModule();
 
+        // SET DATASTORE
+        void setDataStore(std::string path);
+
 
     protected:
         PtMonitorModel();
 
     private:
         static DataPlotQueueConcurret queue;
-        std::thread *readDataFromModuleThread;
- 
+        std::thread *readDataFromModuleThread; 
+
+        // WRITE FILE LOG
+        static DataStore *dataStore;
 };
 
 #endif // __PTMONITORMODEL_H__

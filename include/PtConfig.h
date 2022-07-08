@@ -29,6 +29,7 @@ class PtConfig {
         int getNumberOfTyrePerAxis() const; 
         int getAxisFromId(const uint32_t id);
         int getTyreFromId(const uint32_t id);
+        std::string getLogPath() const;
         bool isValidId(const uint32_t id) const;
 
 
@@ -46,6 +47,7 @@ class PtConfig {
         std::fstream file;
         int numberOfAxis;
         int numberOfTyrePerAxis;
+        std::string logPath;
         std::map<uint32_t, TyrePosition> positions; 
 
 };

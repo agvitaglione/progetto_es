@@ -16,7 +16,12 @@ int main() {
     PtMonitorView *view = PtMonitorView::getInstance();
     PtMonitorModel *model = PtMonitorModel::getInstance();
     PtMonitorControl *control = PtMonitorControl::getInstance(view, model);
-    
+
+    // SET LOG
+    /*
+    if(ptconfig->getLogPath() != "") {
+        model->setDataStore(ptconfig->getLogPath());
+    }*/
 
     view->startRoutine();
 

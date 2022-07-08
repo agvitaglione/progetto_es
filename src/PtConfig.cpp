@@ -28,16 +28,20 @@ void PtConfig::readFile(const std::string fileName) {
 
     // TODO: check exception for error in configuration file
     
-    for(int i = 0; i < 2; i++) {
+    for(int i = 0; i < 3; i++) {
         std::getline(file, line, '=');
         
         if(line == "NUMBER_OF_AXIS") {
             std::getline(file, line);
             numberOfAxis = std::stoi(line);
         }
-        else if (line == "NUMBER_OF_TYRE_PER_AXIS") {
+        else if (line == "NUMBER_OF_TYRES_PER_AXIS") {
             std::getline(file, line);
             numberOfTyrePerAxis = std::stoi(line);
+        }
+        else if(line == "LOG_PATH") {
+            std::getline(file, line);
+            logPath = line;
         }
 
     }
@@ -75,7 +79,7 @@ void PtConfig::saveNewConfiguration(const int numberOfAxis, const int numberOfTy
     file.seekg(std::fstream::beg);
 
     file << "NUMBER_OF_AXIS=" << numberOfAxis << std::endl;
-    file << "NUMBER_OF_TYRE_PER_AXIS=" << numberOfTyrePerAxis << std::endl;
+    file << "NUMBER_OF_TYRES_PER_AXIS=" << numberOfTyrePerAxis << std::endl;
 
     for(int i = 0; i < numberOfAxis * numberOfTyrePerAxis; i++) {
             file << id[i] << std::endl;
@@ -96,6 +100,10 @@ int PtConfig::getAxisFromId(const uint32_t id) {
 
 int PtConfig::getTyreFromId(const uint32_t id) {
     return positions[id].tyre;
+}
+
+std::string PtConfig::getLogPath() const {
+    return logPath;
 }
 
 bool PtConfig::isValidId(const uint32_t id) const {
