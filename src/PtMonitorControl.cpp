@@ -39,10 +39,9 @@ void PtMonitorControl::periodicGetData() {
     int axis;
     int tyre;
 
-    while(stopThread == 0) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));   
+    while(stopThread == 0) {  
 
-        while(model->getData(message) == false) continue;
+        while(model->getData(message) == false);
 
         if(!config->isValidId(message.id)) continue;    // if it is not a valid id, ignore the message
 
@@ -65,10 +64,10 @@ void PtMonitorControl::periodicGetData() {
         }
 
         // PLOT DATA
-        /*
+        
         view->plotData(dataTemperature[axis][tyre], nelem, TEMPERATURE, axis, tyre);
         view->plotData(dataPressure[axis][tyre], nelem, PRESSURE, axis, tyre);
-        */
+        
         //SET LABELS
         view->setMeasureValues(message.temperature, TEMPERATURE, axis, tyre);
         view->setMeasureValues(message.pressure, PRESSURE, axis, tyre);

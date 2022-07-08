@@ -13,10 +13,10 @@ SRC := $(wildcard $(SRCDIR)/*.cpp)
 OBJ := $(SRC:$(SRCDIR)/%.cpp=$(BUILDDIR)/%.o)
 INCLUDE := $(wildcard $(INCLUDEDIR)/*.h)
 
-CFLAGS :=`pkg-config --cflags --libs gtk+-3.0` -rdynamic -std=c++17 -g
+CFLAGS :=`pkg-config --cflags --libs gtk+-3.0 glib-2.0 gthread-2.0` -rdynamic -std=c++17 -g 
 CFLAGS += $(addprefix -I, $(INCLUDEDIR))
 
-LIBS = -lslope -lm -lrt
+LIBS = -lslope -lm -lrt 
 
 all: directories $(TARGET)
 

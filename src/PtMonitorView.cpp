@@ -184,6 +184,11 @@ PtMonitorView* PtMonitorView::getInstance() {
 
 PtMonitorView::PtMonitorView(void) {
 
+    // Lock for thread safe
+    g_thread_init(NULL);
+    gdk_threads_init();
+    gdk_threads_enter();
+
     gtk_init(NULL, NULL);
 	
 	builder = gtk_builder_new_from_file(builder_file_name.c_str());
@@ -267,8 +272,6 @@ PtMonitorView::PtMonitorView(void) {
     }
 
     // ------------------------
-    // SHOW MAIN WINDOW
-	gtk_widget_show_all(window);
 
 
 }
@@ -339,11 +342,17 @@ void PtMonitorView::setSwipeHandler(void (*callback)(gdouble v_x, gdouble v_y)) 
 
 void PtMonitorView::startRoutine(void) const {
 
+    // SHOW MAIN WINDOW
+	gtk_widget_show_all(window);
+
 	// CURSOR (TO DELETE ON TOUCH SCREEN) 
 	gdk_window_set_cursor(gtk_widget_get_window(window), gdk_cursor_new(GDK_ARROW));
 
 	// START GTK MAIN ROUTINE
 	gtk_main();
+
+    // Unlock
+    gdk_threads_leave();
 }
 
 int PtMonitorView::getCurrentPageNumber(void) const {
@@ -383,12 +392,17 @@ void PtMonitorView::plotData(const DataType data, const int nelem, const Measure
         ymax = 2000.0;
     }
 
+    gdk_threads_enter();
+
     slope_scale_remove_item_by_name(SLOPE_SCALE(scale), "prova");
     series = slope_xyseries_new_filled("prova", data.x, data.y, nelem, "b-");
     slope_scale_add_item(scale, series);
     slope_xyscale_set_x_range(SLOPE_XYSCALE(scale), -10, 0);
     slope_xyscale_set_y_range(SLOPE_XYSCALE(scale), ymin, ymax);
     slope_view_redraw(SLOPE_VIEW(view));
+
+    gdk_threads_leave();
+
 }
 
 void PtMonitorView::setMeasureValues(int value, MeasureType measure, const int axis, const int tyre) {
@@ -403,5 +417,7 @@ void PtMonitorView::setMeasureValues(int value, MeasureType measure, const int a
         tyreLabel = interface_labels_pressure[axis][tyre];
     }
 
+    gdk_threads_enter();
     gtk_label_set_label(GTK_LABEL(tyreLabel), (std::to_string(value) + toUnit(measure)).c_str());
+    gdk_threads_leave();
 }
