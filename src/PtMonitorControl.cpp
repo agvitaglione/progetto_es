@@ -129,8 +129,7 @@ PtMonitorControl::~PtMonitorControl() {
 
 
 void PtMonitorControl::shutdownHandler(void) {
-    // TODO
-    //std::cout << "Chiudere!" << std::endl;
+    system("shutdown now");
 }
 
 void PtMonitorControl::swipeHandler(gdouble v_x, gdouble v_y) {
