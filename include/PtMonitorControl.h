@@ -24,6 +24,9 @@ class PtMonitorControl {
         static void shutdownHandler(void);
         static void swipeHandler(gdouble v_x, gdouble v_y);
 
+        // CONNECTION
+        void setConnection(std::string recIP, uint16_t recPort);
+
     protected:
         PtMonitorControl(PtMonitorView *view, PtMonitorModel *model);
 
@@ -40,7 +43,6 @@ class PtMonitorControl {
         static DataPlotQueue **queues;
 
         static void periodicGetData();
-
 };
 
 #endif // __PTMONITORCONTROL_H__

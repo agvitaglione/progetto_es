@@ -19,6 +19,7 @@ class RemoteConnection {
 
         void setConnection(std::string IP, uint16_t port);
         void write(std::string message);
+        bool isConnected() const;
 
     private:
 

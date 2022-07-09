@@ -126,6 +126,7 @@
                             <property name="label" translatable="yes">Temperature and Pressure plot</property>
                             <attributes>
                               <attribute name="scale" value="2"/>
+                              <attribute name="foreground" value="#1c1c7171d8d8"/>
                             </attributes>
                           </object>
                           <packing>

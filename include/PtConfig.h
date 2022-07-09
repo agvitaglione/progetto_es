@@ -32,6 +32,10 @@ class PtConfig {
         std::string getLogPath() const;
         bool isValidId(const uint32_t id) const;
 
+        //CONNECTION VARIABLES
+        std::string getRecIP() const;
+        uint16_t getRecPort() const;
+
 
     protected:
         PtConfig(void) {}
@@ -50,8 +54,10 @@ class PtConfig {
         std::string logPath;
         std::map<uint32_t, TyrePosition> positions; 
 
+        // CONNECTION VARIABLES
+        std::string recIP;
+        uint16_t recPort;
+
 };
-
-
 
 #endif // __PTCONFIG_H__

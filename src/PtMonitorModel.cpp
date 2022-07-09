@@ -68,7 +68,6 @@ void PtMonitorModel::readDataFromModule() {
     int nbytes;
 
     //FOR TEST
-    /*
     uint32_t ids[] = {0x28E311B,
     0x28E241E,
     0x28E2F1E,
@@ -83,10 +82,12 @@ void PtMonitorModel::readDataFromModule() {
     uint32_t temperatures[] = {5, 10, 15, 20, 25, 30};
     int count = 0;
     int count_temp = 0;
-    */
+    
 
 	while(stopThread == 0) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        
+        //std::this_thread::sleep_for(std::chrono::seconds(1));
+        
         
     	nbytes = read(s, &frame, sizeof(struct can_frame));
 
@@ -120,6 +121,5 @@ void PtMonitorModel::readDataFromModule() {
             log = "[" + std::to_string(t) + "] id-sensor: " + std::to_string(id) + " temperature: " + std::to_string(temperature) + " pressure: " + std::to_string(pressure);
             dataStore->write(log);
         }
-
     }
 }

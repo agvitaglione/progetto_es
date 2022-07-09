@@ -2,22 +2,33 @@
 #include <chrono>
 #include <thread>
 #include "PtConfig.h"
-
-// THREAD
-static std::thread *periodicThread;
-
-static int stopThread = 0;
-static int naxis;
-static int ntyre;
+#include "RemoteConnection.h"
 
 // MACRO
 #define SWIPE_RIGHT(v_x, v_y) (v_x >= PtMonitorControl::XACT && abs(v_y) < PtMonitorControl::YLIMIT) // CHECK IT'S A RIGHT SWIPE
 #define SWIPE_LEFT(v_x, v_y) (v_x <= -PtMonitorControl::XACT && abs(v_y) < PtMonitorControl::YLIMIT) // CHECK IT'S A LEFT SWIPE
 
+// REMOTE CONNECTION
+static RemoteConnection rc;
+
+// THREAD
+static std::thread *periodicThread;
+static int stopThread = 0;
+static int naxis;
+static int ntyre;
+
 // STATIC VARIABLES INITIALIZATION
 PtMonitorView *PtMonitorControl::view = nullptr;
 PtMonitorModel *PtMonitorControl::model = nullptr;
 DataPlotQueue **PtMonitorControl::queues = nullptr;
+
+
+// SENDDATA TO REMOTE COMPUTER
+void sendData(const MessageType& data) {
+    std::string message = "[" + std::to_string(data.time) + "] id-sensor: " + std::to_string(data.id) + " temperature: " 
+                        + std::to_string(data.temperature) + " pressure: " + std::to_string(data.pressure);
+    rc.write(message);
+}
 
 /* PERIODIC TASK
 * EACH X SECONDS, IT GETS DATA FROM MODEL
@@ -64,7 +75,6 @@ void PtMonitorControl::periodicGetData() {
         }
 
         // PLOT DATA
-        
         view->plotData(dataTemperature[axis][tyre], nelem, TEMPERATURE, axis, tyre);
         view->plotData(dataPressure[axis][tyre], nelem, PRESSURE, axis, tyre);
         
@@ -72,9 +82,11 @@ void PtMonitorControl::periodicGetData() {
         view->setMeasureValues(message.temperature, TEMPERATURE, axis, tyre);
         view->setMeasureValues(message.pressure, PRESSURE, axis, tyre);
         
-
+        // SEND DATA TO REMOTE
+        if(rc.isConnected()) {
+            sendData(message);
+        }
     }
-
 }
 
 // SINGLETON GET INSTANCE
@@ -98,6 +110,7 @@ PtMonitorControl::PtMonitorControl(PtMonitorView* _view, PtMonitorModel* _model)
         queues[i] = new DataPlotQueue[conf->getNumberOfTyrePerAxis()];
     }
 
+    // PERIODIC TASK WHICH GET DATA FROM MODEL QUEUE
     periodicThread = new std::thread(periodicGetData);
 }
 
@@ -139,3 +152,8 @@ void PtMonitorControl::swipeHandler(gdouble v_x, gdouble v_y) {
     view->setPage(nextPage, transition);
 
 }
+
+void PtMonitorControl::setConnection(std::string recIP, uint16_t recPort) {
+    rc.setConnection(recIP, recPort);
+}
+

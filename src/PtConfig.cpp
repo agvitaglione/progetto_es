@@ -28,7 +28,7 @@ void PtConfig::readFile(const std::string fileName) {
 
     // TODO: check exception for error in configuration file
     
-    for(int i = 0; i < 3; i++) {
+    for(int i = 0; i < 5; i++) {
         std::getline(file, line, '=');
         
         if(line == "NUMBER_OF_AXIS") {
@@ -42,6 +42,14 @@ void PtConfig::readFile(const std::string fileName) {
         else if(line == "LOG_PATH") {
             std::getline(file, line);
             logPath = line;
+        }
+        else if(line == "RECEIVER_IP") {
+            std::getline(file, line);
+            recIP = line;
+        }
+        else if(line == "RECEIVER_PORT") {
+            std::getline(file, line);
+            recPort = stoi(line);
         }
 
     }
@@ -109,4 +117,14 @@ std::string PtConfig::getLogPath() const {
 bool PtConfig::isValidId(const uint32_t id) const {
     if(positions.count(id) > 0) return true;
     else return false;
+}
+
+
+std::string PtConfig::getRecIP() const {
+    return recIP;
+}
+
+
+uint16_t PtConfig::getRecPort() const {
+    return recPort;
 }

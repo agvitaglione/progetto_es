@@ -18,7 +18,7 @@ CFLAGS += $(addprefix -I, $(INCLUDEDIR))
 
 LIBS = -lslope -lm -lrt 
 
-all: directories $(TARGET)
+all: directories $(TARGET) serverUDP
 
 $(TARGET): $(OBJ)
 	$(CC) -o $(TARGETDIR)/$@ $^ $(CFLAGS) $(LIBS)
@@ -26,6 +26,8 @@ $(TARGET): $(OBJ)
 $(OBJ): $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(INCLUDE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
+serverUDP: serverUDP.cpp
+	g++ -o $(TARGETDIR)/serverUDP serverUDP.cpp
 
 .PHONY: clean all directories print
 
@@ -36,6 +38,7 @@ directories:
 clean:
 	rm $(BUILDDIR)/*.o
 	rm $(TARGETDIR)/$(TARGET)
+	rm $(TARGETDIR)/serverUDP
 	rmdir bin
 	rmdir build
 
