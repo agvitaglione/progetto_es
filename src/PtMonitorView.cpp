@@ -483,6 +483,8 @@ void PtMonitorView::addUSB(std::string usb_name) {
     usb_list.insert(std::pair<std::string, GtkWidget*>(usb_name, button));
     gtk_button_set_label(GTK_BUTTON(button), usb_name.c_str());
     g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(_usbButtonHandler), NULL);
+
+    gtk_widget_show(button);
     
     gtk_box_pack_start(GTK_BOX(box_popoverusb), button, TRUE, TRUE, 0);
 
