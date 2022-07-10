@@ -34,9 +34,12 @@ class MessageType {
 
 std::string toUnit(MeasureType measure);
 
-/** 
-* exec TERMINAL COMMANDS 
-* RETURN STRING OUTPUT
-*/
+
+/**
+ * @brief Exec terminal commands
+ * 
+ * @return string output
+ */
 std::string exec(const char* cmd);
+
 #endif // __TYPEDEFINITIONS_H__
