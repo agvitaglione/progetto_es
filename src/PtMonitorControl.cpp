@@ -165,7 +165,9 @@ void PtMonitorControl::usbReloadHandler(void) {
     std::vector<USB_t> usbList = model->getUSBList();
     view->removeAllUSB();
 
+    std::cout << "Prova" << std::endl;
     for(auto usb : usbList) {
+        std::cout << usb.label << std::endl;
         view->addUSB(usb.label);
     }
 }

@@ -102,6 +102,8 @@ class PtMonitorView {
         GtkWidget *togglebottom3;
         GtkWidget *request_dialog;
         GtkWidget *shutdown_button_box;
+        GtkWidget *realease_button;
+        GtkWidget *reload_button;
         
         //LABELS
         GtkWidget ***interface_labels_temperature;

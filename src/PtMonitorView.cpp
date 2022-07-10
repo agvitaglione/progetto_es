@@ -47,14 +47,13 @@ void _usbButtonHandler(GtkWidget* button) {
 }
 
 gboolean _usbReloadButtonHandler (GtkWidget *eventBox) {
-    std::cout << "Eccomi" << std::endl;
     PtMonitorView* view = PtMonitorView::getInstance();
     view->usbReloadButtonHandler();
     return TRUE;
 }
 
 
-gboolean _usbRemoveButtonHandler (GtkWidget *eventBox) {
+gboolean _usbReleaseButtonHandler (GtkWidget *eventBox) {
     PtMonitorView* view = PtMonitorView::getInstance();
     view->usbReleaseButtonHandler();
     return TRUE;
@@ -228,6 +227,11 @@ PtMonitorView::PtMonitorView(void) {
     shutdown_button_box = GTK_WIDGET(gtk_builder_get_object(builder, "shutdown_button_box"));
     box_popoverusb = GTK_WIDGET(gtk_builder_get_object(builder, "boxPopoverUSB"));
 
+    realease_button = GTK_WIDGET(gtk_builder_get_object(builder, "releaseButton"));
+    reload_button = GTK_WIDGET(gtk_builder_get_object(builder, "reloadButton"));
+
+
+
     // ------------------------ GENERATE GRID
 
     // Get number of axis and tyre for each axis
@@ -256,9 +260,8 @@ PtMonitorView::PtMonitorView(void) {
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(shutdown_button_box, "button-release-event", G_CALLBACK(_shutdownRequestHandler), NULL);
 
-    g_signal_connect(shutdown_button_box, "button-release-event", G_CALLBACK(_usbButtonHandler), NULL);
-    g_signal_connect(shutdown_button_box, "button-release-event", G_CALLBACK(_usbReloadButtonHandler), NULL);
-    g_signal_connect(shutdown_button_box, "button-release-event", G_CALLBACK(_usbRemoveButtonHandler), NULL);
+    g_signal_connect(reload_button, "button-release-event", G_CALLBACK(_usbReloadButtonHandler), NULL);
+    g_signal_connect(realease_button, "button-release-event", G_CALLBACK(_usbReleaseButtonHandler), NULL);
 
     // ------------------------
     
@@ -475,7 +478,6 @@ void PtMonitorView::addUSB(std::string usb_name) {
         return;
     }
 
-    gdk_threads_enter();
 
     GtkWidget* button = gtk_button_new();
     usb_list.insert(std::pair<std::string, GtkWidget*>(usb_name, button));
@@ -484,7 +486,6 @@ void PtMonitorView::addUSB(std::string usb_name) {
     
     gtk_box_pack_start(GTK_BOX(box_popoverusb), button, TRUE, TRUE, 0);
 
-    gdk_threads_leave();
 }
 
 void PtMonitorView::removeUSB(std::string usb_name) {
@@ -494,19 +495,15 @@ void PtMonitorView::removeUSB(std::string usb_name) {
         return;
     }
 
-    gdk_threads_enter();
 
     GtkWidget* button = usb_list[usb_name];
     usb_list.erase(usb_name);
     gtk_container_remove(GTK_CONTAINER(box_popoverusb), button);
     gtk_widget_destroy(button);
 
-    gdk_threads_leave();
 }
 
 void PtMonitorView::removeAllUSB() {
-
-    gdk_threads_enter();
 
     for(auto usb : usb_list) {
 
@@ -516,7 +513,6 @@ void PtMonitorView::removeAllUSB() {
 
     }
 
-    gdk_threads_leave();
 
     usb_list.clear();
 }

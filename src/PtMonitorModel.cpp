@@ -180,6 +180,7 @@ std::vector<USB_t> PtMonitorModel::getUSBList() const {
 		}
 	}
 
+    
     return usbList;
 }
 
