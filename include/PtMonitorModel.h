@@ -7,6 +7,7 @@
 #include "DataPlotQueueConcurrent.h"
 #include "DataStore.h"
 #include <thread>
+#include <vector>
 
 
 class PtMonitorModel {
@@ -41,6 +42,10 @@ class PtMonitorModel {
 
         // WRITE FILE LOG
         static DataStore *dataStore;
+
+
+        //---------------------------- USB FUNCTIONS
+        std::vector<USB_t> getUSBList() const;
 };
 
 #endif // __PTMONITORMODEL_H__

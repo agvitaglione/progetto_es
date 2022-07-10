@@ -17,6 +17,7 @@ DataPlotQueueConcurret PtMonitorModel::queue(60);
 DataStore* PtMonitorModel::dataStore = nullptr;
 static int stopThread = 0;
 
+
 PtMonitorModel* PtMonitorModel::getInstance() {
     static PtMonitorModel model;
     return &model;
@@ -122,4 +123,39 @@ void PtMonitorModel::readDataFromModule() {
             dataStore->write(log);
         }
     }
+}
+
+std::vector<USB_t> PtMonitorModel::getUSBList() const {
+
+	std::vector<USB_t> usbList;
+	std::vector<std::string> strList;
+	std::string result = exec("blkid -t TYPE=vfat");
+	result += exec("blkid -t TYPE=ext4");
+	
+	size_t pos = 0;
+	std::string token;
+	while ((pos = result.find("\n")) != std::string::npos) {
+		strList.push_back(result.substr(0, pos));
+		result.erase(0, pos + 1);
+	}	
+
+	std::string toFind = ": LABEL=";
+	size_t firstIndex, lastIndex;
+	std::string path;
+	USB_t usb;
+	for(auto elem : strList) {
+		firstIndex = elem.find(toFind);
+
+		if(firstIndex != std::string::npos) {
+
+
+			firstIndex +=  toFind.length() + 1;
+			lastIndex = elem.find('\"', firstIndex);
+			usb.label = elem.substr(firstIndex, lastIndex - firstIndex);
+			usb.path = elem.substr(0, elem.find(":"));
+			usbList.push_back(usb);
+		}
+	}
+
+    return usbList;
 }

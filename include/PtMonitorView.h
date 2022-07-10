@@ -100,6 +100,7 @@ class PtMonitorView {
         void (*swipeHandler)(gdouble v_x, gdouble v_y);
 
          // --------------------------- 
+
 };
 
 #endif //__PTMONITORVIEW_H__

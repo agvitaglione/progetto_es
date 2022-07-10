@@ -377,7 +377,6 @@ void PtMonitorView::plotData(const DataType& data, const int nelem, const Measur
     SlopeScale* scale;
     SlopeItem** series;
     GtkWidget* view;
-    static std::string colors[] = {"b-", "r-", "y-", "g-"};
     double ymin;
     double ymax;
 
@@ -385,15 +384,15 @@ void PtMonitorView::plotData(const DataType& data, const int nelem, const Measur
         scale = scale_temperature[axis][tyre];
         series = &series_temperature[axis][tyre];
         view = view_temperature[axis][tyre];
-        ymin = 0.0;
-        ymax = 150.0;
+        ymin = 0;
+        ymax = 150;
     }
     else if(graph == PRESSURE) {
         scale = scale_pressure[axis][tyre];
         series = &series_pressure[axis][tyre];
         view = view_pressure[axis][tyre];
-        ymin = 0.0;
-        ymax = 2000.0;
+        ymin = 0;
+        ymax = 2000;
     }
     
     gdk_threads_enter();

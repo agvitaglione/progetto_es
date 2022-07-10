@@ -39,9 +39,9 @@ void PtConfig::readFile(const std::string fileName) {
             std::getline(file, line);
             numberOfTyrePerAxis = std::stoi(line);
         }
-        else if(line == "LOG_PATH") {
+        else if(line == "USB_LABEL") {
             std::getline(file, line);
-            logPath = line;
+            usbLabel = line;
         }
         else if(line == "RECEIVER_IP") {
             std::getline(file, line);
@@ -110,8 +110,8 @@ int PtConfig::getTyreFromId(const uint32_t id) {
     return positions[id].tyre;
 }
 
-std::string PtConfig::getLogPath() const {
-    return logPath;
+std::string PtConfig::getUsbLabel() const {
+    return usbLabel;
 }
 
 bool PtConfig::isValidId(const uint32_t id) const {

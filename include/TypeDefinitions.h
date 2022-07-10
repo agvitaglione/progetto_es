@@ -2,6 +2,7 @@
 #define __TYPEDEFINITIONS_H__
 #include <string>
 #include <iostream>
+#include <memory>
 #define MAX_QUEUE_SIZE 11
 
 // TYPE OF PLOTTABLE GRAPH (TEMPERATURE GRAPH OR PRESSURE GRAPH)
@@ -12,6 +13,11 @@ typedef struct {
     double x[MAX_QUEUE_SIZE];
     double y[MAX_QUEUE_SIZE];
 } DataType;
+
+typedef struct {
+	std::string path;
+	std::string label;
+} USB_t;
 
 class MessageType {
 
@@ -27,4 +33,10 @@ class MessageType {
 };
 
 std::string toUnit(MeasureType measure);
+
+/** 
+* exec TERMINAL COMMANDS 
+* RETURN STRING OUTPUT
+*/
+std::string exec(const char* cmd);
 #endif // __TYPEDEFINITIONS_H__

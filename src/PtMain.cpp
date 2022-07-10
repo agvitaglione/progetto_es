@@ -15,10 +15,6 @@ int main() {
     PtMonitorModel *model = PtMonitorModel::getInstance();
     PtMonitorControl *control = PtMonitorControl::getInstance(view, model);
     
-    // SET LOG
-    if(ptconfig->getLogPath() != "") {
-        model->setDataStore(ptconfig->getLogPath());
-    }
     
     if(ptconfig->getRecIP() != "") {
         control->setConnection(ptconfig->getRecIP(), ptconfig->getRecPort());

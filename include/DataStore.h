@@ -7,10 +7,10 @@
 class DataStore {
 
     public:
-        DataStore(std::string path);
+        DataStore(std::string usbLabel);
         ~DataStore();
         void write(std::string line);
-        void setPath(std::string path);
+        void setUsbLabel(std::string usbLabel);
 
     private:
         std::fstream file;
