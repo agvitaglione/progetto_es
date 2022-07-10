@@ -191,7 +191,7 @@ void generatePlotDiagram (
             SlopeItem *axis_pressure = slope_xyscale_get_axis(SLOPE_XYSCALE(_scale_pressure), SLOPE_XYSCALE_AXIS_BOTTOM);
             SlopeSampler *sampler_pressure = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis_pressure));
             slope_sampler_set_samples(sampler_pressure, slope_sampler_array, NLABEL);
-            slope_xyscale_set_x_range(SLOPE_XYSCALE(_scale_pressure), -60, 0);
+            slope_xyscale_set_x_range(SLOPE_XYSCALE(_scale_pressure), -10, 0);
             g_signal_handlers_disconnect_by_data(_view_pressure, GINT_TO_POINTER(SLOPE_MOUSE_MOVE)); // REMOVE DIAGRAM MOVEMENT ON SWIPE
 
             //------------
