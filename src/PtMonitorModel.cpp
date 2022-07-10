@@ -42,8 +42,8 @@ bool PtMonitorModel::getData(MessageType& message)  {
     return queue.pop(message);
 }
 
-void PtMonitorModel::setDataStore(std::string path) {
-    dataStore = new DataStore(path);
+void PtMonitorModel::setDataStore(std::string usbLabel) {
+    dataStore = new DataStore(usbLabel)
 }
 
 void PtMonitorModel::readDataFromModule() {
@@ -158,4 +158,17 @@ std::vector<USB_t> PtMonitorModel::getUSBList() const {
 	}
 
     return usbList;
+}
+
+bool mountUSB(USB_t usb) {
+    std::string username = exec("echo $USERNAME");
+    std::string destPath = "/home/" + username + "/" + usb.label + "/ptmonitorLog.txt";
+    std::string result = exec("mount " + usb.path + " " + destPath);
+
+    if(result == "") {
+        return true;
+    }
+    else {
+        return false;
+    }
 }

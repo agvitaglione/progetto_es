@@ -33,3 +33,11 @@ void DataStore::write(std::string line) {
     }
     mutex.unlock();
 }
+
+std::vector<USB_t> DataStore::getUSBList() const {
+
+}
+
+void DataStore::mountUSB(USB_t usb) {
+
+}
