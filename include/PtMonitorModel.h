@@ -28,15 +28,34 @@ class PtMonitorModel {
         // ROUTINE TO TAKE DATA FROM USB2CAN MODULE
         static void readDataFromModule();
 
-        /**
-         * @brief Set the DataStore 
-         * 
-         * @param usbLabel Label associated to the USB storage
-         */
-        void setDataStore(std::string usbLabel);
 
         //---------------------------- USB FUNCTIONS
-        
+
+        /**
+         * @brief Set the DataStore. Create a dataStore which can be used to write into an USB storage.
+         * The path will be /home/{USERNAME}/{usbLabel}/ptmonitorLog.txt
+         * 
+         * @param usbLabel Label associated to the USB storage
+         * 
+         * @return true The DataStore has been set
+         * @return false Error during the operation. DataStore is not set
+         */
+        bool setDataStore(std::string usbLabel);
+
+        /**
+         * @brief Check if the DataStore has been set
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool isDataStoreSet() const;
+
+        /**
+         * @brief Delete DataStore. It disables the logging activity.
+         * 
+         */
+        void deleteDataStore();
+
         /**
          * @brief Get a list of currently plugged in data storages .
          * 
@@ -49,7 +68,8 @@ class PtMonitorModel {
          * 
          * @param usb USB_t usb to be mounted
          * 
-         * @return bool true if the operation succeded
+         * @return true if the operation succeded
+         * @return false Error during the operation ha occured.
          */
         bool mountUSB(USB_t usb);
 

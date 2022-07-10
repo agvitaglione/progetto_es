@@ -42,8 +42,31 @@ bool PtMonitorModel::getData(MessageType& message)  {
     return queue.pop(message);
 }
 
-void PtMonitorModel::setDataStore(std::string usbLabel) {
+bool PtMonitorModel::setDataStore(std::string usbLabel) {
+
+    if(dataStore != nullptr) {
+        delete dataStore;
+    }
+
     dataStore = new DataStore(usbLabel);
+
+    if(!dataStore->isOpen()) {
+        delete dataStore;
+        dataStore = nullptr;
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool PtMonitorModel::isDataStoreSet() const {
+    if(dataStore != nullptr && dataStore->isOpen()) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 void PtMonitorModel::readDataFromModule() {
@@ -118,7 +141,7 @@ void PtMonitorModel::readDataFromModule() {
         queue.push(MessageType(id, temperature, pressure, t));
 
         // WRITE LOG FILE
-        if(dataStore != nullptr) {
+        if(dataStore != nullptr && dataStore->isOpen()) {
             log = "[" + std::to_string(t) + "] id-sensor: " + std::to_string(id) + " temperature: " + std::to_string(temperature) + " pressure: " + std::to_string(pressure);
             dataStore->write(log);
         }
@@ -171,5 +194,11 @@ bool mountUSB(USB_t usb) {
     }
     else {
         return false;
+    }
+}
+
+void PtMonitorModel::deleteDataStore() {
+    if(dataStore != nullptr) {
+        delete dataStore;
     }
 }

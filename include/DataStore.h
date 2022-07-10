@@ -39,6 +39,14 @@ class DataStore {
          */
         void setUsbLabel(std::string usbLabel);
 
+        /**
+         * @brief Check if /home/{USERNAME}/{usbLabel}/ptmonitorLog.txt is opened. 
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool isOpen() const;
+
     private:
         std::fstream file;
         std::mutex mutex;

@@ -4,7 +4,12 @@
 DataStore::DataStore(std::string usbLabel){
     std::string username = exec("echo $USERNAME");
     std::string path = "/home/" + username + "/" + usbLabel + "/ptmonitorLog.txt";
-    file.open(path, std::fstream::out | std::fstream::app);
+
+    try {
+        file.open(path, std::fstream::out | std::fstream::app);
+    } catch(...) {
+        // NOTHING TO DO. THE FILE IS NOT OPENED
+    }
 }
 
 DataStore::~DataStore() {
@@ -32,4 +37,8 @@ void DataStore::write(std::string line) {
         file << line << std::endl;
     }
     mutex.unlock();
+}
+
+bool DataStore::isOpen() const {
+    return file.is_open();
 }
