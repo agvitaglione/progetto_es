@@ -16,7 +16,7 @@
             <property name="can-focus">False</property>
             <property name="column-homogeneous">True</property>
             <child>
-              <object class="GtkEventBox">
+              <object class="GtkEventBox" id="releaseButton">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
