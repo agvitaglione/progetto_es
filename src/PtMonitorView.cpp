@@ -170,7 +170,7 @@ void generatePlotDiagram (
             SlopeItem *axis_temperature = slope_xyscale_get_axis(SLOPE_XYSCALE(_scale_temperature), SLOPE_XYSCALE_AXIS_BOTTOM);
             SlopeSampler *sampler_temperature = slope_xyaxis_get_sampler(SLOPE_XYAXIS(axis_temperature));
             slope_sampler_set_samples(sampler_temperature, slope_sampler_array, NLABEL);
-            slope_xyscale_set_x_range(SLOPE_XYSCALE(_scale_temperature), -60, 0);
+            slope_xyscale_set_x_range(SLOPE_XYSCALE(_scale_temperature), -10, 0);
             g_signal_handlers_disconnect_by_data(_view_temperature, GINT_TO_POINTER(SLOPE_MOUSE_MOVE)); // REMOVE DIAGRAM MOVEMENT ON SWIPE
 
             //------------
@@ -426,15 +426,15 @@ void PtMonitorView::plotData(const DataType& data, const int nelem, const Measur
         scale = scale_temperature[axis][tyre];
         series = &series_temperature[axis][tyre];
         view = view_temperature[axis][tyre];
-        ymin = 0;
-        ymax = 150;
+        ymin = 0.0;
+        ymax = 150.0;
     }
     else if(graph == PRESSURE) {
         scale = scale_pressure[axis][tyre];
         series = &series_pressure[axis][tyre];
         view = view_pressure[axis][tyre];
-        ymin = 0;
-        ymax = 2000;
+        ymin = 0.0;
+        ymax = 2000.0;
     }
     
     gdk_threads_enter();
