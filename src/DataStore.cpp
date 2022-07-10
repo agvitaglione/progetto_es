@@ -1,9 +1,9 @@
 #include "DataStore.h"
 #include "TypeDefinitions.h"
+#include <unistd.h>
 
 DataStore::DataStore(std::string usbLabel){
-    std::string username = exec("echo $USERNAME");
-    std::string path = "/home/" + username + "/" + usbLabel + "/ptmonitorLog.txt";
+    std::string path = "/home/" + usbLabel + "/ptmonitorLog.txt";
 
     try {
         file.open(path, std::fstream::out | std::fstream::app);
@@ -18,10 +18,20 @@ DataStore::~DataStore() {
     }
 }
 
+void DataStore::closeFile() {
+
+    try {
+        if(file.is_open()) {
+            file.close();
+        }
+    } catch(...) {
+        // NOTHING TO DO
+    }
+}
+
 void DataStore::setUsbLabel(std::string usbLabel) {
 
-    std::string username = exec("echo $USERNAME");
-    std::string path = "/home/" + username + "/" + usbLabel + "/ptmonitorLog.txt";
+    std::string path = "/home/"  + usbLabel + "/ptmonitorLog.txt";
 
     mutex.lock();
     if(file.is_open()) {
@@ -33,12 +43,23 @@ void DataStore::setUsbLabel(std::string usbLabel) {
 
 void DataStore::write(std::string line) {
     mutex.lock();
-    if(file.is_open()) {
-        file << line << std::endl;
+    try{
+        if(file.is_open()) {
+            file << line << std::endl;
+        }
+    }
+    catch(...) {
+        // NOTHING TO DO: ERROR IN WRITING LOG FILE
     }
     mutex.unlock();
 }
 
 bool DataStore::isOpen() const {
-    return file.is_open();
+
+    try {
+        return file.is_open();
+    }
+    catch(...) {
+        return false;
+    }
 }

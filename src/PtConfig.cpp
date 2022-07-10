@@ -28,7 +28,7 @@ void PtConfig::readFile(const std::string fileName) {
 
     // TODO: check exception for error in configuration file
     
-    for(int i = 0; i < 5; i++) {
+    for(int i = 0; i < 4; i++) {
         std::getline(file, line, '=');
         
         if(line == "NUMBER_OF_AXIS") {
@@ -38,10 +38,6 @@ void PtConfig::readFile(const std::string fileName) {
         else if (line == "NUMBER_OF_TYRES_PER_AXIS") {
             std::getline(file, line);
             numberOfTyrePerAxis = std::stoi(line);
-        }
-        else if(line == "USB_LABEL") {
-            std::getline(file, line);
-            usbLabel = line;
         }
         else if(line == "RECEIVER_IP") {
             std::getline(file, line);
@@ -108,10 +104,6 @@ int PtConfig::getAxisFromId(const uint32_t id) {
 
 int PtConfig::getTyreFromId(const uint32_t id) {
     return positions[id].tyre;
-}
-
-std::string PtConfig::getUsbLabel() const {
-    return usbLabel;
 }
 
 bool PtConfig::isValidId(const uint32_t id) const {

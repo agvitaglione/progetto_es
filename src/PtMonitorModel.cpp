@@ -14,7 +14,7 @@
 #include "/usr/include/linux/can.h"
 
 DataPlotQueueConcurret PtMonitorModel::queue(60);
-DataStore* PtMonitorModel::dataStore = nullptr;
+DataStore PtMonitorModel::dataStore("");
 static int stopThread = 0;
 
 
@@ -32,36 +32,19 @@ PtMonitorModel::~PtMonitorModel() {
     stopThread = 1;
     readDataFromModuleThread->join();
     delete readDataFromModuleThread;
-
-    if(dataStore != nullptr) {
-        delete dataStore;
-    }
 }
 
 bool PtMonitorModel::getData(MessageType& message)  {
     return queue.pop(message);
 }
 
-bool PtMonitorModel::setDataStore(std::string usbLabel) {
+void PtMonitorModel::setDataStore(std::string usbLabel) {
 
-    if(dataStore != nullptr) {
-        delete dataStore;
-    }
-
-    dataStore = new DataStore(usbLabel);
-
-    if(!dataStore->isOpen()) {
-        delete dataStore;
-        dataStore = nullptr;
-        return false;
-    }
-    else {
-        return true;
-    }
+    dataStore.setUsbLabel(usbLabel);
 }
 
 bool PtMonitorModel::isDataStoreSet() const {
-    if(dataStore != nullptr && dataStore->isOpen()) {
+    if(dataStore.isOpen()) {
         return true;
     }
     else {
@@ -141,9 +124,9 @@ void PtMonitorModel::readDataFromModule() {
         queue.push(MessageType(id, temperature, pressure, t));
 
         // WRITE LOG FILE
-        if(dataStore != nullptr && dataStore->isOpen()) {
+        if(dataStore.isOpen()) {
             log = "[" + std::to_string(t) + "] id-sensor: " + std::to_string(id) + " temperature: " + std::to_string(temperature) + " pressure: " + std::to_string(pressure);
-            dataStore->write(log);
+            dataStore.write(log);
         }
     }
 }
@@ -184,10 +167,15 @@ std::vector<USB_t> PtMonitorModel::getUSBList() const {
     return usbList;
 }
 
-bool mountUSB(USB_t usb) {
-    std::string username = exec("echo $USERNAME");
-    std::string destPath = "/home/" + username + "/" + usb.label + "/ptmonitorLog.txt";
-    std::string cmd = "mount " + usb.path + " " + destPath;
+bool PtMonitorModel::mountUSB(USB_t usb) {
+    std::string cmd = "mkdir -p /home/" + usb.label;
+    system(cmd.c_str());
+
+    cmd = "umount -l " + usb.path;
+    system(cmd.c_str());
+
+    std::string destPath = "/home/" + usb.label;
+    cmd = "mount " + usb.path + " " + destPath;
     std::string result = exec(cmd.c_str());
 
     if(result == "") {
@@ -199,7 +187,5 @@ bool mountUSB(USB_t usb) {
 }
 
 void PtMonitorModel::deleteDataStore() {
-    if(dataStore != nullptr) {
-        delete dataStore;
-    }
+    dataStore.setUsbLabel("");
 }

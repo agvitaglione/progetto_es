@@ -165,20 +165,27 @@ void PtMonitorControl::usbReloadHandler(void) {
     std::vector<USB_t> usbList = model->getUSBList();
     view->removeAllUSB();
 
-    std::cout << "Prova" << std::endl;
     for(auto usb : usbList) {
-        std::cout << usb.label << std::endl;
         view->addUSB(usb.label);
     }
 }
 
 
 void PtMonitorControl::usbReleaseHandler(void) {
-
-
+    model->deleteDataStore();
 }
 
 
 void PtMonitorControl::usbHandler(std::string usbLabel) {
 
+    std::vector<USB_t> vector = model->getUSBList();
+
+    for(auto usb : vector) {
+        if(usb.label == usbLabel) {
+            model->mountUSB(usb);
+            break;
+        }
+    }
+
+    model->setDataStore(usbLabel);
 }

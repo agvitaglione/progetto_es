@@ -29,7 +29,6 @@ class PtConfig {
         int getNumberOfTyrePerAxis() const; 
         int getAxisFromId(const uint32_t id);
         int getTyreFromId(const uint32_t id);
-        std::string getUsbLabel() const;
         bool isValidId(const uint32_t id) const;
 
         //CONNECTION VARIABLES
@@ -51,7 +50,6 @@ class PtConfig {
         std::fstream file;
         int numberOfAxis;
         int numberOfTyrePerAxis;
-        std::string usbLabel;
         std::map<uint32_t, TyrePosition> positions; 
 
         // CONNECTION VARIABLES

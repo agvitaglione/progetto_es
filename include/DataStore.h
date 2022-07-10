@@ -9,7 +9,7 @@ class DataStore {
     public:
         /**
          * @brief Open log file setting the path where the log file will be saved. 
-         *  The path will be: /home/{USERNAME}/{usbLabel}/ptmonitorLog.txt 
+         *  The path will be: /home/{usbLabel}/ptmonitorLog.txt 
          *  The usb must have been mounted
          * 
          * @param usbLabel Label associated to USB storage
@@ -17,7 +17,7 @@ class DataStore {
         DataStore(std::string usbLabel);
 
         /**
-         * @brief Close /home/{USERNAME}/{usbLabel}/ptmonitorLog.txt if it's opened
+         * @brief Close /home/{usbLabel}/ptmonitorLog.txt if it's opened
          * 
          */
         ~DataStore();
@@ -31,7 +31,7 @@ class DataStore {
 
         /**
          * @brief Set the path where the log file will be saved and open ptmonitorLog.txt file
-         *  The path will be: /home/{USERNAME}/{usbLabel}/ptmonitorLog.txt 
+         *  The path will be: /home/{usbLabel}/ptmonitorLog.txt 
          * 
          *  The usb must have been mounted
          * 
@@ -40,12 +40,19 @@ class DataStore {
         void setUsbLabel(std::string usbLabel);
 
         /**
-         * @brief Check if /home/{USERNAME}/{usbLabel}/ptmonitorLog.txt is opened. 
+         * @brief Check if /home/{usbLabel}/ptmonitorLog.txt is opened. 
          * 
          * @return true 
          * @return false 
          */
         bool isOpen() const;
+
+        /**
+         * @brief Close the file.
+         *  You don't have to call closeFile before destroying the object.
+         * 
+         */
+        void closeFile();
 
     private:
         std::fstream file;

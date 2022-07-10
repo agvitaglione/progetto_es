@@ -33,14 +33,11 @@ class PtMonitorModel {
 
         /**
          * @brief Set the DataStore. Create a dataStore which can be used to write into an USB storage.
-         * The path will be /home/{USERNAME}/{usbLabel}/ptmonitorLog.txt
+         * The path will be /home/{usbLabel}/ptmonitorLog.txt
          * 
          * @param usbLabel Label associated to the USB storage
-         * 
-         * @return true The DataStore has been set
-         * @return false Error during the operation. DataStore is not set
          */
-        bool setDataStore(std::string usbLabel);
+        void setDataStore(std::string usbLabel);
 
         /**
          * @brief Check if the DataStore has been set
@@ -64,7 +61,7 @@ class PtMonitorModel {
         std::vector<USB_t> getUSBList() const;
 
         /**
-         * @brief Moun the USB to /home/{USERNAME}/{USB_LABEL}
+         * @brief Moun the USB to /home/{USB_LABEL}
          * 
          * @param usb USB_t usb to be mounted
          * 
@@ -81,7 +78,7 @@ class PtMonitorModel {
         std::thread *readDataFromModuleThread; 
 
         // WRITE FILE LOG
-        static DataStore *dataStore;
+        static DataStore dataStore;
 
 };
 

@@ -11,8 +11,8 @@ static int numberOfAxis;
 static int numberOfTyrePerAxis;
 
 // X AXIS FOR PLOT
-#define NLABEL 4
-static const SlopeSample slope_sampler_array[] = {
+#define NLABEL 3
+static const SlopeSample slope_sampler_array[NLABEL] = {
     {-10, (char*) "10"},
     {-5, (char*) "5"},
     {0  , (char*) "0" },
@@ -511,8 +511,6 @@ void PtMonitorView::removeAllUSB() {
 
         GtkWidget* button = usb.second;
         gtk_container_remove(GTK_CONTAINER(box_popoverusb), button);
-        gtk_widget_destroy(button);
-
     }
 
 
