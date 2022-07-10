@@ -23,6 +23,9 @@ class PtMonitorControl {
         // CALLBACK FUNCTIONS
         static void shutdownHandler(void);
         static void swipeHandler(gdouble v_x, gdouble v_y);
+        static void usbReloadHandler(void);
+        static void usbReleaseHandler(void);
+        static void usbHandler(std::string usbLabel);
 
         // CONNECTION
         void setConnection(std::string recIP, uint16_t recPort);

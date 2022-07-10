@@ -41,21 +41,23 @@ gboolean _shutdownRequestHandler (GtkWidget *shutdown_button_box) {
     return TRUE;
 }
 
-void _usbButtonHandler(GtkWidget* button, gpointer data) {
+void _usbButtonHandler(GtkWidget* button) {
     PtMonitorView* view = PtMonitorView::getInstance();
     view->usbButtonHandler(std::string(gtk_button_get_label(GTK_BUTTON(button))));
 }
 
-gboolean _usbReloadButtonHandler (GtkWidget *eventBox, gpointer user_data) {
+gboolean _usbReloadButtonHandler (GtkWidget *eventBox) {
+    std::cout << "Eccomi" << std::endl;
     PtMonitorView* view = PtMonitorView::getInstance();
     view->usbReloadButtonHandler();
-    return true;
+    return TRUE;
 }
 
-gboolean _usbRemoveButtonHandler (GtkWidget *eventBox, gpointer user_data) {
+
+gboolean _usbRemoveButtonHandler (GtkWidget *eventBox) {
     PtMonitorView* view = PtMonitorView::getInstance();
     view->usbReleaseButtonHandler();
-    return true;
+    return TRUE;
 }
 
 //-----------------------------------
@@ -253,6 +255,10 @@ PtMonitorView::PtMonitorView(void) {
 
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(shutdown_button_box, "button-release-event", G_CALLBACK(_shutdownRequestHandler), NULL);
+
+    g_signal_connect(shutdown_button_box, "button-release-event", G_CALLBACK(_usbButtonHandler), NULL);
+    g_signal_connect(shutdown_button_box, "button-release-event", G_CALLBACK(_usbReloadButtonHandler), NULL);
+    g_signal_connect(shutdown_button_box, "button-release-event", G_CALLBACK(_usbRemoveButtonHandler), NULL);
 
     // ------------------------
     

@@ -99,8 +99,13 @@ PtMonitorControl* PtMonitorControl::getInstance(PtMonitorView* view, PtMonitorMo
 PtMonitorControl::PtMonitorControl(PtMonitorView* _view, PtMonitorModel* _model) {
     PtMonitorControl::view = _view;
     PtMonitorControl::model = _model;
+
+    // SET HANDLER
     this->view->setShoutdownHandler(&PtMonitorControl::shutdownHandler);
     this->view->setSwipeHandler(&PtMonitorControl::swipeHandler);
+    this->view->setUsbButtonHandler(&PtMonitorControl::usbHandler);
+    this->view->setUsbReleaseButtonHandler(&PtMonitorControl::usbReleaseHandler);
+    this->view->setUsbReloadButtonHandler(&PtMonitorControl::usbReloadHandler);
 
     PtConfig *conf = PtConfig::getInstance();
 
@@ -156,3 +161,22 @@ void PtMonitorControl::setConnection(std::string recIP, uint16_t recPort) {
     rc.setConnection(recIP, recPort);
 }
 
+void PtMonitorControl::usbReloadHandler(void) {
+    std::vector<USB_t> usbList = model->getUSBList();
+    view->removeAllUSB();
+
+    for(auto usb : usbList) {
+        view->addUSB(usb.label);
+    }
+}
+
+
+void PtMonitorControl::usbReleaseHandler(void) {
+
+
+}
+
+
+void PtMonitorControl::usbHandler(std::string usbLabel) {
+
+}

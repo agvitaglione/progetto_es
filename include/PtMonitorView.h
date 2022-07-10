@@ -11,7 +11,6 @@
 #include <map>
 
 
-
 // Singleton Class
 
 class PtMonitorView {
@@ -21,9 +20,9 @@ class PtMonitorView {
 
     friend gboolean _shutdownRequestHandler (GtkWidget *shutdown_button_box);
     friend void _changePageHandler(GtkGestureSwipe *swipe, gdouble v_x, gdouble v_y);
-    friend void _usbButtonHandler(GtkWidget* button, gpointer data);
-    friend gboolean _usbReloadButtonHandler (GtkWidget *eventBox, gpointer user_data);  
-    friend gboolean _usbRemoveButtonHandler (GtkWidget *eventBox, gpointer user_data);
+    friend void _usbButtonHandler(GtkWidget* button);
+    friend gboolean _usbReloadButtonHandler(GtkWidget *eventBox);  
+    friend gboolean _usbReleaseButtonHandler(GtkWidget *eventBox);
    
     // --------------------------- 
 
