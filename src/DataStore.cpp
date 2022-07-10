@@ -3,7 +3,7 @@
 
 DataStore::DataStore(std::string usbLabel){
     std::string username = exec("echo $USERNAME");
-    std::string path = "/home/" + username + "/" + usbLabel + "ptmonitorLog.txt";
+    std::string path = "/home/" + username + "/" + usbLabel + "/ptmonitorLog.txt";
     file.open(path, std::fstream::out | std::fstream::app);
 }
 
@@ -16,7 +16,7 @@ DataStore::~DataStore() {
 void DataStore::setUsbLabel(std::string usbLabel) {
 
     std::string username = exec("echo $USERNAME");
-    std::string path = "/home/" + username + "/" + usbLabel + "ptmonitorLog.txt";
+    std::string path = "/home/" + username + "/" + usbLabel + "/ptmonitorLog.txt";
 
     mutex.lock();
     if(file.is_open()) {
@@ -32,12 +32,4 @@ void DataStore::write(std::string line) {
         file << line << std::endl;
     }
     mutex.unlock();
-}
-
-std::vector<USB_t> DataStore::getUSBList() const {
-
-}
-
-void DataStore::mountUSB(USB_t usb) {
-
 }

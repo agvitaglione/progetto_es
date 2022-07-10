@@ -9,14 +9,17 @@ class DataStore {
     public:
         /**
          * @brief Open log file setting the path where the log file will be saved. 
-         *  The path will be: /home/{USERNAME}/usbLabel
+         *  The path will be: /home/{USERNAME}/{usbLabel}/ptmonitorLog.txt 
          *  The usb must have been mounted
          * 
          * @param usbLabel Label associated to USB storage
          */
         DataStore(std::string usbLabel);
 
-
+        /**
+         * @brief Close /home/{USERNAME}/{usbLabel}/ptmonitorLog.txt if it's opened
+         * 
+         */
         ~DataStore();
 
         /**
@@ -27,8 +30,9 @@ class DataStore {
         void write(std::string line);
 
         /**
-         * @brief Set the path where the log file will be saved. 
-         *  The path will be: /home/{USERNAME}/usbLabel
+         * @brief Set the path where the log file will be saved and open ptmonitorLog.txt file
+         *  The path will be: /home/{USERNAME}/{usbLabel}/ptmonitorLog.txt 
+         * 
          *  The usb must have been mounted
          * 
          * @param usbLabel Label associated to USB storage

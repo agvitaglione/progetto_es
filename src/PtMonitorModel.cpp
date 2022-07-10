@@ -43,7 +43,7 @@ bool PtMonitorModel::getData(MessageType& message)  {
 }
 
 void PtMonitorModel::setDataStore(std::string usbLabel) {
-    dataStore = new DataStore(usbLabel)
+    dataStore = new DataStore(usbLabel);
 }
 
 void PtMonitorModel::readDataFromModule() {
@@ -117,7 +117,7 @@ void PtMonitorModel::readDataFromModule() {
         int t = (int) time(NULL);
         queue.push(MessageType(id, temperature, pressure, t));
 
-        //WRITE LOG FILE
+        // WRITE LOG FILE
         if(dataStore != nullptr) {
             log = "[" + std::to_string(t) + "] id-sensor: " + std::to_string(id) + " temperature: " + std::to_string(temperature) + " pressure: " + std::to_string(pressure);
             dataStore->write(log);
@@ -163,7 +163,8 @@ std::vector<USB_t> PtMonitorModel::getUSBList() const {
 bool mountUSB(USB_t usb) {
     std::string username = exec("echo $USERNAME");
     std::string destPath = "/home/" + username + "/" + usb.label + "/ptmonitorLog.txt";
-    std::string result = exec("mount " + usb.path + " " + destPath);
+    std::string cmd = "mount " + usb.path + " " + destPath;
+    std::string result = exec(cmd.c_str());
 
     if(result == "") {
         return true;
