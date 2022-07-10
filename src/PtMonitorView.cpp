@@ -46,6 +46,18 @@ void _usbButtonHandler(GtkWidget* button, gpointer data) {
     view->usbButtonHandler(std::string(gtk_button_get_label(GTK_BUTTON(button))));
 }
 
+gboolean _usbReloadButtonHandler (GtkWidget *eventBox, gpointer user_data) {
+    PtMonitorView* view = PtMonitorView::getInstance();
+    view->usbReloadButtonHandler();
+    return true;
+}
+
+gboolean _usbRemoveButtonHandler (GtkWidget *eventBox, gpointer user_data) {
+    PtMonitorView* view = PtMonitorView::getInstance();
+    view->usbReleaseButtonHandler();
+    return true;
+}
+
 //-----------------------------------
 
 
@@ -356,7 +368,13 @@ void PtMonitorView::setUsbButtonHandler(void (*callback)(std::string usb_name)) 
     usbButtonHandler = callback;
 }
 
+void PtMonitorView::setUsbReloadButtonHandler(void (*callback)(void)) {
+    usbReloadButtonHandler = callback;
+}
 
+void PtMonitorView::setUsbReleaseButtonHandler(void (*callback)(void)) {
+    usbReleaseButtonHandler = callback;
+}
 
 
 void PtMonitorView::startRoutine(void) const {

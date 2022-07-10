@@ -22,6 +22,8 @@ class PtMonitorView {
     friend gboolean _shutdownRequestHandler (GtkWidget *shutdown_button_box);
     friend void _changePageHandler(GtkGestureSwipe *swipe, gdouble v_x, gdouble v_y);
     friend void _usbButtonHandler(GtkWidget* button, gpointer data);
+    friend gboolean _usbReloadButtonHandler (GtkWidget *eventBox, gpointer user_data);  
+    friend gboolean _usbRemoveButtonHandler (GtkWidget *eventBox, gpointer user_data);
    
     // --------------------------- 
 
@@ -46,6 +48,9 @@ class PtMonitorView {
         void setShoutdownHandler(void (*callback)(void));
         void setSwipeHandler(void (*callback)(gdouble v_x, gdouble v_y));
         void setUsbButtonHandler(void (*callback)(std::string usb_name));
+        void setUsbReloadButtonHandler(void (*callback)(void));
+        void setUsbReleaseButtonHandler(void (*callback)(void));
+
 
         // SET MEASURE LABELS
         void setMeasureValues(int value, MeasureType measure, const int axis, const int tyre);
@@ -125,6 +130,8 @@ class PtMonitorView {
         void (*shutdownHandler)(void);
         void (*swipeHandler)(gdouble v_x, gdouble v_y);
         void (*usbButtonHandler)(std::string usb_name);
+        void (*usbReloadButtonHandler)(void);
+        void (*usbReleaseButtonHandler)(void);
 
          // --------------------------- 
 
