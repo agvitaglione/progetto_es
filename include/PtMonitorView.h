@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iomanip>
 #include "TypeDefinitions.h"
+#include <map>
 
 
 
@@ -18,8 +19,9 @@ class PtMonitorView {
 
     // --------------------------- FRIEND FUNCTIONS
 
-    friend gboolean shutdownRequestHandler (GtkWidget *shutdown_button_box);
-    friend void changePageHandler(GtkGestureSwipe *swipe, gdouble v_x, gdouble v_y);
+    friend gboolean _shutdownRequestHandler (GtkWidget *shutdown_button_box);
+    friend void _changePageHandler(GtkGestureSwipe *swipe, gdouble v_x, gdouble v_y);
+    friend void _usbButtonHandler(GtkWidget* button, gpointer data);
    
     // --------------------------- 
 
@@ -43,6 +45,7 @@ class PtMonitorView {
         // SET HANDLERS
         void setShoutdownHandler(void (*callback)(void));
         void setSwipeHandler(void (*callback)(gdouble v_x, gdouble v_y));
+        void setUsbButtonHandler(void (*callback)(std::string usb_name));
 
         // SET MEASURE LABELS
         void setMeasureValues(int value, MeasureType measure, const int axis, const int tyre);
@@ -54,6 +57,26 @@ class PtMonitorView {
         void plotData(const DataType& data, const int nelem, const MeasureType graph, const int axis, const int tyre);
 
         void startRoutine(void) const;
+
+        /**
+         * @brief Add USB on the interface. If the USB is already in the list, the function won't do anything. 
+         * 
+         * @param usb_name name of the USB to add to the list.
+         */
+        void addUSB(std::string usb_name);
+
+        /**
+         * @brief Remove USB from the interface. If the USB is not in the list, the function won't do anything
+         * 
+         * @param usb_name name of the USB to remove from the list.
+         */
+        void removeUSB(std::string usb_name);
+        
+        /**
+         * @brief Remove all USB from the interface.
+         * 
+         */
+        void removeAllUSB();
 
 
     protected:
@@ -91,13 +114,17 @@ class PtMonitorView {
         GtkWidget ***view_pressure;
         SlopeScale ***scale_pressure;
         SlopeItem ***series_pressure;
-        
+
+        // USB UTILITIES
+        GtkWidget* box_popoverusb;
+        std::map<std::string, GtkWidget*> usb_list;
 
 
         // ---------------------------  CALLBACK FUNCTIONS
 
         void (*shutdownHandler)(void);
         void (*swipeHandler)(gdouble v_x, gdouble v_y);
+        void (*usbButtonHandler)(std::string usb_name);
 
          // --------------------------- 
 

@@ -20,13 +20,13 @@ static const SlopeSample slope_sampler_array[] = {
 
 //----------------------------------- CALLBACKS
 // SWIPE HANDLER
-void changePageHandler(GtkGestureSwipe *swipe, gdouble v_x, gdouble v_y) {
+void _changePageHandler(GtkGestureSwipe *swipe, gdouble v_x, gdouble v_y) {
     PtMonitorView* view = PtMonitorView::getInstance();
     view->swipeHandler(v_x, v_y);
 }
 
 // CONFIRM SHUTDOWN BUTTON HANDLER
-gboolean shutdownRequestHandler (GtkWidget *shutdown_button_box) {
+gboolean _shutdownRequestHandler (GtkWidget *shutdown_button_box) {
 	PtMonitorView* view = PtMonitorView::getInstance();
 
 	int risultato = gtk_dialog_run(GTK_DIALOG(view->request_dialog));
@@ -40,6 +40,15 @@ gboolean shutdownRequestHandler (GtkWidget *shutdown_button_box) {
 
     return TRUE;
 }
+
+void _usbButtonHandler(GtkWidget* button, gpointer data) {
+    PtMonitorView* view = PtMonitorView::getInstance();
+    view->usbButtonHandler(std::string(gtk_button_get_label(GTK_BUTTON(button))));
+}
+
+//-----------------------------------
+
+
 
 
 //----------------------------------- GENERATE GRID
@@ -203,6 +212,7 @@ PtMonitorView::PtMonitorView(void) {
     box_plot = GTK_WIDGET(gtk_builder_get_object(builder, "pagina2"));
     request_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "request_dialog"));
     shutdown_button_box = GTK_WIDGET(gtk_builder_get_object(builder, "shutdown_button_box"));
+    box_popoverusb = GTK_WIDGET(gtk_builder_get_object(builder, "boxPopoverUSB"));
 
     // ------------------------ GENERATE GRID
 
@@ -230,7 +240,7 @@ PtMonitorView::PtMonitorView(void) {
     // ------------------------ CALLBACKS
 
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(shutdown_button_box, "button-release-event", G_CALLBACK(shutdownRequestHandler), NULL);
+    g_signal_connect(shutdown_button_box, "button-release-event", G_CALLBACK(_shutdownRequestHandler), NULL);
 
     // ------------------------
     
@@ -238,7 +248,7 @@ PtMonitorView::PtMonitorView(void) {
   	// ------------------------ ADD GESTURE LISTENER
 
 	swipe = gtk_gesture_swipe_new(window);
-	g_signal_connect(swipe, "swipe", G_CALLBACK(changePageHandler), NULL);
+	g_signal_connect(swipe, "swipe", G_CALLBACK(_changePageHandler), NULL);
 
     //------------------------
 
@@ -342,6 +352,11 @@ void PtMonitorView::setSwipeHandler(void (*callback)(gdouble v_x, gdouble v_y)) 
     swipeHandler = callback; 
 }
 
+void PtMonitorView::setUsbButtonHandler(void (*callback)(std::string usb_name)) {
+    usbButtonHandler = callback;
+}
+
+
 
 
 void PtMonitorView::startRoutine(void) const {
@@ -427,4 +442,57 @@ void PtMonitorView::setMeasureValues(int value, MeasureType measure, const int a
     gdk_threads_enter();
     gtk_label_set_label(GTK_LABEL(tyreLabel), (std::to_string(value) + toUnit(measure)).c_str());
     gdk_threads_leave();
+}
+
+void PtMonitorView::addUSB(std::string usb_name) {
+
+    // If the usb_name is already in the list, don't do anything
+    if(usb_list.count(usb_name) > 0) {
+        return;
+    }
+
+    gdk_threads_enter();
+
+    GtkWidget* button = gtk_button_new();
+    usb_list.insert(std::pair<std::string, GtkWidget*>(usb_name, button));
+    gtk_button_set_label(GTK_BUTTON(button), usb_name.c_str());
+    g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(_usbButtonHandler), NULL);
+    
+    gtk_box_pack_start(GTK_BOX(box_popoverusb), button, TRUE, TRUE, 0);
+
+    gdk_threads_leave();
+}
+
+void PtMonitorView::removeUSB(std::string usb_name) {
+
+    // IF the usb_name is not in the list, don't do anything
+    if(usb_list.count(usb_name) == 0) {
+        return;
+    }
+
+    gdk_threads_enter();
+
+    GtkWidget* button = usb_list[usb_name];
+    usb_list.erase(usb_name);
+    gtk_container_remove(GTK_CONTAINER(box_popoverusb), button);
+    gtk_widget_destroy(button);
+
+    gdk_threads_leave();
+}
+
+void PtMonitorView::removeAllUSB() {
+
+    gdk_threads_enter();
+
+    for(auto usb : usb_list) {
+
+        GtkWidget* button = usb.second;
+        gtk_container_remove(GTK_CONTAINER(box_popoverusb), button);
+        gtk_widget_destroy(button);
+
+    }
+
+    gdk_threads_leave();
+
+    usb_list.clear();
 }
