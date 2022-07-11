@@ -171,6 +171,10 @@ bool PtMonitorModel::mountUSB(USB_t usb, std::string path) {
     exec(cmd.c_str());
     std::cout << cmd << std::endl;
 
+    /**
+     * @brief TODO SUDO ESCALETION MUST BE REMOVED FROM CMD
+     * Set account permissions properly in order to permit mount, umount, mkdir
+     */
     cmd = "echo admin1234 | sudo -S umount -l " + usb.path;
     exec(cmd.c_str());
     std::cout << cmd << std::endl;
