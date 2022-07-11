@@ -238,16 +238,19 @@ class PtMonitorView {
 
         // --------------------------- LABELS
 
-        /// Example:
-        /// interface_labels_temperature[axis][tyre] is GtkWidget pointer which
-        /// is refered to the label on the first page that shows the temperature 
-        /// of the tyre [axis][tyre].
+        /**
+         * EXAMPLE:
+         *  interface_labels_temperature[axis][tyre] is GtkWidget pointer which
+         *  is refered to the label on the first page that shows the temperature 
+         *  of the tyre [axis][tyre].
+         * 
+         */
         GtkWidget ***interface_labels_temperature;
         GtkWidget ***interface_labels_pressure;
 
-        ---------------------------
+        // ---------------------------
 
-        // GESTURE
+        /// GESTURE
         GtkGesture *swipe;
 
         // --------------------------- PLOT WIDGET VARIABLES 
@@ -267,7 +270,7 @@ class PtMonitorView {
         GtkWidget* box_popoverusb;
         std::map<std::string, GtkWidget*> usb_list;
 
-        ---------------------------
+        // ---------------------------
 
 
         // ---------------------------  CALLBACK FUNCTIONS
@@ -278,7 +281,7 @@ class PtMonitorView {
         void (*usbReloadButtonHandler)(void);
         void (*usbReleaseButtonHandler)(void);
 
-         // --------------------------- 
+        // --------------------------- 
 
 };
 
