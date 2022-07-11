@@ -389,7 +389,7 @@ void PtMonitorView::setUsbReleaseButtonHandler(void (*callback)(void)) {
 void PtMonitorView::startRoutine(void) const {
 
     // SHOW MAIN WINDOW
-    gtk_window_fullscreen(GTK_WINDOW(window));
+    // gtk_window_fullscreen(GTK_WINDOW(window));
 	gtk_widget_show_all(window);
 
 	// CURSOR (TO DELETE ON TOUCH SCREEN) 
