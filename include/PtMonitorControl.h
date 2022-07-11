@@ -132,5 +132,4 @@ class PtMonitorControl {
          */
         static void periodicGetData();
 };
-
 #endif // __PTMONITORCONTROL_H__
