@@ -19,9 +19,10 @@ void RemoteConnection::setConnection(std::string IP, uint16_t port) {
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(port);
     inet_pton(AF_INET, IP.c_str(), &serv_addr.sin_addr);
-    bind(sock, (sockaddr*)&serv_addr, sizeof(serv_addr));
     int broadcastEnable=1;
     int ret=setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &broadcastEnable, sizeof(broadcastEnable));
+    bind(sock, (sockaddr*)&serv_addr, sizeof(serv_addr));
+
 }
 
 void RemoteConnection::write(std::string message) {
