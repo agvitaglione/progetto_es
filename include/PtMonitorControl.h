@@ -93,20 +93,43 @@ class PtMonitorControl {
         const PtMonitorControl& operator=(const PtMonitorControl&) = delete;
 
     protected:
+
+        /**
+         * @brief Construct a new Pt Monitor Control object
+         * The model and the view must have been already constructed.
+         * 
+         * It runs periodicGetData task.
+         * 
+         * @see periodicGetData
+         * 
+         * @param[in] view View instance
+         * @param[in] model Model instance
+         */
         PtMonitorControl(PtMonitorView *view, PtMonitorModel *model);
 
     private:
 
-        //INTERNAL CONSTANT
+        /// Horizontal swipe speed required to change pages.
         static const int XACT = 500;
+
+        /// Limit speed of vertical swipe required to change pages.
         static const int YLIMIT = 300;
         
         static PtMonitorView *view;
         static PtMonitorModel *model;
 
-        //Queue Array
+        /**
+         * @brief The control requires a number of queues equal to the number of tyres.
+         * Each queue is associated to one plot (temperature and pressure).
+         * The row states for the axis; the column states for the tyre.
+         */
         static MessageQueue **queues;
 
+
+        /**
+         * @brief Independet task which gatheres messages from model.
+         * The messages are put into the proper queue according to the tyre.
+         */
         static void periodicGetData();
 };
 
