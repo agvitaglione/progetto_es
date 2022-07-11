@@ -125,28 +125,32 @@ class PtMonitorView {
         void setShoutdownHandler(void (*callback)(void));
 
         /**
-         * @brief Set the Swipe Handler object
+         * @brief Set the Swipe Handler callback function, which is called when the user trys to change the page through swiping.
          * 
          * @param callback 
+         *      - v_x[in] swipe speed on x axis.
+         *      - v_y[in] swipe speed on y axis.
          */
         void setSwipeHandler(void (*callback)(gdouble v_x, gdouble v_y));
 
         /**
-         * @brief Set the Usb Button Handler object
+         * @brief Set the Usb Button Handler callback function, which is called when the user chooses an USB.
          * 
          * @param callback 
+         *      - usb_name[in] Name of the chosen USB.
          */
         void setUsbButtonHandler(void (*callback)(std::string usb_name));
 
         /**
-         * @brief Set the Usb Reload Button Handler object
+         * @brief Set the Usb Reload Button Handler callback function, which is called when the user requests to reload
+         *  the usb detected, usually when a new usb is plugged in.
          * 
          * @param callback 
          */
         void setUsbReloadButtonHandler(void (*callback)(void));
 
         /**
-         * @brief Set the Usb Release Button Handler object
+         * @brief Set the Usb Release Button Handler callback function, which is called when the user requests to stop logging on USB.
          * 
          * @param callback 
          */
@@ -154,16 +158,32 @@ class PtMonitorView {
 
         // ---------------------------
 
-
-        // SET MEASURE LABELS
+        /**
+         * @brief Set the Measure Values shown on the first page. 
+         * 
+         * @param value to be shown.
+         * @param measure Type of the measured value which can be either TEMPERATURE or PRESSURE. 
+         * @param axis car axis where the tyre is.
+         * @param tyre identification number of the tyre. 
+         */
         void setMeasureValues(int value, MeasureType measure, const int axis, const int tyre);
 
-        // DRAW DATA
-        /*
-        * Data must be a vector of 4 elements
-        */
+        /**
+         * @brief Plot the data on one of the box plot in the second page. 
+         * 
+         * @param data to be plotted.
+         * @param nelem number of the points to be plotted.
+         * @param graph type of the value to be plotted (temperature, pressure).
+         * @param axis car axis where the tyre is.
+         * @param tyre identification number of the tyre.
+         */
         void plotData(const DataType& data, const int nelem, const MeasureType graph, const int axis, const int tyre);
 
+        /**
+         * @brief Starts the gtk main function. 
+         *  It should be called at the end, when all the initialization phase in concluded.
+         * 
+         */
         void startRoutine(void) const;
 
         /**
@@ -188,16 +208,21 @@ class PtMonitorView {
 
 
     protected:
+
         PtMonitorView(void);
 
     private:
 
-        // GLOBAL VIARIABLES
+        /// Number of pages in the application.
         static const int NUMBER_OF_PAGES = 2;
+
+        /// Name of the glade file.
+        /// If the file cannot be found, the application will crash.
         inline static const std::string builder_file_name =  "../interface_scalable.glade";
 
 
-        // GLOBAL WIDGET INTERFACE VARIABLES
+        // -------------------------- WIDGET INTERFACE VARIABLES
+
         GtkBuilder *builder;
         GtkWidget *window;
         GtkWidget *stack;
@@ -209,14 +234,24 @@ class PtMonitorView {
         GtkWidget *realease_button;
         GtkWidget *reload_button;
         
-        //LABELS
+        // ---------------------------
+
+        // --------------------------- LABELS
+
+        /// Example:
+        /// interface_labels_temperature[axis][tyre] is GtkWidget pointer which
+        /// is refered to the label on the first page that shows the temperature 
+        /// of the tyre [axis][tyre].
         GtkWidget ***interface_labels_temperature;
         GtkWidget ***interface_labels_pressure;
+
+        ---------------------------
 
         // GESTURE
         GtkGesture *swipe;
 
-        // PLOT
+        // --------------------------- PLOT WIDGET VARIABLES 
+
         GtkWidget *box_plot;
         GtkWidget ***view_temperature;
         SlopeScale ***scale_temperature;
@@ -225,9 +260,14 @@ class PtMonitorView {
         SlopeScale ***scale_pressure;
         SlopeItem ***series_pressure;
 
-        // USB UTILITIES
+        // ---------------------------
+
+        // --------------------------- USB UTILITIES VARIABLES
+
         GtkWidget* box_popoverusb;
         std::map<std::string, GtkWidget*> usb_list;
+
+        ---------------------------
 
 
         // ---------------------------  CALLBACK FUNCTIONS
