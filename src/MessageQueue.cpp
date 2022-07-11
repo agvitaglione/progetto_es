@@ -28,7 +28,6 @@ MessageQueue::~MessageQueue()  {
 
 void MessageQueue::push(const MessageType& message) {
   
-    
     queue[tail] = message;
     tail = (tail + 1) % size;
 

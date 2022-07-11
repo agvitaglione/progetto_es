@@ -16,7 +16,7 @@ class DataStore {
         DataStore(std::string usbLabel);
 
         /**
-         * @brief Close file if it's opened
+         * @brief Destructor. Close file if it's opened.
          * 
          */
         ~DataStore();
@@ -38,7 +38,7 @@ class DataStore {
         void setPath(std::string path);
 
         /**
-         * @brief Check if /home/{usbLabel}/ptmonitorLog.txt is opened. 
+         * @brief Check if {path}/ptmonitorLog.txt is opened. 
          * 
          * @return true 
          * @return false 
@@ -56,5 +56,4 @@ class DataStore {
         std::fstream file;
         std::mutex mutex;
 };
-
 #endif // __DATA_STORE_H__
