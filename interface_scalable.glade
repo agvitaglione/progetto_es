@@ -75,8 +75,8 @@
   </object>
   <object class="GtkWindow" id="window">
     <property name="can-focus">False</property>
-    <property name="default-width">800</property>
-    <property name="default-height">400</property>
+    <property name="default-width">1920</property>
+    <property name="default-height">1080</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>

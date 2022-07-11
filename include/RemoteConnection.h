@@ -1,7 +1,7 @@
 #ifndef __REMOTE_CONNECTION_H__
 #define __REMOTE_CONNECTION_H__
 
-#include "DataPlotQueueConcurrent.h"
+#include "MessageQueueConcurrent.h"
 #include <string>
 #include <arpa/inet.h>
 #include <stdio.h>

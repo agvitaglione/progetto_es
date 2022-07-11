@@ -1,14 +1,14 @@
 #ifndef __DATA_PLOT_QUEUE_CONCURRET_H__
 #define __DATA_PLOT_QUEUE_CONCURRET_H__
-#include "DataPlotQueue.h"
+#include "MessageQueue.h"
 #include "TypeDefinitions.h"
 #include <mutex>
 
-class DataPlotQueueConcurret : public DataPlotQueue {
+class MessageQueueConcurret : public MessageQueue {
 
     public:
-        DataPlotQueueConcurret(const int size);
-        DataPlotQueueConcurret(const DataPlotQueueConcurret& other);
+        MessageQueueConcurret(const int size);
+        MessageQueueConcurret(const MessageQueueConcurret& other);
 
         // IF THE QUEUE IS FULL, REPLACE THE OLDEST ELEMENT
         virtual void push(const MessageType& message);

@@ -3,7 +3,7 @@
 
 #include "PtMonitorView.h"
 #include "PtMonitorModel.h"
-#include "DataPlotQueue.h"
+#include "MessageQueue.h"
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
@@ -43,7 +43,7 @@ class PtMonitorControl {
         static PtMonitorModel *model;
 
         //Queue Array
-        static DataPlotQueue **queues;
+        static MessageQueue **queues;
 
         static void periodicGetData();
 };

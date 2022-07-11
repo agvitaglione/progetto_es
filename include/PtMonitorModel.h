@@ -4,7 +4,7 @@
 #include <mqueue.h>
 #include <string>
 #include "TypeDefinitions.h"
-#include "DataPlotQueueConcurrent.h"
+#include "MessageQueueConcurrent.h"
 #include "DataStore.h"
 #include <thread>
 #include <vector>
@@ -75,7 +75,7 @@ class PtMonitorModel {
         PtMonitorModel();
 
     private:
-        static DataPlotQueueConcurret queue;
+        static MessageQueueConcurret queue;
         std::thread *readDataFromModuleThread; 
 
         // WRITE FILE LOG

@@ -1,6 +1,6 @@
-#include "DataPlotQueue.h"
+#include "MessageQueue.h"
 
-DataPlotQueue::DataPlotQueue(const int size) {
+MessageQueue::MessageQueue(const int size) {
     this->size = size;
     queue = new MessageType[size];
     nelem = 0;
@@ -9,7 +9,7 @@ DataPlotQueue::DataPlotQueue(const int size) {
 }
 
 
-DataPlotQueue::DataPlotQueue(const DataPlotQueue& other)  {
+MessageQueue::MessageQueue(const MessageQueue& other)  {
     this->size = other.size;
     this->queue = new MessageType[other.size];
     this->nelem = other.nelem;
@@ -22,11 +22,11 @@ DataPlotQueue::DataPlotQueue(const DataPlotQueue& other)  {
 }
 
 
-DataPlotQueue::~DataPlotQueue()  {
+MessageQueue::~MessageQueue()  {
     delete[] queue;
 }
 
-void DataPlotQueue::push(const MessageType& message) {
+void MessageQueue::push(const MessageType& message) {
   
     
     queue[tail] = message;
@@ -41,7 +41,7 @@ void DataPlotQueue::push(const MessageType& message) {
 }
 
 
-void DataPlotQueue::getData(MessageType *messageArray) const {
+void MessageQueue::getData(MessageType *messageArray) const {
 
     int i = head;
     for(int k = 0; k < nelem; k++) {
@@ -50,7 +50,7 @@ void DataPlotQueue::getData(MessageType *messageArray) const {
     }
 }
 
-bool DataPlotQueue::pop(MessageType& message) {
+bool MessageQueue::pop(MessageType& message) {
     
     if(nelem > 0 ) {
         message = queue[head];

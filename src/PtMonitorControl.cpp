@@ -20,7 +20,7 @@ static int ntyre;
 // STATIC VARIABLES INITIALIZATION
 PtMonitorView *PtMonitorControl::view = nullptr;
 PtMonitorModel *PtMonitorControl::model = nullptr;
-DataPlotQueue **PtMonitorControl::queues = nullptr;
+MessageQueue **PtMonitorControl::queues = nullptr;
 
 
 // SENDDATA TO REMOTE COMPUTER
@@ -46,7 +46,7 @@ void PtMonitorControl::periodicGetData() {
     ntyre = config->getNumberOfTyrePerAxis();
     DataType dataTemperature[naxis][ntyre];
     DataType dataPressure[naxis][ntyre];
-    DataPlotQueue *queue;
+    MessageQueue *queue;
     int axis;
     int tyre;
 
@@ -110,9 +110,9 @@ PtMonitorControl::PtMonitorControl(PtMonitorView* _view, PtMonitorModel* _model)
     PtConfig *conf = PtConfig::getInstance();
 
     // CREATE QUEUES. ONE FOR EACH TYRE
-    queues = new DataPlotQueue*[conf->getNumberOfAxis()];
+    queues = new MessageQueue*[conf->getNumberOfAxis()];
     for(int i = 0; i < conf->getNumberOfAxis(); i++) {
-        queues[i] = new DataPlotQueue[conf->getNumberOfTyrePerAxis()];
+        queues[i] = new MessageQueue[conf->getNumberOfTyrePerAxis()];
     }
 
     // PERIODIC TASK WHICH GET DATA FROM MODEL QUEUE

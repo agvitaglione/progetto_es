@@ -3,12 +3,23 @@
 #include "TypeDefinitions.h"
 #include <mutex>
 
-class DataPlotQueue {
+class MessageQueue {
 
     public:
-        DataPlotQueue(const int size = MAX_QUEUE_SIZE);
-        DataPlotQueue(const DataPlotQueue& other);
-        ~DataPlotQueue();
+
+        /**
+         * @brief Construct a new Data Plot Queue object.
+         * 
+         * 
+         * @param size 
+         */
+        MessageQueue(const int size = MAX_QUEUE_SIZE);
+
+
+        MessageQueue(const MessageQueue& other);
+
+
+        ~MessageQueue();
 
         // IF THE QUEUE IS FULL, REPLACE THE OLDEST ELEMENT
         virtual void push(const MessageType& message);

@@ -1,22 +1,22 @@
-#include "DataPlotQueueConcurrent.h"
+#include "MessageQueueConcurrent.h"
 
-DataPlotQueueConcurret::DataPlotQueueConcurret(const int size) : DataPlotQueue(size) {
+MessageQueueConcurret::MessageQueueConcurret(const int size) : MessageQueue(size) {
 }
 
-DataPlotQueueConcurret::DataPlotQueueConcurret(const DataPlotQueueConcurret& other) : DataPlotQueue(other) {
+MessageQueueConcurret::MessageQueueConcurret(const MessageQueueConcurret& other) : MessageQueue(other) {
 }
 
 
-void DataPlotQueueConcurret::push(const MessageType& message) {
+void MessageQueueConcurret::push(const MessageType& message) {
    mutex.lock();
-   DataPlotQueue::push(message);
+   MessageQueue::push(message);
    mutex.unlock();
 }
 
-bool DataPlotQueueConcurret::pop(MessageType& message) {
+bool MessageQueueConcurret::pop(MessageType& message) {
     bool result;
     mutex.lock();
-    result = DataPlotQueue::pop(message);
+    result = MessageQueue::pop(message);
     mutex.unlock();
     return result;
 }

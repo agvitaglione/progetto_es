@@ -13,7 +13,7 @@
 #include <unistd.h>
 #include "/usr/include/linux/can.h"
 
-DataPlotQueueConcurret PtMonitorModel::queue(60);
+MessageQueueConcurret PtMonitorModel::queue(60);
 DataStore PtMonitorModel::dataStore("");
 static int stopThread = 0;
 
