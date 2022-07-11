@@ -22,7 +22,6 @@ class MessageQueueConcurret : public MessageQueue {
          */
         MessageQueueConcurret(const MessageQueueConcurret& other);
 
-        // 
         /**
          * @brief Insert a message into the queue.
          * If the queue is full, the new message replaces the oldest one.
