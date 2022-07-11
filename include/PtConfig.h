@@ -1,6 +1,5 @@
 #ifndef __PTCONFIG_H__
 #define __PTCONFIG_H__
-
 #include <fstream>
 #include <string>
 #include <map>
@@ -8,7 +7,6 @@
 class PtConfig {
     public:
 
-        
         /**
          * @brief Get the Instance of PtConfig
          * 
@@ -100,13 +98,17 @@ class PtConfig {
         bool isValidId(const uint32_t id) const;
  
         /**
-         * @brief Get the Rec I P object
+         * @brief Get the receiver IP
          * 
          * @return std::string 
          */
         std::string getRecIP() const;
 
-
+        /**
+         * @brief Get the receiver port
+         * 
+         * @return uint16_t 
+         */
         uint16_t getRecPort() const;
 
         //------------------------------------- DISABLED METHODS
