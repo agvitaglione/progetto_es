@@ -58,13 +58,23 @@ class PtMonitorControl {
          */
         static void usbReleaseHandler(void);
 
-
+        /**
+         * @brief Mount the usb with label usbLabel and call model to open a log file.
+         * The log path will be /home/{user}/{usbLabel}/ptmonitorLog.txt
+         * 
+         * @param usbLabel usb LABEL. You can get it through blkid command (proper permissions are required).
+         */
         static void usbHandler(std::string usbLabel);
 
         //------------------------------------- 
 
 
-        // CONNECTION
+        /**
+         * @brief Set the Connection object which allows to send log to a remote computer.
+         * 
+         * @param recIP Receiver IP
+         * @param recPort Receiver PORT (7000 in the current version)
+         */
         void setConnection(std::string recIP, uint16_t recPort);
 
 
