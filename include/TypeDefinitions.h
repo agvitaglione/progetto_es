@@ -6,20 +6,42 @@
 /// Default queue size
 #define MAX_QUEUE_SIZE 11
 
-// TYPE OF PLOTTABLE GRAPH (TEMPERATURE GRAPH OR PRESSURE GRAPH)
+/// Type of plottable graph (temperature graph or pressure grap
 typedef enum {TEMPERATURE, PRESSURE} MeasureType; 
 
-// STRUCT THAT CONTAINS THE X Y VALUE TO PLOT, ACCORDING TO THE TYRE
+
+/**
+ * @brief DataTypre rappresents the data to plot.
+ *      - x: vector of x value
+ *      - y: vector of y value
+ * x and y must have the same length.
+ * 
+ */
 typedef struct {
     double x[MAX_QUEUE_SIZE];
     double y[MAX_QUEUE_SIZE];
 } DataType;
 
+/**
+ * @brief USB_t rappresents an USB.
+ *      - path: /dev/{USB} path
+ *      - label: USB's label
+ */
 typedef struct {
 	std::string path;
 	std::string label;
 } USB_t;
 
+/**
+ * @brief This class rappresents a messagge sended by a sensor.
+ * 
+ * Variables:
+ *      - id: The id of the sensor.
+ *      - temperature: The measured temperature.
+ *      - pressure: The measured pressure.
+ *      - time: The timestamop when the message has been received. 
+ * 
+ */
 class MessageType {
 
     public:
@@ -29,13 +51,14 @@ class MessageType {
         uint32_t pressure;
         int time;
 
+        /// Constructors
         MessageType();
         MessageType(uint32_t id, uint32_t temperature, uint32_t pressure, int time);
         MessageType(const MessageType& other);
 };
 
 /**
- * @brief Returns the unit mesure of a Mesur type.
+ * @brief Returns the unit mesure of a MesureType.
  * 
  * 
  * @param measure 
