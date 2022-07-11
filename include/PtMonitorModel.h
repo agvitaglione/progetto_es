@@ -1,7 +1,6 @@
 #ifndef __PTMONITORMODEL_H__
 #define __PTMONITORMODEL_H__
 
-#include <mqueue.h>
 #include <string>
 #include "TypeDefinitions.h"
 #include "MessageQueueConcurrent.h"
@@ -9,31 +8,57 @@
 #include <thread>
 #include <vector>
 
-
 class PtMonitorModel {
 
     public:
 
-        ~PtMonitorModel();
-        
-        //SINGLETON
+        /**
+         * @brief Get the Instance object.
+         * 
+         * @return PtMonitorModel* 
+         */
         static PtMonitorModel* getInstance();
 
-        // DISABLE OTHER CONSTRUCOTRS
+        /**
+         * @brief Destroy the Pt Monitor Model object.
+         * 
+         */
+        ~PtMonitorModel();
+
+        /**
+         * @brief The copy constructor is disabled.
+         * 
+         */
         PtMonitorModel(const PtMonitorModel&) = delete;
+
+        /**
+         * @brief The assignment operator is deleted. 
+         * 
+         */
         const PtMonitorModel& operator=(const PtMonitorModel&) = delete;
 
+        /**
+         * @brief Pop the oldest message from the queue. 
+         * 
+         * @param[out] message 
+         * @return true if there is a massage to pop.
+         * @return false if there isn't any massage to pop.
+         */
         bool getData(MessageType& message);
 
-        // ROUTINE TO TAKE DATA FROM USB2CAN MODULE
+        /**
+         * @brief Routine that in polling read messages from CAN bus. New messages are pushed in the queue.
+         *  If a data store is open, the messages are written in a log file. 
+         *  It starts when the object is costructed.
+         * 
+         */
         static void readDataFromModule();
 
-
-        //---------------------------- USB FUNCTIONS
+        // ---------------------------- USB FUNCTIONS
 
         /**
          * @brief Set the DataStore. Create a dataStore which can be used to write into an USB storage.
-         * The path will be /home/{usbLabel}/ptmonitorLog.txt
+         *  The path will be /home/{usbLabel}/ptmonitorLog.txt
          * 
          * @param usbLabel Label associated to the USB storage
          */
@@ -56,7 +81,7 @@ class PtMonitorModel {
         /**
          * @brief Get a list of currently plugged in data storages .
          * 
-         * @return std::vector<USB_t> List of USB
+         * @return std::vector<USB_t> List of USB plugged in.
          */
         std::vector<USB_t> getUSBList() const;
 
@@ -67,18 +92,36 @@ class PtMonitorModel {
          * @param path Path where usb is mounting.
          * 
          * @return true if the operation succeded
-         * @return false Error during the operation ha occured.
+         * @return false Error during the operation has occured.
          */
         bool mountUSB(USB_t usb, std::string path);
 
+        //----------------------------
+
     protected:
+
+        /**
+         * @brief Construct a new Pt Monitor Model object.
+         *  It runs readDataFromModule task.
+         * 
+         * @see readDataFromModule
+         * 
+         */
         PtMonitorModel();
 
     private:
+
+        /// Queue where all messages sent are stored. 
         static MessageQueueConcurret queue;
+
+        /**
+         * @brief Indipendent task which read messages sent through can bus.
+         * 
+         * @see readDataFromModule
+         */
         std::thread *readDataFromModuleThread; 
 
-        // WRITE FILE LOG
+        /// Object used for message logging.
         static DataStore dataStore;
 
 };

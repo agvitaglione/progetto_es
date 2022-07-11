@@ -3,6 +3,8 @@
 #include <string>
 #include <iostream>
 #include <memory>
+
+/// Default queue size
 #define MAX_QUEUE_SIZE 11
 
 // TYPE OF PLOTTABLE GRAPH (TEMPERATURE GRAPH OR PRESSURE GRAPH)
