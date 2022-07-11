@@ -135,7 +135,6 @@ class PtConfig {
 
     private:
 
-        // utile type 
         typedef struct {
             int axis;
             int tire;
@@ -145,6 +144,7 @@ class PtConfig {
         int numberOfAxis;
         int numberOfTirePerAxis;
         std::map<uint32_t, TirePosition> positions; 
+
 
         // CONNECTION VARIABLES
         std::string recIP;
