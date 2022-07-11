@@ -1,7 +1,6 @@
 #ifndef __TYPEDEFINITIONS_H__
 #define __TYPEDEFINITIONS_H__
 #include <string>
-#include <iostream>
 #include <memory>
 
 /// Default queue size
@@ -24,6 +23,7 @@ typedef struct {
 class MessageType {
 
     public:
+
         uint32_t id;
         uint32_t temperature;
         uint32_t pressure;
@@ -34,8 +34,14 @@ class MessageType {
         MessageType(const MessageType& other);
 };
 
+/**
+ * @brief Returns the unit mesure of a Mesur type.
+ * 
+ * 
+ * @param measure 
+ * @return std::string "°C" if TEMPERATURE, " bar" if PRESSURE.
+ */
 std::string toUnit(MeasureType measure);
-
 
 /**
  * @brief Exec terminal commands
