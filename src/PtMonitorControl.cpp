@@ -182,13 +182,21 @@ void PtMonitorControl::usbReleaseHandler(void) {
 void PtMonitorControl::usbHandler(std::string usbLabel) {
 
     std::vector<USB_t> vector = model->getUSBList();
+    std::string logname = exec("echo $LOGNAME");
+    logname = logname.substr(0, logname.length() - 1);
+    std::string path = "/home/" + logname + "/" + usbLabel;
+    bool success = false;
 
     for(auto usb : vector) {
         if(usb.label == usbLabel) {
-            model->mountUSB(usb);
+            model->mountUSB(usb, path);
+            success = true;
             break;
         }
     }
 
-    model->setDataStore(usbLabel);
+    if(success) {
+        path += "/ptmonitorLog.txt";
+        model->setDataStore(path);
+    }
 }

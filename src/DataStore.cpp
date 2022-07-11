@@ -2,9 +2,7 @@
 #include "TypeDefinitions.h"
 #include <unistd.h>
 
-DataStore::DataStore(std::string usbLabel){
-    std::string path = "/home/" + usbLabel + "/ptmonitorLog.txt";
-
+DataStore::DataStore(std::string path){
     try {
         file.open(path, std::fstream::out | std::fstream::app);
     } catch(...) {
@@ -29,15 +27,15 @@ void DataStore::closeFile() {
     }
 }
 
-void DataStore::setUsbLabel(std::string usbLabel) {
-
-    std::string path = "/home/"  + usbLabel + "/ptmonitorLog.txt";
+void DataStore::setPath(std::string path) {
 
     mutex.lock();
     if(file.is_open()) {
         file.close();
     }
-    file.open(path, std::fstream::out | std::fstream::app);
+    if(path != "") {
+        file.open(path, std::fstream::out | std::fstream::app);
+    }
     mutex.unlock();
 }
 

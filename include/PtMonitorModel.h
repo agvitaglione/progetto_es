@@ -64,11 +64,12 @@ class PtMonitorModel {
          * @brief Moun the USB to /home/{USB_LABEL}
          * 
          * @param usb USB_t usb to be mounted
+         * @param path Path where usb is mounting.
          * 
          * @return true if the operation succeded
          * @return false Error during the operation ha occured.
          */
-        bool mountUSB(USB_t usb);
+        bool mountUSB(USB_t usb, std::string path);
 
     protected:
         PtMonitorModel();
