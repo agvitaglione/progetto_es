@@ -208,17 +208,21 @@ class PtMonitorView {
 
 
     protected:
-    
+
         PtMonitorView(void);
 
     private:
 
-        // GLOBAL VIARIABLES
+        /// Number of pages in the application.
         static const int NUMBER_OF_PAGES = 2;
+
+        /// Name of the glade file.
+        /// If the file cannot be found, the application will crash.
         inline static const std::string builder_file_name =  "../interface_scalable.glade";
 
 
-        // GLOBAL WIDGET INTERFACE VARIABLES
+        // -------------------------- WIDGET INTERFACE VARIABLES
+
         GtkBuilder *builder;
         GtkWidget *window;
         GtkWidget *stack;
@@ -230,14 +234,24 @@ class PtMonitorView {
         GtkWidget *realease_button;
         GtkWidget *reload_button;
         
-        //LABELS
+        // ---------------------------
+
+        // --------------------------- LABELS
+
+        /// Example:
+        /// interface_labels_temperature[axis][tyre] is GtkWidget pointer which
+        /// is refered to the label on the first page that shows the temperature 
+        /// of the tyre [axis][tyre].
         GtkWidget ***interface_labels_temperature;
         GtkWidget ***interface_labels_pressure;
+
+        ---------------------------
 
         // GESTURE
         GtkGesture *swipe;
 
-        // PLOT
+        // --------------------------- PLOT WIDGET VARIABLES 
+
         GtkWidget *box_plot;
         GtkWidget ***view_temperature;
         SlopeScale ***scale_temperature;
@@ -246,9 +260,14 @@ class PtMonitorView {
         SlopeScale ***scale_pressure;
         SlopeItem ***series_pressure;
 
-        // USB UTILITIES
+        // ---------------------------
+
+        // --------------------------- USB UTILITIES VARIABLES
+
         GtkWidget* box_popoverusb;
         std::map<std::string, GtkWidget*> usb_list;
+
+        ---------------------------
 
 
         // ---------------------------  CALLBACK FUNCTIONS
