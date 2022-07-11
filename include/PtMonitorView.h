@@ -15,40 +15,144 @@
 
 class PtMonitorView {
 
-
     // --------------------------- FRIEND FUNCTIONS
 
+    /**
+     * @brief Handler function called by the interface when the user press the shutdown button. It invokes the function
+     *  setted with setShoutdownHandler.
+     * 
+     * @param shutdown_button_box handler function for shutdown request.
+     * @return gboolean always true. 
+     */
     friend gboolean _shutdownRequestHandler (GtkWidget *shutdown_button_box);
+
+    /**
+     * @brief Handler function called by the interface when the user change the page through swiping. It invokes the function
+     *  setted with setSwipeHandler.
+     * 
+     * @param swipe gtk object for swipe handling.
+     * @param v_x swipe speed on x axis.
+     * @param v_y swipe speed on y axis.
+     */
     friend void _changePageHandler(GtkGestureSwipe *swipe, gdouble v_x, gdouble v_y);
+
+    /**
+     * @brief Handler function called by the interface when the user chooses an USB where to store data.
+     * 
+     * @param button pressed. The button label is the USB name. 
+     */
     friend void _usbButtonHandler(GtkWidget* button);
-    friend gboolean _usbReloadButtonHandler(GtkWidget *eventBox);  
+
+    /**
+     * @brief Handler function called by the interface when the user requests to reload the usb list.  It invokes the function
+     *  setted with setUsbReloadButtonHandler.
+     * 
+     * @param eventBox gtk object for the event box where the user has clicked.
+     * @return gboolean always true.
+     */
+    friend gboolean _usbReloadButtonHandler(GtkWidget *eventBox); 
+
+    /**
+     * @brief Handler function called by the interface when the user requests to stop logging on USB. It invokes the function
+     *  setted with setUsbReloadButtonHandler.
+     * 
+     * @param eventBox gtk object for the event box where the user has clicked.
+     * @return gboolean always true.
+     */
     friend gboolean _usbReleaseButtonHandler(GtkWidget *eventBox);
    
     // --------------------------- 
 
     public:
 
-        // SINGLETON
+        /**
+         * @brief Get the Instance object.
+         * 
+         * @return PtMonitorView*. 
+         */
         static PtMonitorView* getInstance();
+
+        /**
+         * @brief Destroy the Pt Monitor View object.
+         * 
+         */
         ~PtMonitorView();
 
-        // DISABLE OTHER CONSTRUCTORS
+        /**
+         * @brief The copy constructor is disabled.
+         * 
+         */
         PtMonitorView(const PtMonitorView&) = delete;
+
+        /**
+         * @brief The assignment operator is disabled.
+         * 
+         * 
+         */
         const PtMonitorView& operator=(const PtMonitorView&) = delete; 
         
-
+        /**
+         * @brief Get the Current Page Number. 
+         * 
+         * @return 0 if the user is in the first page.
+         * @return 1 if the user is in the second page.
+         */
         int getCurrentPageNumber(void) const;
+
+        /**
+         * @brief Get the Number Of Pages object
+         * 
+         * @return int. In this version, always 2.
+         */
         static int getNumberOfPages(void);
 
 
+        /**
+         * @brief Set the page showed to the user.
+         * 
+         * @param page_number It can be or 0 or 1.
+         * @param transition Set the transition type (left to right, right to left...).
+         */
         void setPage(const int page_number, const GtkStackTransitionType transition);
 
-        // SET HANDLERS
+        // --------------------------- SET HANDLERS
+
+        /**
+         * @brief Set the Shoutdown Handler callback function, which is called when a shoutdown request is raised.
+         * 
+         * @param callback 
+         */
         void setShoutdownHandler(void (*callback)(void));
+
+        /**
+         * @brief Set the Swipe Handler object
+         * 
+         * @param callback 
+         */
         void setSwipeHandler(void (*callback)(gdouble v_x, gdouble v_y));
+
+        /**
+         * @brief Set the Usb Button Handler object
+         * 
+         * @param callback 
+         */
         void setUsbButtonHandler(void (*callback)(std::string usb_name));
+
+        /**
+         * @brief Set the Usb Reload Button Handler object
+         * 
+         * @param callback 
+         */
         void setUsbReloadButtonHandler(void (*callback)(void));
+
+        /**
+         * @brief Set the Usb Release Button Handler object
+         * 
+         * @param callback 
+         */
         void setUsbReleaseButtonHandler(void (*callback)(void));
+
+        // ---------------------------
 
 
         // SET MEASURE LABELS
