@@ -79,6 +79,8 @@ void PtConfig::readFile(const std::string fileName) {
 }
 
 void PtConfig::saveNewConfiguration(const int numberOfAxis, const int numberOfTirePerAxis, std::string *id) {
+
+    // TODO: SAVE RECEIVER IP AND PORT 
     
     file.seekg(std::fstream::beg);
 
