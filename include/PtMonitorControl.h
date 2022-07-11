@@ -119,16 +119,16 @@ class PtMonitorControl {
         static PtMonitorModel *model;
 
         /**
-         * @brief The control requires a number of queues equal to the number of tyres.
+         * @brief The control requires a number of queues equal to the number of tires.
          * Each queue is associated to one plot (temperature and pressure).
-         * The row states for the axis; the column states for the tyre.
+         * The row states for the axis; the column states for the tire.
          */
         static MessageQueue **queues;
 
 
         /**
          * @brief Independet task which gatheres messages from model.
-         * The messages are put into the proper queue according to the tyre.
+         * The messages are put into the proper queue according to the tire.
          */
         static void periodicGetData();
 };

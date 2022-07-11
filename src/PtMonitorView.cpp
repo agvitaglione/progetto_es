@@ -8,7 +8,7 @@
 * Variabili da prendere da file
 */
 static int numberOfAxis;
-static int numberOfTyrePerAxis;
+static int numberOfTirePerAxis;
 
 // X AXIS FOR PLOT
 #define NLABEL 3
@@ -74,7 +74,7 @@ void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, Gt
 
     for(int i = 0; i < numberOfAxis; i++) {
 
-        int ntyre = 0;
+        int ntire = 0;
 
         for(int j = 0; j < 2; j++) {
 
@@ -98,8 +98,8 @@ void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, Gt
             GtkWidget* image_thermometer = gtk_image_new_from_file("../img/thermometer.png");
             gtk_grid_attach(GTK_GRID(grid_tp), image_thermometer, 0, 0, 1, 1);
 
-            GtkWidget* image_tyre = gtk_image_new_from_file("../img/tyre.png");
-            gtk_grid_attach(GTK_GRID(grid_tp), image_tyre, 2, 0, 1, 1);
+            GtkWidget* image_tire = gtk_image_new_from_file("../img/tire.png");
+            gtk_grid_attach(GTK_GRID(grid_tp), image_tire, 2, 0, 1, 1);
 
             // ---------------------------
 
@@ -115,12 +115,12 @@ void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, Gt
             gtk_box_set_homogeneous(GTK_BOX(box_pressure), true);
             gtk_grid_attach(GTK_GRID(grid_tp), box_pressure, 3, 0, 1, 1);
 
-            for(int k = 0; k < numberOfTyrePerAxis / 2; k++) {
-                interface_labels_temperature[i][ntyre] = gtk_label_new("0°C");
-                interface_labels_pressure[i][ntyre] = gtk_label_new("0 mbar");
-                gtk_box_pack_start(GTK_BOX(box_temperature), interface_labels_temperature[i][ntyre], false, false, 0);
-                gtk_box_pack_start(GTK_BOX(box_pressure), interface_labels_pressure[i][ntyre], false, false, 0);
-                ntyre++;
+            for(int k = 0; k < numberOfTirePerAxis / 2; k++) {
+                interface_labels_temperature[i][ntire] = gtk_label_new("0°C");
+                interface_labels_pressure[i][ntire] = gtk_label_new("0 mbar");
+                gtk_box_pack_start(GTK_BOX(box_temperature), interface_labels_temperature[i][ntire], false, false, 0);
+                gtk_box_pack_start(GTK_BOX(box_pressure), interface_labels_pressure[i][ntire], false, false, 0);
+                ntire++;
             }
             
             // ---------------------------
@@ -139,15 +139,15 @@ void generatePlotDiagram (
 
     for(int axis = 0; axis < numberOfAxis; axis++) {
         
-        for(int tyre = 0; tyre < numberOfTyrePerAxis; tyre++){
+        for(int tire = 0; tire < numberOfTirePerAxis; tire++){
 
             // Create a grid for each axis
             GtkWidget* grid = gtk_grid_new();
             gtk_grid_set_column_homogeneous(GTK_GRID(grid), true);
             gtk_box_pack_start(GTK_BOX(box), grid, TRUE, TRUE, 10);
             
-            // Title for the tyre
-            std::string label_string = "Axis " + std::to_string(axis) + " Tyre " + std::to_string(tyre);
+            // Title for the tire
+            std::string label_string = "Axis " + std::to_string(axis) + " Tire " + std::to_string(tire);
             GtkWidget* label = gtk_label_new(label_string.c_str());
 
             
@@ -157,12 +157,12 @@ void generatePlotDiagram (
             // ------------ Generate Graph Temperature
 
             SlopeFigure *figure_temperature = slope_figure_new();
-            scale_temperature[axis][tyre] = slope_xyscale_new_axis("Previous samples", "Value [°C]", "Temperature");
-            view_temperature[axis][tyre]   = slope_view_new();
+            scale_temperature[axis][tire] = slope_xyscale_new_axis("Previous samples", "Value [°C]", "Temperature");
+            view_temperature[axis][tire]   = slope_view_new();
             
             // Get value to semplify
-            SlopeScale *_scale_temperature = scale_temperature[axis][tyre];
-            GtkWidget *_view_temperature = view_temperature[axis][tyre];
+            SlopeScale *_scale_temperature = scale_temperature[axis][tire];
+            GtkWidget *_view_temperature = view_temperature[axis][tire];
 
             gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(_view_temperature), 0, 1, 1, 1);
             slope_view_set_figure(SLOPE_VIEW(_view_temperature), figure_temperature);
@@ -178,12 +178,12 @@ void generatePlotDiagram (
             // ------------ Generate Graph Pressure
 
             SlopeFigure *figure_pressure = slope_figure_new();
-            scale_pressure[axis][tyre] = slope_xyscale_new_axis("Previous samples", "Value [mbar]", "Pressure");
-            view_pressure[axis][tyre]   = slope_view_new();
+            scale_pressure[axis][tire] = slope_xyscale_new_axis("Previous samples", "Value [mbar]", "Pressure");
+            view_pressure[axis][tire]   = slope_view_new();
             
             // Get value to semplify
-            SlopeScale *_scale_pressure = scale_pressure[axis][tyre];
-            GtkWidget *_view_pressure = view_pressure[axis][tyre];
+            SlopeScale *_scale_pressure = scale_pressure[axis][tire];
+            GtkWidget *_view_pressure = view_pressure[axis][tire];
 
             gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(_view_pressure), 1, 1, 1, 1);
             slope_view_set_figure(SLOPE_VIEW(_view_pressure), figure_pressure);
@@ -234,18 +234,18 @@ PtMonitorView::PtMonitorView(void) {
 
     // ------------------------ GENERATE GRID
 
-    // Get number of axis and tyre for each axis
+    // Get number of axis and tire for each axis
     PtConfig *ptConfig = PtConfig::getInstance(); 
     ::numberOfAxis = ptConfig->getNumberOfAxis();
-    ::numberOfTyrePerAxis = ptConfig->getNumberOfTyrePerAxis();
+    ::numberOfTirePerAxis = ptConfig->getNumberOfTirePerAxis();
 
     GtkWidget* box_first_page = GTK_WIDGET(gtk_builder_get_object(builder, "pagina1"));
 
     interface_labels_temperature = new GtkWidget**[numberOfAxis];
     interface_labels_pressure = new GtkWidget**[numberOfAxis];
     for(int i = 0; i < numberOfAxis; i++) {
-        interface_labels_temperature[i] = new GtkWidget*[numberOfTyrePerAxis];
-        interface_labels_pressure[i] = new GtkWidget*[numberOfTyrePerAxis];
+        interface_labels_temperature[i] = new GtkWidget*[numberOfTirePerAxis];
+        interface_labels_pressure[i] = new GtkWidget*[numberOfTirePerAxis];
     }
     
     generateGrid(box_first_page, interface_labels_temperature, interface_labels_pressure);
@@ -300,9 +300,9 @@ PtMonitorView::PtMonitorView(void) {
 	// ------------------------ DELETE SIGNAL HANDLER MOUSE MOVING
 
     for(int axis = 0; axis < numberOfAxis; axis++) {
-        for(int tyre = 0; tyre < numberOfTyrePerAxis; tyre++) {
-            g_signal_handlers_disconnect_by_data(view_temperature[axis][tyre], GINT_TO_POINTER(SLOPE_MOUSE_MOVE));
-            g_signal_handlers_disconnect_by_data(view_pressure[axis][tyre], GINT_TO_POINTER(SLOPE_MOUSE_MOVE));
+        for(int tire = 0; tire < numberOfTirePerAxis; tire++) {
+            g_signal_handlers_disconnect_by_data(view_temperature[axis][tire], GINT_TO_POINTER(SLOPE_MOUSE_MOVE));
+            g_signal_handlers_disconnect_by_data(view_pressure[axis][tire], GINT_TO_POINTER(SLOPE_MOUSE_MOVE));
         }
     }
 
@@ -415,7 +415,7 @@ int PtMonitorView::getNumberOfPages(void) {
     return NUMBER_OF_PAGES;
 }
 
-void PtMonitorView::plotData(const DataType& data, const int nelem, const MeasureType graph, const int axis, const int tyre) {
+void PtMonitorView::plotData(const DataType& data, const int nelem, const MeasureType graph, const int axis, const int tire) {
 
     SlopeScale* scale;
     SlopeItem** series;
@@ -424,16 +424,16 @@ void PtMonitorView::plotData(const DataType& data, const int nelem, const Measur
     double ymax;
 
     if(graph == TEMPERATURE) {
-        scale = scale_temperature[axis][tyre];
-        series = &series_temperature[axis][tyre];
-        view = view_temperature[axis][tyre];
+        scale = scale_temperature[axis][tire];
+        series = &series_temperature[axis][tire];
+        view = view_temperature[axis][tire];
         ymin = 0.0;
         ymax = 150.0;
     }
     else if(graph == PRESSURE) {
-        scale = scale_pressure[axis][tyre];
-        series = &series_pressure[axis][tyre];
-        view = view_pressure[axis][tyre];
+        scale = scale_pressure[axis][tire];
+        series = &series_pressure[axis][tire];
+        view = view_pressure[axis][tire];
         ymin = 0.0;
         ymax = 2000.0;
     }
@@ -455,20 +455,20 @@ void PtMonitorView::plotData(const DataType& data, const int nelem, const Measur
 
 }
 
-void PtMonitorView::setMeasureValues(int value, MeasureType measure, const int axis, const int tyre) {
+void PtMonitorView::setMeasureValues(int value, MeasureType measure, const int axis, const int tire) {
 
-    GtkWidget *tyreLabel;
+    GtkWidget *tireLabel;
 
     if(measure == MeasureType::TEMPERATURE) {
-        tyreLabel = interface_labels_temperature[axis][tyre];
+        tireLabel = interface_labels_temperature[axis][tire];
     }
 
     else if(measure == MeasureType::PRESSURE) {
-        tyreLabel = interface_labels_pressure[axis][tyre];
+        tireLabel = interface_labels_pressure[axis][tire];
     }
 
     gdk_threads_enter();
-    gtk_label_set_label(GTK_LABEL(tyreLabel), (std::to_string(value) + toUnit(measure)).c_str());
+    gtk_label_set_label(GTK_LABEL(tireLabel), (std::to_string(value) + toUnit(measure)).c_str());
     gdk_threads_leave();
 }
 
