@@ -92,9 +92,8 @@ void PtMonitorModel::readDataFromModule() {
 
 	while(stopThread == 0) {
         
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        //std::this_thread::sleep_for(std::chrono::seconds(1));
         
-        /*
     	nbytes = read(s, &frame, sizeof(struct can_frame));
 
 		if (nbytes < 0) {
@@ -107,17 +106,17 @@ void PtMonitorModel::readDataFromModule() {
 		        // fprintf(stderr, "read: incomplete CAN frame\n");
 		        continue;
 		}
-		*/
+		
 		/* do something with the received CAN frame */
-		//uint32_t id (frame.can_id & (uint32_t)0x1FFFFFFF);
-        uint32_t id = ids[count];
-        count = (count + 1) % 11;
-        //uint32_t temperature (frame.data[1]); // °C
-        uint32_t temperature = temperatures[count_temp] + 52;
-        count_temp = (count_temp + 1) % 6;
+		uint32_t id (frame.can_id & (uint32_t)0x1FFFFFFF);
+        //uint32_t id = ids[count];
+        //count = (count + 1) % 11;
+        uint32_t temperature (frame.data[1]); // °C
+        //uint32_t temperature = temperatures[count_temp] + 52;
+        //count_temp = (count_temp + 1) % 6;
         temperature = temperature - 52;
-        //uint32_t pressure (frame.data[2] + frame.data[3] & 0x1); // mBar
-        uint32_t pressure = temperatures[count_temp];
+        uint32_t pressure (frame.data[2] + frame.data[3] & 0x1); // mBar
+        //uint32_t pressure = temperatures[count_temp];
         pressure = pressure * 40;
         int t = (int) time(NULL);
         queue.push(MessageType(id, temperature, pressure, t));
@@ -169,7 +168,6 @@ std::vector<USB_t> PtMonitorModel::getUSBList() const {
 bool PtMonitorModel::mountUSB(USB_t usb, std::string path) {
     std::string cmd = "mkdir " + path;
     exec(cmd.c_str());
-    std::cout << cmd << std::endl;
 
     /**
      * @brief TODO SUDO ESCALETION MUST BE REMOVED FROM CMD
@@ -177,12 +175,12 @@ bool PtMonitorModel::mountUSB(USB_t usb, std::string path) {
      */
     cmd = "echo admin1234 | sudo -S umount -l " + usb.path;
     exec(cmd.c_str());
-    std::cout << cmd << std::endl;
 
     cmd = "echo admin1234 | sudo -S mount -o rw,umask=0 " + usb.path + " " + path;
     std::string result = exec(cmd.c_str());
-    std::cout << cmd << std::endl;
 
+
+    // TODO Not always return true
     return true;
 }
 

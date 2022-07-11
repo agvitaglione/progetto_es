@@ -134,10 +134,7 @@ PtMonitorControl::~PtMonitorControl() {
 
 
 void PtMonitorControl::shutdownHandler(void) {
-    // TODO
-    //system("shutdown now");
-    gtk_main_quit();
-    exit(0);
+    system("shutdown now");
 }
 
 void PtMonitorControl::swipeHandler(gdouble v_x, gdouble v_y) {
