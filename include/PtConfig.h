@@ -5,18 +5,19 @@
 #include <map>
 
 class PtConfig {
+
     public:
 
         /**
-         * @brief Get the Instance of PtConfig
+         * @brief Get the Instance of PtConfig.
          * 
          * @return PtConfig* 
          */
         static PtConfig* getInstance();
 
         /**
-         * @brief Destroy the Pt Config object
-         * If file is open, close it 
+         * @brief Destroy the Pt Config object.
+         * If file is open, close it. 
          */
         ~PtConfig();
 
@@ -55,14 +56,14 @@ class PtConfig {
         void saveNewConfiguration(const int numberOfAxis, const int numberOfTirePerAxis, std::string *id);
 
         /**
-         * @brief Get the number ff Axis
+         * @brief Get the number of Axis.
          * 
          * @return int 
          */
         int getNumberOfAxis() const; 
 
         /**
-         * @brief Get the number of tire per axis
+         * @brief Get the number of tire per axis.
          * 
          * @return int 
          */
@@ -129,25 +130,43 @@ class PtConfig {
 
         /**
          * @brief Construct a new Pt Config object.
-         * Nothing to do.
+         *  Nothing to do.
          */
         PtConfig(void) {}
 
     private:
 
+        /**
+         * @brief structure used to store the position of each tyre.
+         * 
+         */
         typedef struct {
             int axis;
             int tire;
         } TirePosition;
 
+        /// Stream from configuration file.
         std::fstream file;
+
+        /// Number of the axis the car.
         int numberOfAxis;
+
+        /// Number of tire per axis.
         int numberOfTirePerAxis;
+
+        /**
+         * @brief Dictionary
+         *      - key: sensor id
+         *      - value: sensor position in term of axis and tire.
+         * 
+         * It is usefull to get the tire position by an id. 
+         */
         std::map<uint32_t, TirePosition> positions; 
 
-
-        // CONNECTION VARIABLES
+        /// Host receiver IP
         std::string recIP;
+
+        /// Host receiver PORT
         uint16_t recPort;
 
 };
