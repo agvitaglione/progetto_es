@@ -98,7 +98,7 @@ void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, Gt
             GtkWidget* image_thermometer = gtk_image_new_from_file("../img/thermometer.png");
             gtk_grid_attach(GTK_GRID(grid_tp), image_thermometer, 0, 0, 1, 1);
 
-            GtkWidget* image_tire = gtk_image_new_from_file("../img/tire.png");
+            GtkWidget* image_tire = gtk_image_new_from_file("../img/tyre.png");
             gtk_grid_attach(GTK_GRID(grid_tp), image_tire, 2, 0, 1, 1);
 
             // ---------------------------
