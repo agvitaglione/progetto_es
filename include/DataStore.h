@@ -16,7 +16,7 @@ class DataStore {
         DataStore(std::string usbLabel);
 
         /**
-         * @brief Destructor. Close file if it's opened.
+         * @brief Destructor. Close file if it's open.
          * 
          */
         ~DataStore();
@@ -38,7 +38,7 @@ class DataStore {
         void setPath(std::string path);
 
         /**
-         * @brief Check if {path}/ptmonitorLog.txt is opened. 
+         * @brief Check if {path}/ptmonitorLog.txt is open. 
          * 
          * @return true 
          * @return false 

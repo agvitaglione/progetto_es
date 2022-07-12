@@ -100,7 +100,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEventBox" id="releaseButton1">
+                  <object class="GtkEventBox" id="releaseButton">
                     <property name="name">re</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -119,7 +119,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEventBox" id="reloadButton1">
+                  <object class="GtkEventBox" id="reloadButton">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
