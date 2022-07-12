@@ -219,6 +219,9 @@ class PtMonitorView {
         /// Name of the glade file.
         /// If the file cannot be found, the application will crash.
         inline static const std::string builder_file_name =  "../interface_scalable.glade";
+        
+        /// Name of the css file 
+        inline static const std::string css_file_name = "../style.css";
 
 
         // -------------------------- WIDGET INTERFACE VARIABLES
@@ -252,6 +255,9 @@ class PtMonitorView {
 
         /// GESTURE
         GtkGesture *swipe;
+
+        /// Style provider for css
+        GtkCssProvider *provider;
 
         // --------------------------- PLOT WIDGET VARIABLES 
 

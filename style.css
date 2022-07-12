@@ -1,5 +1,12 @@
-.dialog {
-    background-color: red;
+#labelValue {
+    font-size: 2em;
 }
 
+#labelAxis {
+    font-size: 2em;
+}
+
+#labelAxisFirstPage {
+    font-size: 2em;;
+}
 

@@ -66,11 +66,12 @@ gboolean _usbReleaseButtonHandler (GtkWidget *eventBox) {
 
 //----------------------------------- GENERATE GRID
 
-void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, GtkWidget ***interface_labels_pressure) {
+void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, GtkWidget ***interface_labels_pressure, GtkCssProvider *provider) {
 
     gtk_grid_set_row_homogeneous(GTK_GRID(grid), true);
     gtk_grid_set_row_spacing(GTK_GRID(grid), 20);
 
+    GtkStyleContext *context;
 
     for(int i = 0; i < numberOfAxis; i++) {
 
@@ -85,6 +86,11 @@ void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, Gt
             std::string label_box_str = "AXIS " + std::to_string(i + 1);
             label_box_str += j == 0 ? " L" : " R";
             GtkWidget* label_box = gtk_label_new(label_box_str.c_str());
+
+            gtk_widget_set_name(label_box, "labelAxisFirstPage");
+            context = gtk_widget_get_style_context(label_box);
+            gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+
             gtk_widget_set_halign(label_box, GTK_ALIGN_START);
             gtk_box_pack_start(GTK_BOX(box), label_box, false, false, 0);
 
@@ -115,11 +121,28 @@ void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, Gt
             gtk_box_set_homogeneous(GTK_BOX(box_pressure), true);
             gtk_grid_attach(GTK_GRID(grid_tp), box_pressure, 3, 0, 1, 1);
 
+            GtkWidget* lt;
+            GtkWidget* lp;
+
             for(int k = 0; k < numberOfTirePerAxis / 2; k++) {
-                interface_labels_temperature[i][ntire] = gtk_label_new("0°C");
-                interface_labels_pressure[i][ntire] = gtk_label_new("0 mbar");
-                gtk_box_pack_start(GTK_BOX(box_temperature), interface_labels_temperature[i][ntire], false, false, 0);
-                gtk_box_pack_start(GTK_BOX(box_pressure), interface_labels_pressure[i][ntire], false, false, 0);
+
+                lt = gtk_label_new("0°C");;
+                lp = gtk_label_new("0 mbar");
+
+                interface_labels_temperature[i][ntire] = lt;
+                interface_labels_pressure[i][ntire] = lp;
+
+                gtk_widget_set_name(lt, "labelValue");
+                gtk_widget_set_name(lp , "labelValue");
+
+                context = gtk_widget_get_style_context(lt);
+                gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+                context = gtk_widget_get_style_context(lp);
+                gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
+
+                gtk_box_pack_start(GTK_BOX(box_temperature), lt, false, false, 0);
+                gtk_box_pack_start(GTK_BOX(box_pressure), lp, false, false, 0);
+
                 ntire++;
             }
             
@@ -134,7 +157,8 @@ void generatePlotDiagram (
     GtkWidget ***view_temperature,
     SlopeScale ***scale_temperature,
     GtkWidget ***view_pressure,
-    SlopeScale ***scale_pressure)
+    SlopeScale ***scale_pressure,
+    GtkCssProvider *provider)
 {
 
     for(int axis = 0; axis < numberOfAxis; axis++) {
@@ -149,6 +173,9 @@ void generatePlotDiagram (
             // Title for the tire
             std::string label_string = "Axis " + std::to_string(axis) + " Tire " + std::to_string(tire);
             GtkWidget* label = gtk_label_new(label_string.c_str());
+            gtk_widget_set_name(label, "labelAxis");
+            GtkStyleContext *context = gtk_widget_get_style_context(label);
+            gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 
             
 
@@ -231,6 +258,13 @@ PtMonitorView::PtMonitorView(void) {
     reload_button = GTK_WIDGET(gtk_builder_get_object(builder, "reloadButton"));
 
 
+    // ------------------------ Style provider 
+
+    provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_path(provider, "../style.css", NULL);
+    
+    // ------------------------
+
 
     // ------------------------ GENERATE GRID
 
@@ -248,7 +282,7 @@ PtMonitorView::PtMonitorView(void) {
         interface_labels_pressure[i] = new GtkWidget*[numberOfTirePerAxis];
     }
     
-    generateGrid(box_first_page, interface_labels_temperature, interface_labels_pressure);
+    generateGrid(box_first_page, interface_labels_temperature, interface_labels_pressure, provider);
 
 
     // ------------------------
@@ -292,7 +326,7 @@ PtMonitorView::PtMonitorView(void) {
         series_pressure[i] = new SlopeItem*[numberOfAxis];
     }
 
-    generatePlotDiagram(box_plot, view_temperature, scale_temperature, view_pressure, scale_pressure);
+    generatePlotDiagram(box_plot, view_temperature, scale_temperature, view_pressure, scale_pressure, provider);
     
     // ------------------------ 
 	
