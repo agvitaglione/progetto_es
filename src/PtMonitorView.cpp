@@ -91,7 +91,7 @@ void generateGrid(GtkWidget* grid, GtkWidget ***interface_labels_temperature, Gt
             context = gtk_widget_get_style_context(label_box);
             gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 
-            gtk_widget_set_halign(label_box, GTK_ALIGN_START);
+            gtk_widget_set_halign(label_box, GTK_ALIGN_CENTER);
             gtk_box_pack_start(GTK_BOX(box), label_box, false, false, 0);
 
 
@@ -171,7 +171,7 @@ void generatePlotDiagram (
             gtk_box_pack_start(GTK_BOX(box), grid, TRUE, TRUE, 10);
             
             // Title for the tire
-            std::string label_string = "Axis " + std::to_string(axis) + " Tire " + std::to_string(tire);
+            std::string label_string = "Axis " + std::to_string(axis + 1) + " Tire " + std::to_string(tire + 1);
             GtkWidget* label = gtk_label_new(label_string.c_str());
             gtk_widget_set_name(label, "labelAxis");
             GtkStyleContext *context = gtk_widget_get_style_context(label);
@@ -426,8 +426,8 @@ void PtMonitorView::startRoutine(void) const {
     // gtk_window_fullscreen(GTK_WINDOW(window));
 	gtk_widget_show_all(window);
 
-	// CURSOR (TO DELETE ON TOUCH SCREEN) 
-	gdk_window_set_cursor(gtk_widget_get_window(window), gdk_cursor_new(GDK_ARROW));
+	// CURSOR (TO COMMENT FOR TOUCH SCREEN) 
+	//gdk_window_set_cursor(gtk_widget_get_window(window), gdk_cursor_new(GDK_ARROW));
 
 	// START GTK MAIN ROUTINE
 	gtk_main();
