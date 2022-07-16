@@ -2,6 +2,7 @@
 #include <signal.h>
 #include <time.h>
 #include <iomanip>
+#include "Password.h"
 
 // FOR CAN MESSAGE
 #include <sys/socket.h>
@@ -141,8 +142,17 @@ std::vector<USB_t> PtMonitorModel::getUSBList() const {
 
 	std::vector<USB_t> usbList;
 	std::vector<std::string> strList;
-	std::string result = exec("blkid -t TYPE=vfat");
-	result += exec("blkid -t TYPE=ext4");
+    
+    /**
+    * @brief TODO SUDO ESCALETION MUST BE REMOVED FROM CMD
+    * Set account permissions properly in order to permit mount, umount, mkdir
+    */
+    std::string password = PASSWORD;
+    std::string cmd = "echo " + password + " | sudo -S blkid -t TYPE=vfat";
+	std::string result = exec(cmd.c_str());
+
+    cmd = "echo " + password + " | sudo -S blkid -t TYPE=ext4";
+	result += exec(cmd.c_str());
 	
 	size_t pos = 0;
 	std::string token;
@@ -175,13 +185,14 @@ std::vector<USB_t> PtMonitorModel::getUSBList() const {
 
 bool PtMonitorModel::mountUSB(USB_t usb, std::string path) {
     std::string cmd = "mkdir " + path;
+    std::string password = PASSWORD;
     exec(cmd.c_str());
 
     /**
      * @brief TODO SUDO ESCALETION MUST BE REMOVED FROM CMD
      * Set account permissions properly in order to permit mount, umount, mkdir
      */
-    cmd = "echo admin1234 | sudo -S umount -l " + usb.path;
+    cmd = "echo " + password + " | sudo -S umount -l " + usb.path;
     exec(cmd.c_str());
 
     cmd = "echo admin1234 | sudo -S mount -o rw,umask=0 " + usb.path + " " + path;
