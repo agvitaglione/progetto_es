@@ -30,7 +30,6 @@ sudo ip link set can0 type can bitrate 250000
 sudo ifconfig can0 up
 ```
 
-Install PtMonitor:
 Before installing PTMonitor, to not have problems with the possible user accesses for the USB storages visualization, is necessary to edit include/Password.h before compiling, by entering the root password (will be removed from the next versions). Then, the software installation can start:
 ```bash
 cd ~
