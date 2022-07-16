@@ -9,9 +9,8 @@ class DataStore {
     public:
         /**
          * @brief Open log file setting the path where the log will be saved. 
-         * The usb must have been mounted
          * 
-         * @param usbLabel Label associated to USB storage
+         * @param path 
          */
         DataStore(std::string path);
 
