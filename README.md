@@ -31,6 +31,7 @@ sudo ifconfig can0 up
 ```
 
 Install PtMonitor:
+Before installing PTMonitor, to not have problems with the possible user accesses for the USB storages visualization, is necessary to edit include/Password.h before compiling, by entering the root password (will be removed from the next versions). Then, the software installation can start:
 ```bash
 cd ~
 git clone https://github.com/agvitaglione/ptmonitor
@@ -42,7 +43,7 @@ PtMonitor must be lunched in the bin directory, otherwise _config.txt_ and _inte
 
 ## Configuration file
 In _config.txt_ is possible to set:
-* IP and PORT of a host receiver to which the data wil be sent.
+* IP and PORT of a receiver host that will collect the data with an UDP Socket.
 * Number of axis.
 * Number of tyre per axys.
 * List of _numberOfAxis x numberOfTyrePerAxys_ ID sensors. The sensors must be written in order from top-left to bottom-right. Use NONE if there are no sensors in that position.
