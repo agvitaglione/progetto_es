@@ -1,1 +1,1 @@
-![alt text](https://github.com/agvitaglione/ptmonitor/blob/main/img/logo.png)
+![alt text](https://github.com/agvitaglione/ptmonitor/blob/main/img/logo.png | width=500)
