@@ -38,6 +38,8 @@ cd ptmonitor
 make -j 4
 ```
 
+PtMonitor must be lunched in the bin directory, otherwise _config.txt_ and _interface_scalable.glade_ won't be found.  
+
 ## Configuration file
 In _config.txt_ is possible to set:
 * IP and PORT of a host receiver to which the data wil be sent
