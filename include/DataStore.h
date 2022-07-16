@@ -13,7 +13,7 @@ class DataStore {
          * 
          * @param usbLabel Label associated to USB storage
          */
-        DataStore(std::string usbLabel);
+        DataStore(std::string path);
 
         /**
          * @brief Destructor. Close file if it's open.
