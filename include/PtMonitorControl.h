@@ -20,6 +20,10 @@ class PtMonitorControl {
          * @param[in] _view 
          * @param[in] _model 
          * @return PtMonitorControl* The instance ot object.
+         * 
+         * TODO: getInstance must be invoked with no parameters. 
+         *  view and model should be set with different functions, so that
+         *  the control can be get without knowing view and model. 
          */
         static PtMonitorControl* getInstance(PtMonitorView *_view, PtMonitorModel *_model);
 
