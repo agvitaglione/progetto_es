@@ -2,7 +2,7 @@
   <img src="https://github.com/agvitaglione/ptmonitor/blob/main/img/logo.png" width="500">
 </p>
 PtMonitor is a GUI-based monitoring applcation running on GNU/Linux system for the collection, elaboration and visualization on screen of vehicle tyre temperature and pressure values. The values are sent though a CAN bus connected to the system whith a USB2CAN module. 
-The GUI is developed using GTK3.0 and <a href=https://github.com/bytebrew/slope>slope</a>
+The GUI is developed using GTK3.0 and <a href=https://github.com/bytebrew/slope>slope</a>.
 
 ## Installation
 Install the required development packages: 
@@ -10,7 +10,7 @@ Install the required development packages:
 sudo apt-get install build-essential cmake libgtk-3-dev
 ```
 
-Install the slope toolkit
+Install slope toolkit
 ```bash
 cd ~
 git clone https://github.com/bytebrew/slope
@@ -30,7 +30,7 @@ sudo ip link set can0 type can bitrate 250000
 sudo ifconfig can0 up
 ```
 
-Install ptmonitor:
+Install PtMonitor:
 ```bash
 cd ~
 git clone https://github.com/agvitaglione/ptmonitor
@@ -42,10 +42,10 @@ PtMonitor must be lunched in the bin directory, otherwise _config.txt_ and _inte
 
 ## Configuration file
 In _config.txt_ is possible to set:
-* IP and PORT of a host receiver to which the data wil be sent
-* Number of axis
-* Number of tyre per axys
-* List of numberOfAxis x numberOfTyrePerAxys ID sensors. The sensors must be written in order from top-left to bottom-right. Use NONE if there are no sensors in that position.
+* IP and PORT of a host receiver to which the data wil be sent.
+* Number of axis.
+* Number of tyre per axys.
+* List of _numberOfAxis x numberOfTyrePerAxys_ ID sensors. The sensors must be written in order from top-left to bottom-right. Use NONE if there are no sensors in that position.
 
 Here an example configuration file:
 ```
