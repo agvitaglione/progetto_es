@@ -34,7 +34,7 @@ class PtConfig {
          * @brief Save the new configuration in the configuration file.
          * You must have already called readFile before using this method.
          * 
-         * id must be an array of dimension numberOfAxis x numberOfTirePerAxis sorted as follow.
+         * id must be an array of dimension numberOfAxis x numberOfTyrePerAxis sorted as follow.
          *            
          *    _____________FRONT___________
          *    |                           |
@@ -45,15 +45,15 @@ class PtConfig {
          *    |4_6_____________________6_7|
          *    |                           |
          *
-         * id NONE means that there's no sensor placed in the tire, or there's no tire in that position.
+         * id NONE means that there's no sensor placed in the tyre, or there's no tyre in that position.
          * 
          * WARNING: do not use this method since it's not fully implemented.
          * 
          * @param numberOfAxis 
-         * @param numberOfTirePerAxis 
+         * @param numberOfTyrePerAxis 
          * @param id Sensors' id. 
          */
-        void saveNewConfiguration(const int numberOfAxis, const int numberOfTirePerAxis, std::string *id);
+        void saveNewConfiguration(const int numberOfAxis, const int numberOfTyrePerAxis, std::string *id);
 
         /**
          * @brief Get the number of Axis.
@@ -63,11 +63,11 @@ class PtConfig {
         int getNumberOfAxis() const; 
 
         /**
-         * @brief Get the number of tire per axis.
+         * @brief Get the number of tyre per axis.
          * 
          * @return int 
          */
-        int getNumberOfTirePerAxis() const; 
+        int getNumberOfTyrePerAxis() const; 
 
         /**
          * @brief Get the axis given the sensor's id.
@@ -80,14 +80,14 @@ class PtConfig {
         int getAxisFromId(const uint32_t id);
 
         /**
-         * @brief Get the tire given the sensor's id.
+         * @brief Get the tyre given the sensor's id.
          * 
          * @see saveNewConfiguration
          * 
          * @param id Sensor's id
-         * @return int Tire
+         * @return int Tyre
          */
-        int getTireFromId(const uint32_t id);
+        int getTyreFromId(const uint32_t id);
 
         /**
          * @brief Check that the id is valid (i.e. is written in the configuration file)
@@ -142,8 +142,8 @@ class PtConfig {
          */
         typedef struct {
             int axis;
-            int tire;
-        } TirePosition;
+            int tyre;
+        } TyrePosition;
 
         /// Stream from configuration file.
         std::fstream file;
@@ -151,17 +151,17 @@ class PtConfig {
         /// Number of the axis the car.
         int numberOfAxis;
 
-        /// Number of tire per axis.
-        int numberOfTirePerAxis;
+        /// Number of tyre per axis.
+        int numberOfTyrePerAxis;
 
         /**
          * @brief Dictionary
          *      - key: sensor id
-         *      - value: sensor position in term of axis and tire.
+         *      - value: sensor position in term of axis and tyre.
          * 
-         * It is usefull to get the tire position by an id. 
+         * It is usefull to get the tyre position by an id. 
          */
-        std::map<uint32_t, TirePosition> positions; 
+        std::map<uint32_t, TyrePosition> positions; 
 
         /// Host receiver IP
         std::string recIP;

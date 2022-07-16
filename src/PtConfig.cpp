@@ -37,7 +37,7 @@ void PtConfig::readFile(const std::string fileName) {
         }
         else if (line == "NUMBER_OF_TYRES_PER_AXIS") {
             std::getline(file, line);
-            numberOfTirePerAxis = std::stoi(line);
+            numberOfTyrePerAxis = std::stoi(line);
         }
         else if(line == "RECEIVER_IP") {
             std::getline(file, line);
@@ -54,21 +54,21 @@ void PtConfig::readFile(const std::string fileName) {
 
     // ------------------------- Get sensors ID
 
-    TirePosition position;
+    TyrePosition position;
 
     for(int axis = 0; axis < numberOfAxis; axis++) {
-        for(int tire = 0; tire < numberOfTirePerAxis; tire++) {
+        for(int tyre = 0; tyre < numberOfTyrePerAxis; tyre++) {
 
             std::getline(file, line);
             position.axis = axis;
-            position.tire = tire;
+            position.tyre = tyre;
 
             if(line != "NONE") {
                 uint32_t x;   
                 std::stringstream ss;
                 ss << std::hex << line ;
                 ss >> x;
-                positions.insert(std::pair<uint32_t, TirePosition>(x, position));
+                positions.insert(std::pair<uint32_t, TyrePosition>(x, position));
             }
         }
     }
@@ -78,16 +78,16 @@ void PtConfig::readFile(const std::string fileName) {
 
 }
 
-void PtConfig::saveNewConfiguration(const int numberOfAxis, const int numberOfTirePerAxis, std::string *id) {
+void PtConfig::saveNewConfiguration(const int numberOfAxis, const int numberOfTyrePerAxis, std::string *id) {
 
     // TODO: SAVE RECEIVER IP AND PORT 
     
     file.seekg(std::fstream::beg);
 
     file << "NUMBER_OF_AXIS=" << numberOfAxis << std::endl;
-    file << "NUMBER_OF_TYRES_PER_AXIS=" << numberOfTirePerAxis << std::endl;
+    file << "NUMBER_OF_TYRES_PER_AXIS=" << numberOfTyrePerAxis << std::endl;
 
-    for(int i = 0; i < numberOfAxis * numberOfTirePerAxis; i++) {
+    for(int i = 0; i < numberOfAxis * numberOfTyrePerAxis; i++) {
             file << id[i] << std::endl;
     }
 }
@@ -96,16 +96,16 @@ int PtConfig::getNumberOfAxis() const {
     return numberOfAxis;
 }
 
-int PtConfig::getNumberOfTirePerAxis() const {
-    return numberOfTirePerAxis;
+int PtConfig::getNumberOfTyrePerAxis() const {
+    return numberOfTyrePerAxis;
 }
 
 int PtConfig::getAxisFromId(const uint32_t id) {
     return positions[id].axis;
 }
 
-int PtConfig::getTireFromId(const uint32_t id) {
-    return positions[id].tire;
+int PtConfig::getTyreFromId(const uint32_t id) {
+    return positions[id].tyre;
 }
 
 bool PtConfig::isValidId(const uint32_t id) const {

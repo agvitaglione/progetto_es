@@ -163,10 +163,10 @@ class PtMonitorView {
          * 
          * @param value to be shown.
          * @param measure Type of the measured value which can be either TEMPERATURE or PRESSURE. 
-         * @param axis car axis where the tire is.
-         * @param tire identification number of the tire. 
+         * @param axis car axis where the tyre is.
+         * @param tyre identification number of the tyre. 
          */
-        void setMeasureValues(int value, MeasureType measure, const int axis, const int tire);
+        void setMeasureValues(int value, MeasureType measure, const int axis, const int tyre);
 
         /**
          * @brief Plot the data on one of the box plot in the second page. 
@@ -174,10 +174,10 @@ class PtMonitorView {
          * @param data to be plotted.
          * @param nelem number of the points to be plotted.
          * @param graph type of the value to be plotted (temperature, pressure).
-         * @param axis car axis where the tire is.
-         * @param tire identification number of the tire.
+         * @param axis car axis where the tyre is.
+         * @param tyre identification number of the tyre.
          */
-        void plotData(const DataType& data, const int nelem, const MeasureType graph, const int axis, const int tire);
+        void plotData(const DataType& data, const int nelem, const MeasureType graph, const int axis, const int tyre);
 
         /**
          * @brief Starts the gtk main function. 
@@ -243,9 +243,9 @@ class PtMonitorView {
 
         /**
          * EXAMPLE:
-         *  interface_labels_temperature[axis][tire] is GtkWidget pointer which
+         *  interface_labels_temperature[axis][tyre] is GtkWidget pointer which
          *  is refered to the label on the first page that shows the temperature 
-         *  of the tire [axis][tire].
+         *  of the tyre [axis][tyre].
          * 
          */
         GtkWidget ***interface_labels_temperature;

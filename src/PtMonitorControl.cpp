@@ -15,7 +15,7 @@ static RemoteConnection rc;
 static std::thread *periodicThread;
 static int stopThread = 0;
 static int naxis;
-static int ntire;
+static int ntyre;
 
 // STATIC VARIABLES INITIALIZATION
 PtMonitorView *PtMonitorControl::view = nullptr;
@@ -43,12 +43,12 @@ void PtMonitorControl::periodicGetData() {
 
     PtConfig *config = PtConfig::getInstance();
     naxis = config->getNumberOfAxis();
-    ntire = config->getNumberOfTirePerAxis();
-    DataType dataTemperature[naxis][ntire];
-    DataType dataPressure[naxis][ntire];
+    ntyre = config->getNumberOfTyrePerAxis();
+    DataType dataTemperature[naxis][ntyre];
+    DataType dataPressure[naxis][ntyre];
     MessageQueue *queue;
     int axis;
-    int tire;
+    int tyre;
 
     while(stopThread == 0) {  
 
@@ -57,8 +57,8 @@ void PtMonitorControl::periodicGetData() {
         if(!config->isValidId(message.id)) continue;    // if it is not a valid id, ignore the message
 
         axis = config->getAxisFromId(message.id);
-        tire = config->getTireFromId(message.id);
-        queue = &queues[axis][tire];
+        tyre = config->getTyreFromId(message.id);
+        queue = &queues[axis][tyre];
         queue->push(message);
         
         // PLOT DATA
@@ -67,20 +67,20 @@ void PtMonitorControl::periodicGetData() {
         
 
         for(int i = 0; i < nelem; i++) {
-           dataTemperature[axis][tire].x[i] = -nelem + i + 1;
-           dataTemperature[axis][tire].y[i] = messageArray[i].temperature;
+           dataTemperature[axis][tyre].x[i] = -nelem + i + 1;
+           dataTemperature[axis][tyre].y[i] = messageArray[i].temperature;
 
-           dataPressure[axis][tire].x[i] = -nelem + i + 1;
-           dataPressure[axis][tire].y[i] = messageArray[i].pressure;
+           dataPressure[axis][tyre].x[i] = -nelem + i + 1;
+           dataPressure[axis][tyre].y[i] = messageArray[i].pressure;
         }
 
         // PLOT DATA
-        view->plotData(dataTemperature[axis][tire], nelem, TEMPERATURE, axis, tire);
-        view->plotData(dataPressure[axis][tire], nelem, PRESSURE, axis, tire);
+        view->plotData(dataTemperature[axis][tyre], nelem, TEMPERATURE, axis, tyre);
+        view->plotData(dataPressure[axis][tyre], nelem, PRESSURE, axis, tyre);
         
         //SET LABELS
-        view->setMeasureValues(message.temperature, TEMPERATURE, axis, tire);
-        view->setMeasureValues(message.pressure, PRESSURE, axis, tire);
+        view->setMeasureValues(message.temperature, TEMPERATURE, axis, tyre);
+        view->setMeasureValues(message.pressure, PRESSURE, axis, tyre);
         
         // SEND DATA TO REMOTE
         if(rc.isConnected()) {
@@ -112,7 +112,7 @@ PtMonitorControl::PtMonitorControl(PtMonitorView* _view, PtMonitorModel* _model)
     // CREATE QUEUES. ONE FOR EACH TYRE
     queues = new MessageQueue*[conf->getNumberOfAxis()];
     for(int i = 0; i < conf->getNumberOfAxis(); i++) {
-        queues[i] = new MessageQueue[conf->getNumberOfTirePerAxis()];
+        queues[i] = new MessageQueue[conf->getNumberOfTyrePerAxis()];
     }
 
     // PERIODIC TASK WHICH GET DATA FROM MODEL QUEUE
