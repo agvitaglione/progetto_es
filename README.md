@@ -38,16 +38,16 @@ cd ptmonitor
 make -j 4
 ```
 
-PtMonitor must be lunched in the bin directory, otherwise _config.txt_ and _interface_scalable.glade_ won't be found.  
+PtMonitor must be lunched from the bin directory, otherwise _config.txt_ and _interface_scalable.glade_ won't be found.  
 
 ## Configuration file
 In _config.txt_ is possible to set:
 * IP and PORT of a receiver host that will collect the data with an UDP Socket.
 * Number of axis.
-* Number of tyre per axys.
-* List of _numberOfAxis x numberOfTyrePerAxys_ ID sensors. The sensors must be written in order from top-left to bottom-right. Use NONE if there are no sensors in that position.
+* Number of tyres per axys.
+* List of _numberOfAxis x numberOfTyrePerAxys_ ID sensors. The sensor IDs must be written in order from left to right, starting from the first axis to the last one. Use NONE if there is no sensor in that position.
 
-Here an example configuration file:
+Here is an example configuration file:
 ```
 RECEIVER_IP=192.168.1.10
 RECEIVER_PORT=7000
@@ -68,4 +68,4 @@ NONE
 ```
 
 ## Server UDP
-To test a remote host, compile _serverUDP_ using make and run it on the host. It will print on screen sensor data messages. 
+To test a remote host, compile _serverUDP_ using make and run it on the host. It will print sensor data messages on the screen. 
