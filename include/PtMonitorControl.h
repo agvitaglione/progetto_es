@@ -33,7 +33,6 @@ class PtMonitorControl {
          */
         ~PtMonitorControl();
 
-
         // -------------------------------------  CALLBACK FUNCTIONS
 
         /**
@@ -71,7 +70,6 @@ class PtMonitorControl {
         static void usbHandler(std::string usbLabel);
 
         //------------------------------------- 
-
 
         /**
          * @brief Set the Connection object which allows to send log to a remote computer.
@@ -128,7 +126,6 @@ class PtMonitorControl {
          * The row states for the axis; the column states for the tire.
          */
         static MessageQueue **queues;
-
 
         /**
          * @brief Independet task which gatheres messages from model.
