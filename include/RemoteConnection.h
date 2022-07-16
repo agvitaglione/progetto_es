@@ -1,7 +1,6 @@
 #ifndef __REMOTE_CONNECTION_H__
 #define __REMOTE_CONNECTION_H__
 
-#include "MessageQueueConcurrent.h"
 #include <string>
 #include <arpa/inet.h>
 #include <stdio.h>
