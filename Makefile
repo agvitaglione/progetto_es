@@ -41,6 +41,3 @@ clean:
 	rm $(TARGETDIR)/serverUDP
 	rmdir bin
 	rmdir build
-
-print:
-	@echo $(OBJ)
