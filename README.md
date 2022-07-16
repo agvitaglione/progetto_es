@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://github.com/agvitaglione/ptmonitor/blob/main/img/logo.png" width="500">
 </p>
-PtMonitor is a GUI-based monitoring applcation running on GNU/Linux system for the collection, elaboration and visualization on screen of vehicle tyre temperature and pressure values. The values are sent though a CAN bus connected to the system whith a USB2CAN module. 
+PtMonitor is a GUI-based monitoring applcation running on GNU/Linux system for the collection, elaboration and visualization on screen of vehicle tyre temperature and pressure values. The values are sent through a CAN bus connected to the system whith a USB2CAN module. 
 The GUI is developed using GTK3.0 and <a href=https://github.com/bytebrew/slope>slope</a>.
 
 ## Installation
