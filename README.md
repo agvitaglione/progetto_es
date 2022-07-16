@@ -65,4 +65,5 @@ NUMBER_OF_TYRES_PER_AXIS=4
 NONE
 ```
 
-
+## Server UDP
+To test a remote host, compile _serverUDP_ using make and run it on the host. It will print on screen sensor data messages. 
