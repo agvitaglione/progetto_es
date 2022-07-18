@@ -169,8 +169,6 @@ std::vector<USB_t> PtMonitorModel::getUSBList() const {
 		firstIndex = elem.find(toFind);
 
 		if(firstIndex != std::string::npos) {
-
-
 			firstIndex +=  toFind.length() + 1;
 			lastIndex = elem.find('\"', firstIndex);
 			usb.label = elem.substr(firstIndex, lastIndex - firstIndex);
@@ -195,7 +193,7 @@ bool PtMonitorModel::mountUSB(USB_t usb, std::string path) {
     cmd = "echo " + password + " | sudo -S umount -l " + usb.path;
     exec(cmd.c_str());
 
-    cmd = "echo admin1234 | sudo -S mount -o rw,umask=0 " + usb.path + " " + path;
+    cmd = "echo " + password + " | sudo -S mount -o rw,umask=0 " + usb.path + " " + path;
     std::string result = exec(cmd.c_str());
 
 
