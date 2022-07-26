@@ -27,7 +27,7 @@ $(OBJ): $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(INCLUDE)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 serverUDP: serverUDP.cpp
-	g++ -o $(TARGETDIR)/serverUDP serverUDP.cpp
+	$(CC) -o $(TARGETDIR)/serverUDP serverUDP.cpp
 
 .PHONY: clean all directories print
 
