@@ -27,7 +27,7 @@ void RemoteConnection::setConnection(std::string IP, uint16_t port) {
 
 void RemoteConnection::write(std::string message) {
     if(sock != 0) {
-        sendto(sock, message.c_str(), message.length(), 0, (sockaddr*)&serv_addr, sizeof(serv_addr));
+        sendto(sock, message.c_str(), message.length() + 1, 0, (sockaddr*)&serv_addr, sizeof(serv_addr));
     }
 }
 
